@@ -23,4 +23,5 @@ input_select:
 alarm_control_panel:
   - platform: manual
     name: HA
+    arming_time: 0
 
