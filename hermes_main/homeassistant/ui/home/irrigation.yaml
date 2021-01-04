@@ -1,0 +1,68 @@
+# lovelace_gen
+
+{% macro logbook(entity, name) -%}
+  - type: custom:logbook-card
+    entity: {{ entity }}
+    title: {{ name }}
+    hiddenState: ['off']
+    show:
+      state: false
+      end_date: false
+{%- endmacro %}
+
+title: Irrigation
+path: irrigation
+icon: mdi:sprinkler
+
+cards:
+  
+  - type: custom:button-card
+    entity: sensor.irrigation_program_next_remaining
+    icon: mdi:autorenew
+    size: 50px
+    template: general
+    #layout: icon_name_state
+    tap_action:
+      action: more-info
+      entity: sensor.irrigation_program_next
+    state:
+      - value: 60
+        operator: "<"
+        name: >
+          [[[
+            return entity.state + " minutes";
+          ]]]
+      - operator: "default"
+        name: >
+          [[[
+            return Math.round(entity.state/60) + " hours";
+          ]]]
+    show_label: true
+    label: >
+      [[[
+        var date = new Date(states['sensor.irrigation_program_next'].state);
+        var today = new Date();
+        //return today.getDay()+1;
+        if (date.getDay() == today.getDay()) { return ("0" + date.getHours()).substr(-2) + ":" + ("0" + date.getMinutes()).substr(-2); }
+        else if ((date.getDay() - today.getDay()) == 1) { return "Tomorrow " + ("0" + date.getHours()).substr(-2) + ":" + ("0" + date.getMinutes()).substr(-2); }
+        else { return date.getMonth()+1 + "/" + date.getDate() + " " + ("0" + date.getHours()).substr(-2) + ":" + ("0" + date.getMinutes()).substr(-2); }
+      ]]]
+    styles:
+      icon:
+        - color: var(--paper-item-icon-color)
+      name:
+        - font-size: 16px
+        - font-weight: bold
+      label:
+        - font-size: 14px
+  
+  {{ logbook("switch.irrigation_zone_back_main_sprinklers", "Back Main Sprinklers") }}
+  {{ logbook("switch.irrigation_zone_back_hvac_sprinklers", "Back HVAC Sprinklers") }}
+  {{ logbook("switch.irrigation_zone_front_road_sprinklers", "Front Road Sprinklers") }}
+  {{ logbook("switch.irrigation_zone_front_house_sprinklers", "Front House Sprinklers") }}
+  {{ logbook("switch.irrigation_zone_rear_hose", "Rear Hose") }}
+  {{ logbook("switch.irrigation_zone_front_hose", "Front Hose") }}
+  {{ logbook("switch.irrigation_zone_side_hose", "Side Hose") }}
+  {{ logbook("switch.irrigation_zone_fence_hose_1", "Fence Hose 1") }}
+  {{ logbook("switch.irrigation_zone_fence_hose_2", "Fence Hose 2") }}
+  {{ logbook("switch.irrigation_zone_fence_hose_3", "Fence Hose 3") }}

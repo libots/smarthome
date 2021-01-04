@@ -1,0 +1,20 @@
+sensor:
+  - platform: min_max
+    name: Luminance Average
+    type: mean
+    round_digits: 0
+    entity_ids:
+      - sensor.luminance_outside_patio
+      - sensor.luminance_outside_backyard
+      - sensor.luminance_outside_garage_left
+      - sensor.luminance_outside_garage_right
+
+group:
+  luminance:
+    name: Luminance
+    entities:
+      - sensor.luminance_average
+      - sensor.luminance_outside_patio
+      - sensor.luminance_outside_backyard
+      - sensor.luminance_outside_garage_left
+      - sensor.luminance_outside_garage_right

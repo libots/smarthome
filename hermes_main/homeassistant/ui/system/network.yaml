@@ -1,0 +1,74 @@
+# lovelace_gen
+
+title: Network
+path: network
+icon: mdi:lan
+cards:
+  # Begin WAN card
+  - title: WAN
+    type: entities
+    show_header_toggle: false
+    entities:
+      - entity: sensor.pfsense_nic_wan_in_mbps
+        name: Traffic In
+      - entity: sensor.pfsense_nic_wan_out_mbps
+        name: Traffic Out
+      - type: custom:hui-history-graph-card
+        hours_to_show: 1
+        entities:
+          - entity: sensor.pfsense_nic_wan_in_mbps
+            name: In
+          - entity: sensor.pfsense_nic_wan_out_mbps
+            name: Out
+        style: |
+          ha-card { box-shadow: none; }
+          div.content { padding: 0; }
+      - entity: sensor.wan_ipv4
+        name: IPv4 Address
+        icon: mdi:ip
+      - entity: sensor.pfsense_uptime
+        name: Uptime
+        icon: mdi:clock
+        type: custom:multiple-entity-row
+        secondary_info:
+          entity: sensor.pfsense_boottime
+          name: false
+      - type: custom:multiple-entity-row
+        name: Cox Bandwidth
+        icon: mdi:wan
+        entity: sensor.cox_sensor_percentage_used
+        entities:
+          - entity: sensor.cox_sensor_remaining_days
+            name: Remaining
+          - attribute: data_plan
+            name: Limit
+          - entity: sensor.cox_sensor_data_used
+            name: Used
+  # End WAN card
+
+  # Begin HA card
+  - title: Home Assistant
+    type: entities
+    show_header_toggle: false
+    entities:
+      - entity: sensor.wan_ipv6
+        name: IPv6 Address
+        icon: mdi:ip
+      - entity: sensor.local_ip
+        name: Local IP Address
+  # End HA card
+
+  # Begin Zeus card
+  - title: Zeus
+    type: entities
+    show_header_toggle: false
+    entities:
+      - entity: sensor.zeus_net_in
+      - entity: sensor.zeus_net_out
+      - entity: sensor.zeus_network_0_ipv4
+        name: IPv4
+        icon: mdi:ip
+      - entity: sensor.zeus_network_0_ipv6
+        name: IPv6
+        icon: mdi:ip
+  # End Zeus card

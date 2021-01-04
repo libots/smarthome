@@ -1,0 +1,652 @@
+# lovelace_gen
+
+title: Overview
+path: overview
+icon: mdi:home
+
+cards:
+  
+  # Begin main card
+  - type: vertical-stack
+    cards:
+      - type: horizontal-stack
+        cards:
+          - entity: alarm_control_panel.abode
+            type: custom:button-card
+            size: 30px
+            icon: mdi:shield
+            state:
+              - value: 'disarmed'
+                color: var(--label-badge-green)
+                icon: mdi:shield-off
+                name: Disarmed
+              - value: 'armed_home'
+                color: var(--label-badge-red)
+                icon: mdi:shield-home
+                name: Armed Home
+              - value: 'armed_away'
+                color: var(--label-badge-red)
+                icon: mdi:shield-lock
+                name: Armed Away
+            styles:
+              card:
+                - height: 70px
+              name:
+                - font-size: 14px
+            tap_action:
+              action: more-info
+          - entity: input_boolean.vacation
+            type: custom:button-card
+            size: 30px
+            name: >
+              [[[
+                switch (entity.state) {
+                  case "off": return "Vacation Mode Off"; break;
+                  case "on":  return "Vacation Mode On"; break;
+                  default:    return "Vacation Mode";
+                }
+              ]]]
+            icon: >
+              [[[
+                switch (entity.state) {
+                  case "off": return "mdi:airplane-off"; break;
+                  default:    return "mdi:airplane";
+                }
+              ]]]
+            hold_action:
+                action: more-info
+            styles:
+              card:
+                - height: 70px
+              name:
+                - font-size: 14px
+          - entity: input_boolean.guest
+            type: custom:button-card
+            size: 30px
+            name: >
+              [[[
+                switch (entity.state) {
+                  case "off": return "Guest Mode Off"; break;
+                  case "on":  return "Guest Mode On"; break;
+                  default:    return "Guestguest Mode";
+                }
+              ]]]
+            icon: >
+              [[[
+                switch (entity.state) {
+                  case "off": return "mdi:account-off"; break;
+                  default:    return "mdi:account";
+                }
+              ]]]
+            hold_action:
+                action: more-info
+            styles:
+              card:
+                - height: 70px
+              name:
+                - font-size: 14px
+      - type: horizontal-stack
+        cards:
+          - entity: person.matt
+            type: custom:button-card
+            template: person
+            double_tap_action:
+              action: call-service
+              service: notify.mobile_app_miphone12
+              service_data:
+                message: "request_location_update"
+          - entity: person.kayla
+            type: custom:button-card
+            template: person
+            double_tap_action:
+              action: call-service
+              service: notify.mobile_app_kiphone12
+              service_data:
+                message: "request_location_update"
+          - entity: device_tracker.whistle_alamo
+            type: custom:button-card
+            template:
+              - person
+              - fuel
+            variables:
+              fuel: '[[[ return entity.attributes.battery_level; ]]]'
+          - entity: device_tracker.whistle_chance
+            type: custom:button-card
+            template:
+              - person
+              - fuel
+            variables:
+              fuel: '[[[ return entity.attributes.battery_level; ]]]'
+      - type: horizontal-stack
+        cards:
+          - entity: device_tracker.subaru
+            type: custom:button-card
+            template:
+              - car
+              - fuel
+            variables:
+              fuel: '[[[ return states["sensor.fuel_subaru"].state; ]]]'
+            styles:
+              icon:
+                - height: 45px
+                - width: 83px
+              custom_fields:
+                fuel:
+                  - margin-left: 35px
+          - entity: device_tracker.frontier
+            type: custom:button-card
+            template:
+              - car
+              - fuel
+            variables:
+              fuel: '[[[ return states["sensor.fuel_frontier"].state; ]]]'
+            styles:
+              icon:
+                - height: 45px
+                - width: 96px
+  # End main card
+  
+  # Begin reminders card
+      - type: entities
+        entities:
+          - type: custom:hui-element
+            card_type: horizontal-stack
+            cards:
+              - type: custom:button-card
+                name: Trash
+                entity: sensor.garbage_trash
+                icon: mdi:trash-can
+                size: 50px
+                template:
+                  - general
+                  - inside
+                styles:
+                  icon:
+                    - color: var(--label-badge-green)
+                state:
+                  - value: 0
+                    name: Today
+                  - value: 1
+                    name: Tomorrow
+                  - value: 2
+                    name: >
+                      [[[
+                        return entity.attributes.days + " days";
+                      ]]]
+              - type: custom:button-card
+                name: Recycling
+                entity: sensor.garbage_recycling
+                icon: mdi:recycle
+                size: 50px
+                template:
+                  - general
+                  - inside
+                styles:
+                  icon:
+                    - color: var(--label-badge-blue)
+                state:
+                  - value: 0
+                    name: Today
+                  - value: 1
+                    name: Tomorrow
+                  - value: 2
+                    name: >
+                      [[[
+                        return entity.attributes.days + " days";
+                      ]]]
+              - type: custom:button-card
+                entity: sensor.irrigation_program_next_remaining
+                icon: mdi:sprinkler
+                size: 50px
+                template:
+                  - general
+                  - inside
+                tap_action:
+                  action: more-info
+                  entity: sensor.irrigation_program_next
+                state:
+                  - value: unavailable
+                    name: Unavailable
+                  - value: 60
+                    operator: "<"
+                    name: >
+                      [[[
+                        return entity.state + " minutes";
+                      ]]]
+                  - operator: "default"
+                    name: >
+                      [[[
+                        return Math.round(entity.state/60) + " hours";
+                      ]]]
+                styles:
+                  icon:
+                    - color: var(--paper-item-icon-color)
+  # End reminders card
+  
+  # Begin weather card
+  - type: entities
+    entities:
+      - type: custom:weather-card
+        entity: weather.dark_sky
+        current: true
+        details: true
+        forecast: true
+        style: |
+          ha-card {
+            box-shadow: none;
+            margin: -16px -16px auto -16px !important;
+            #padding: 0 0 10px 0 !important;
+          }
+          span.temp, span.tempc {
+            padding-top: 18px;
+          }
+      - type: custom:button-card
+        entity: sensor.u_s_air_quality_index
+        layout: icon_name_state2nd
+        show_state: true
+        show_units: false
+        show_entity_picture: true
+        tap_action:
+          action: more-info
+        state:
+          - value: 50
+            operator: "<="
+            entity_picture: "/local/images/forecast_aqi1.png"
+            name: Air Quality Good
+            styles:
+              card:
+                - border-color: rgb(118,210,80)
+          - value: 100
+            operator: "<="
+            entity_picture: "/local/images/forecast_aqi2.png"
+            name: Air Quality Moderate
+            styles:
+              card:
+                - border-color: rgb(255,223,47)
+          - value: 150
+            operator: "<="
+            entity_picture: "/local/images/forecast_aqi3.png"
+            name: Air Quality Unhealthy for Sensitive Groups
+            styles:
+              card:
+                - border-color: rgb(251,124,39)
+          - value: 200
+            operator: "<="
+            entity_picture: "/local/images/forecast_aqi4.png"
+            name: Air Quality Unhealthy
+            styles:
+              card:
+                - border-color: rgb(234,27,27)
+          - value: 300
+            operator: "<="
+            entity_picture: "/local/images/forecast_aqi5.png"
+            name: Air Quality Very Unhealthy
+            styles:
+              card:
+                - border-color: rgb(177,70,145)
+          - value: 300
+            operator: ">"
+            entity_picture: "/local/images/forecast_aqi6.png"
+            name: Air Quality Hazardous
+            styles:
+              card:
+                - border-color: rgb(153,68,68)
+        styles:
+          card:
+            - box-shadow: none
+            - border: 2px solid
+            - border-radius: 10px
+          name:
+            - font-size: 14px
+          state:
+            - font-size: 12px
+            - color: var(--secondary-text-color)
+        style: |
+          div#state::before { content: "Air Quality Index: "; }
+  # End weather card
+  
+  # Begin common areas card
+  - title: Common Areas
+    type: entities
+    show_header_toggle: false
+    entities:
+      - type: custom:hui-element
+        card_type: horizontal-stack
+        cards:
+          - entity: light.foyer
+            type: custom:button-card
+            name: Foyer Light
+            template:
+              - general
+              - inside
+          - entity: light.stairs_hallway
+            type: custom:button-card
+            name: Stairs/Hallway Lights
+            template:
+              - general
+              - inside
+              - control_motion
+            variables:
+              motion_boolean: input_boolean.motion_light_hall
+            triggers_update:
+              - input_boolean.motion_light_hall
+          - entity: light.basement
+            type: custom:button-card
+            name: Basement Lights
+            template:
+              - general
+              - inside
+  # End common areas card
+  
+  # Begin living room card
+  - title: Living Room
+    type: entities
+    show_header_toggle: false
+    entities:
+      - type: custom:hui-element
+        card_type: horizontal-stack
+        cards:
+          - entity: light.lvrm_cans
+            type: custom:button-card
+            name: Recessed Lights
+            template:
+              - general
+              - inside
+          - entity: light.lvrm_fan
+            type: custom:button-card
+            name: Fan Light
+            template:
+              - general
+              - inside
+          - entity: fan.lvrm
+            type: custom:button-card
+            name: Ceiling Fan
+            template:
+              - fan
+              - inside
+  # End living room card
+  
+  # Begin office card
+  - title: Office
+    type: entities
+    show_header_toggle: false
+    entities:
+      - type: custom:hui-element
+        card_type: horizontal-stack
+        cards:
+          - entity: light.office_cans
+            type: custom:button-card
+            name: Recessed Lights
+            template:
+              - general
+              - inside
+          - entity: light.office_fan
+            type: custom:button-card
+            name: Fan Light
+            template:
+              - general
+              - inside
+          - entity: fan.office
+            type: custom:button-card
+            name: Ceiling Fan
+            template:
+              - fan
+              - inside
+  # End office card
+  
+  # Begin dining room card
+  - title: Dining Room
+    type: entities
+    show_header_toggle: false
+    entities:
+      - type: custom:hui-element
+        card_type: horizontal-stack
+        cards:
+          - type: custom:button-card
+            color_type: blank-card
+          - entity: light.dining
+            type: custom:button-card
+            name: Chandelier
+            template:
+              - general
+              - inside
+          - type: custom:button-card
+            color_type: blank-card
+  # End dining room card
+  
+  # Begin kitchen card
+  - title: Kitchen
+    type: entities
+    show_header_toggle: false
+    entities:
+      - type: custom:hui-element
+        card_type: horizontal-stack
+        cards:
+          - entity: light.kitchen_cans
+            type: custom:button-card
+            name: Recessed Lights
+            template:
+              - general
+              - inside
+          - entity: light.kitchen_cabinet
+            type: custom:button-card
+            name: Cabinet Lights
+            template:
+              - general
+              - inside
+          - entity: light.pantry
+            type: custom:button-card
+            name: Pantry Light
+            template:
+              - general
+              - inside
+  # End kitchen card
+  
+  # Begin thermostats cards
+  - !include
+    - 'templates/hvac.yaml'
+    - entity: climate.downstairs
+      name: Downstairs
+      automate_entity: input_boolean.hvac_downstairs_automate
+  - !include
+    - 'templates/hvac.yaml'
+    - entity: climate.upstairs
+      name: Upstairs
+      automate_entity: input_boolean.hvac_upstairs_automate
+  # End thermostats cards
+  
+  # Begin master bedroom card
+  - title: Master Bedroom
+    type: entities
+    show_header_toggle: false
+    entities:
+      - type: custom:hui-element
+        card_type: horizontal-stack
+        cards:
+          - entity: light.mbed_fan
+            type: custom:button-card
+            name: Fan Light
+            template:
+              - general
+              - inside
+          - entity: fan.mbed
+            type: custom:button-card
+            name: Ceiling Fan
+            template:
+              - fan
+              - inside
+          - entity: light.mbed_matt
+            type: custom:button-card
+            name: Matt’s Light
+            template:
+              - general
+              - inside
+          - entity: light.mbed_kayla
+            type: custom:button-card
+            name: Kayla’s Light
+            template:
+              - general
+              - inside
+      - type: custom:button-card
+        color_type: blank-card
+      - entity: input_boolean.wakeup_mbed
+        type: custom:multiple-entity-row
+        name: Wakeup Alarm Lights
+        toggle: true
+        icon: mdi:alarm
+        entities:
+            - entity: sensor.bedroom_dot_next_alarm
+              name: Alarm Time
+              format: time
+  # End master bedroom card
+  
+  # Begin laundry card
+  - title: Laundry
+    type: entities
+    show_header_toggle: false
+    entities:
+      - type: custom:hui-element
+        card_type: horizontal-stack
+        cards:
+          - name: Washing Machine
+            entity: binary_sensor.laundry_washer
+            type: custom:button-card
+            template:
+              - general
+              - inside
+            show_last_changed: true
+            tap_action:
+              action: more-info
+          - name: Dryer
+            entity: binary_sensor.laundry_dryer
+            type: custom:button-card
+            template:
+              - general
+              - inside
+            show_last_changed: true
+            tap_action:
+              action: more-info
+      - type: custom:hui-history-graph-card
+        hours_to_show: 1
+        entities:
+          - entity: sensor.laundry_dryer_power
+            name: Dryer
+          - entity: sensor.laundry_washer_power
+            name: Washer
+          - entity: sensor.laundry_dryer_power_log
+            name: Log Dryer
+          - entity: sensor.laundry_washer_power_log
+            name: Log Washer
+        style: |
+          ha-card { box-shadow: none; }
+          div.content { padding: 0 0 16px; }
+  # End laundry card
+  
+  # Begin outside card
+  - title: Outside
+    type: entities
+    show_header_toggle: false
+    entities:
+      - type: custom:hui-element
+        card_type: horizontal-stack
+        cards:
+          - entity: light.porch
+            type: custom:button-card
+            name: Porch Lights
+            template:
+              - general
+              - inside
+            lock:
+              enabled: "[[[ return entity.state === 'on'; ]]]"
+              duration: 5
+          - entity: light.outside_yard
+            type: custom:button-card
+            name: Backyard Lights
+            template:
+              - general
+              - inside
+      - type: custom:button-card
+        color_type: blank-card
+      - entity: input_boolean.light_yard_motion
+        type: custom:multiple-entity-row
+        name: Yard Motion Detector Lights
+        toggle: true
+        entities:
+          - icon: mdi:power-cycle
+            name: false
+            tap_action:
+              action: call-service
+              service: mqtt.publish
+              service_data:
+                topic: yard_light_reset
+      - type: custom:button-card
+        color_type: blank-card
+      - type: custom:hui-element
+        card_type: horizontal-stack
+        cards:
+          - entity: light.outside_patio
+            type: custom:button-card
+            name: Patio Lights
+            template:
+              - general
+              - inside
+          - entity: light.outside_backyard
+            type: custom:button-card
+            name: Backyard Lights
+            template:
+              - general
+              - inside
+          - entity: light.outside_garage
+            type: custom:button-card
+            name: Garage Lights
+            template:
+              - general
+              - inside
+      - type: custom:button-card
+        color_type: blank-card
+      - type: custom:button-card
+        color_type: blank-card
+      - type: custom:hui-element
+        card_type: horizontal-stack
+        cards:
+          - entity: light.pergola
+            type: custom:button-card
+            name: Pergola Lights
+            template:
+              - general
+              - inside
+          - entity: fan.pergola
+            type: custom:button-card
+            name: Pergola Fan
+            template:
+              - fan
+              - inside
+  # End outside card
+  
+  # Begin dog room card
+  - title: Dog Room
+    type: entities
+    show_header_toggle: false
+    entities:
+      - type: custom:hui-element
+        card_type: horizontal-stack
+        cards:
+          - entity: light.dog_cans
+            type: custom:button-card
+            name: Recessed Lights
+            template:
+              - general
+              - inside
+          - entity: light.dog_fan
+            type: custom:button-card
+            name: Fan Light
+            template:
+              - general
+              - inside
+          - entity: fan.dog
+            type: custom:button-card
+            name: Ceiling Fan
+            template:
+              - fan
+              - inside
+  # End dog room card

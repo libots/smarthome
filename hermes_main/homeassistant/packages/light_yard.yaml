@@ -1,0 +1,116 @@
+light:
+  - platform: template
+    lights:
+      outside_yard:
+        friendly_name: Outside Yard Lights
+        turn_on:
+          service: switch.turn_on
+          data:
+            entity_id: group.light_yard
+        turn_off:
+          service: switch.turn_off
+          data:
+            entity_id: group.light_yard
+  # - platform: group
+    # name: Outside Yard
+    # entities:
+      # - light.outside_patio
+      # - light.outside_backyard
+      # - light.outside_garage_left
+      # - light.outside_garage_right
+  - platform: switch
+    name: Outside Patio
+    entity_id: switch.light_outside_patio
+  - platform: switch
+    name: Outside Backyard
+    entity_id: switch.light_outside_backyard
+  - platform: switch
+    name: Outside Garage Left
+    entity_id: switch.light_outside_garage_left
+  - platform: switch
+    name: Outside Garage Right
+    entity_id: switch.light_outside_garage_right
+  - platform: group
+    name: Outside Garage
+    entities:
+      - light.outside_garage_left
+      - light.outside_garage_right
+
+homeassistant:
+  customize:
+    light.outside_garage:
+      icon: mdi:lightbulb
+
+group:
+  light_yard:
+    name: Yard Lights
+    entities:
+      - switch.light_outside_patio
+      - switch.light_outside_backyard
+      - switch.light_outside_garage_left
+      - switch.light_outside_garage_right
+
+input_boolean:
+  light_yard_motion:
+    name: Yard Motion Detectors
+    icon: mdi:motion-sensor
+  light_yard_motion_patio:
+    name: Patio Motion Detector
+    icon: mdi:motion-sensor
+  light_yard_motion_backyard:
+    name: Backyard Motion Detector
+    icon: mdi:motion-sensor
+  light_yard_motion_garage:
+    name: Garage Motion Detectors
+    icon: mdi:motion-sensor
+
+binary_sensor:
+  - platform: template
+    sensors:
+      motion_outside_patio:
+        friendly_name: "Motion Outside Patio"
+        device_class: motion
+        value_template: >-
+          {{ is_state('sensor.light_outside_patio_alarm_home_security', 'Motion Detected at Unknown Location') }}
+      motion_outside_backyard:
+        friendly_name: "Motion Outside Backyard"
+        device_class: motion
+        value_template: >-
+          {{ is_state('sensor.light_outside_backyard_alarm_home_security', 'Motion Detected at Unknown Location') }}
+      motion_outside_garage_left:
+        friendly_name: "Motion Outside Garage Left"
+        device_class: motion
+        value_template: >-
+          {{ is_state('sensor.light_outside_garage_left_alarm_home_security', 'Motion Detected at Unknown Location') }}
+      motion_outside_garage_right:
+        friendly_name: "Motion Outside Garage Right"
+        device_class: motion
+        value_template: >-
+          {{ is_state('sensor.light_outside_garage_right_alarm_home_security', 'Motion Detected at Unknown Location') }}
+      trigger_outside_patio:
+        friendly_name: "Trigger Outside Patio"
+        device_class: motion
+        value_template: >-
+          {{ is_state('sensor.light_outside_patio_alarm_home_security', 'Motion Detected at Unknown Location')
+          or is_state('sensor.light_outside_backyard_alarm_home_security', 'Motion Detected at Unknown Location') }}
+      trigger_outside_backyard:
+        friendly_name: "Trigger Outside Backyard"
+        device_class: motion
+        value_template: >-
+          {{ is_state('sensor.light_outside_patio_alarm_home_security', 'Motion Detected at Unknown Location')
+          or is_state('sensor.light_outside_backyard_alarm_home_security', 'Motion Detected at Unknown Location')
+          or is_state('sensor.light_outside_garage_left_alarm_home_security', 'Motion Detected at Unknown Location')
+          or is_state('sensor.light_outside_garage_right_alarm_home_security', 'Motion Detected at Unknown Location') }}
+        # or is_state('binary_sensor.motion_cam_g_front', 'on') }}
+      trigger_outside_garage:
+        friendly_name: "Trigger Outside Garage"
+        device_class: motion
+        value_template: >-
+          {{ is_state('sensor.light_outside_backyard_alarm_home_security', 'Motion Detected at Unknown Location')
+          or is_state('sensor.light_outside_garage_left_alarm_home_security', 'Motion Detected at Unknown Location')
+          or is_state('sensor.light_outside_garage_right_alarm_home_security', 'Motion Detected at Unknown Location') }}
+        # or is_state('binary_sensor.motion_cam_g_front', 'on') }}
+      resettable_outside_motion:
+        friendly_name: "Motion Outside Resettable"
+        value_template: >-
+          {{ is_state('group.light_yard', 'on') and is_state('light.outside_yard', 'off') }}

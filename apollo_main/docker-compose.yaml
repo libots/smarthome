@@ -1,0 +1,377 @@
+version: '3.6'
+
+services:
+  # airsonic:
+  #   image: linuxserver/airsonic
+  #   container_name: airsonic
+  #   ports:
+  #     - "4040:4040"
+  #   volumes:
+  #     - ${MAINDIR}/airsonic/.data:/config
+  #     - /media/zeus_pool/Media/Music Collection:/music
+  #     - ${MAINDIR}/airsonic/playlists:/playlists
+  #   restart: unless-stopped
+  #   environment:
+  #     - TZ=${TZ}
+  #     - PUID=${PUID}
+  #     - PGID=${PGID}
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-file: "5"
+  #       max-size: "10m"
+  airsonic_advanced:
+    image: airsonicadvanced/airsonic-advanced:latest
+    container_name: airsonic_advanced
+    network_mode: host
+    ports:
+      - "4041:4040"
+    volumes:
+      - ${MAINDIR}/airsonic_advanced/.data:/var/airsonic
+      - /media/zeus_pool/Media/Music Collection:/var/music
+      - ${MAINDIR}/airsonic_advanced/playlists:/var/playlists
+    restart: unless-stopped
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "10m"
+  jackett:
+    image: ghcr.io/linuxserver/jackett
+    container_name: jackett
+    restart: unless-stopped
+    ports:
+      - "9117:9117"
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - AUTO_UPDATE=true #optional
+      # - RUN_OPTS=<run options here> #optional
+    volumes:
+      - ${MAINDIR}/jackett/.data:/config
+      # - <path to blackhole>:/downloads
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.jackett.rule=Host(`jackett.${DOMAINNAME}`,`jackett.${DOMAINNAME_EXTERNAL}`)"
+      - "traefik.http.routers.jackett.tls=true"
+      - "traefik.http.routers.jackett.middlewares=traefikauth"
+      - "traefik.http.services.jackett.loadbalancer.server.port=9117"
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "10m"
+  # onedrive_matt:
+  #   image: driveone/onedrive:latest
+  #   container_name: onedrive_matt
+  #   restart: unless-stopped
+  #   volumes:
+  #     - ${MAINDIR}/onedrive_matt/.data:/onedrive/conf
+  #     - /media/zeus_pool/Users/Matt/OneDrive:/onedrive/data
+  #   environment:
+  #     - TZ=${TZ}
+  #     - ONEDRIVE_UID=${PUID}
+  #     - ONEDRIVE_GID=${PGID}
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-file: "5"
+  #       max-size: "10m"
+  #   # docker run -it --restart unless-stopped --name onedrive_Work -v onedrive_conf_Work:/onedrive/conf -v "${onedriveDirWork}:/onedrive/data" driveone/onedrive:latest
+  plex:
+    image: ghcr.io/linuxserver/plex
+    container_name: plex
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - ${MAINDIR}/plex/.data:/config
+      # - /media/zeus_pool/Media/TV Shows:/tv
+      # - /media/zeus_pool/Media/Movies:/movies
+      - tv:/tv
+      - movies:/movies
+    restart: unless-stopped
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - VERSION=docker
+      - PLEX_CLAIM=claim-Ca5b4rFTatvEsB4xFbjy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.plex.rule=Host(`plex.${DOMAINNAME}`,`plex.${DOMAINNAME_EXTERNAL}`)"
+      - "traefik.http.routers.plex.tls=true"
+      - "traefik.http.routers.plex.middlewares=traefikauth"
+      - "traefik.http.services.plex.loadbalancer.server.port=32400"
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "10m"
+  # portainer:
+  #   image: portainer/portainer-ce
+  #   container_name: portainer
+  #   restart: unless-stopped
+  #   command: -H unix:///var/run/docker.sock
+  #   ports:
+  #     - "9000:9000"
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #     - ${MAINDIR}/portainer/.data:/data
+  #   environment:
+  #     - TZ=${TZ}
+  #     - PUID=${PUID}
+  #     - PGID=${PGID}
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-file: "5"
+  #       max-size: "10m"
+  portainer_agent:
+    image: portainer/agent
+    container_name: portainer_agent
+    restart: unless-stopped
+    ports:
+      - "9001:9001"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker/volumes:/var/lib/docker/volumes
+    environment:
+      - AGENT_SECRET=${PORTAINER_SECRET}
+  radarr:
+    image: ghcr.io/linuxserver/radarr
+    container_name: radarr
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - UMASK_SET=022 #optional
+    volumes:
+      - ${MAINDIR}/radarr/.data:/config
+      - movies:/movies
+      - poseidon_deluge:/downloads_poseidon_deluge
+      - poseidon_transmission:/downloads_poseidon_transmission
+      - /media/gyges/private/transmission/radarr:/downloads_gyges
+    # ports:
+    #   - 7878:7878
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.radarr.rule=Host(`radarr.${DOMAINNAME}`,`radarr.${DOMAINNAME_EXTERNAL}`)"
+      - "traefik.http.routers.radarr.tls=true"
+      - "traefik.http.routers.radarr.middlewares=traefikauth"
+      - "traefik.http.services.radarr.loadbalancer.server.port=7878"
+    links:
+      - jackett
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "10m"
+  samba:
+    image: dperson/samba
+    container_name: samba
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
+    read_only: false
+    tmpfs:
+      - /tmp
+    ports:
+      - "137:137/udp" # required to advertise shares (NMBD)
+      - "138:138/udp" # required to advertise shares (NMBD)
+      - "139:139/tcp" # default smb port
+      - "445:445/tcp" # default  smb port
+    volumes:
+      - ${USERDIR}:/mnt/docker:z
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - NMBD=true # advertise shares
+      - USERID=${PUID}
+      - GROUPID=${PGID}
+      - WORKGROUP=WORKGROUP
+    # -u "UserName;Password"
+    # -s "ShareName;/path/in/container;browsable;read_only;guest;users;admins;writelist;comment"
+    command: '-u "${SMB_USERNAME};${SMB_PASSWORD}"
+              -s "docker;/mnt/docker;yes;no;no;${SMB_USERNAME}"'
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "10m"
+  sonarr:
+    image: ghcr.io/linuxserver/sonarr:preview
+    container_name: sonarr
+    restart: unless-stopped
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+      # - UMASK_SET=002 #optional
+    volumes:
+      - ${MAINDIR}/sonarr/.data:/config
+      - tv:/tv
+      - poseidon_deluge:/downloads_poseidon_deluge
+      - poseidon_transmission:/downloads_poseidon_transmission
+      - /media/gyges/private/transmission/sonarr:/downloads_gyges
+      # - /path/to/downloadclient-downloads:/downloads
+    ports:
+      - 8989:8989
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.sonarr.rule=Host(`sonarr.${DOMAINNAME}`,`sonarr.${DOMAINNAME_EXTERNAL}`)"
+      - "traefik.http.routers.sonarr.tls=true"
+      - "traefik.http.routers.sonarr.middlewares=traefikauth"
+      - "traefik.http.services.sonarr.loadbalancer.server.port=8989"
+    links:
+      - jackett
+    # networks:
+    #   - default
+    #   - internal
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "10m"
+  tautulli:
+    image: ghcr.io/linuxserver/tautulli
+    container_name: tautulli
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+    volumes:
+      - ${MAINDIR}/tautulli/.data:/config
+      - ${MAINDIR}/plex/.data/Library/Application Support/Plex Media Server/Logs:/logs:ro
+    # ports:
+    #   - 8181:8181
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.tautulli.rule=Host(`tautulli.${DOMAINNAME}`,`tautulli.${DOMAINNAME_EXTERNAL}`)"
+      - "traefik.http.routers.tautulli.tls=true"
+      - "traefik.http.routers.tautulli.middlewares=traefikauth"
+      - "traefik.http.services.tautulli.loadbalancer.server.port=8181"
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "10m"
+  traefik:
+    image: traefik:latest
+    container_name: traefik
+    restart: unless-stopped
+    domainname: ${DOMAINNAME}
+    ports:
+      - "80:80"
+      - "443:443"
+      - "${IP_TRUST}:8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ${MAINDIR}/traefik:/configuration
+      - ${MAINDIR}/shared:/shared
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.web-secure.address=:443"
+      - "--providers.file.directory=/configuration"
+      - "--providers.file.watch=true"
+      - "--serversTransport.insecureSkipVerify=true"
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "10m"
+  traefik_auth:
+    container_name: traefik_auth
+    image: thomseddon/traefik-forward-auth
+    restart: unless-stopped
+    environment:
+      - DEFAULT_PROVIDER=oidc
+      - PROVIDERS_OIDC_CLIENT_ID=${TRAEFIKAUTH_CLIENT_ID}
+      - PROVIDERS_OIDC_CLIENT_SECRET=${TRAEFIKAUTH_CLIENT_SECRET}
+      - PROVIDERS_OIDC_ISSUER_URL=https://kc.${DOMAINNAME_EXTERNAL}/auth/realms/master
+      - SECRET=${TRAEFIKAUTH_SECRET}
+      - AUTH_HOST=auth.${DOMAINNAME_EXTERNAL}
+      - COOKIE_DOMAIN=${DOMAINNAME_EXTERNAL}
+      # - COOKIE_DOMAIN=${DOMAINNAME}
+      - LOG_LEVEL=debug
+    ports:
+      - "4181:4181"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefikauth.rule=Host(`auth.${DOMAINNAME}`,`auth.${DOMAINNAME_EXTERNAL}`)"
+      - "traefik.http.routers.traefikauth.tls=true"
+      - "traefik.http.routers.traefikauth.middlewares=traefikauth"
+      - "traefik.http.services.traefikauth.loadbalancer.server.port=4181"
+      # - "traefik.http.middlewares.traefikauth.forwardauth.address=http://10.20.32.9:4181"
+      # - "traefik.http.middlewares.traefikauth.forwardauth.authResponseHeaders=X-Forwarded-User"
+      # - "traefik.http.middlewares.traefikauth.forwardauth.trustForwardHeader=true"
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - TZ=${TZ}
+      - '--cleanup'
+      # - '--monitor-only'
+    command: --interval 3600
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "10m"
+  whoami:
+    image: "traefik/whoami"
+    container_name: "whoami"
+    ports:
+      - "81:80"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.whoami.rule=Host(`${DOMAINNAME}`,`apollo.${DOMAINNAME_EXTERNAL}`)"
+      - "traefik.http.routers.whoami.tls=true"
+      - "traefik.http.routers.whoami.middlewares=traefikauth"
+      - "traefik.http.services.whoami.loadbalancer.server.port=80"
+      - "traefik.http.middlewares.traefikauth.forwardauth.address=http://10.20.32.9:4181"
+      - "traefik.http.middlewares.traefikauth.forwardauth.authResponseHeaders=X-Forwarded-User"
+      - "traefik.http.middlewares.traefikauth.forwardauth.trustForwardHeader=true"
+# networks:
+#   default:
+#     driver: bridge
+#   internal:
+#     internal: true
+volumes:
+  tv:
+    driver_opts:
+      type: cifs
+      o: username=${CIFS_USERNAME},password=${CIFS_PASSWORD},domain=${CIFS_DOMAIN},iocharset=utf8,rw,uid=1000,gid=1000,nounix,file_mode=0777,dir_mode=0777
+      device: ${CIFS_POOL_ROOT}\Media\TV Shows
+  movies:
+    driver_opts:
+      type: cifs
+      o: username=${CIFS_USERNAME},password=${CIFS_PASSWORD},domain=${CIFS_DOMAIN},iocharset=utf8,rw,uid=1000,gid=1000,nounix,file_mode=0777,dir_mode=0777
+      device: ${CIFS_POOL_ROOT}\Media\Movies
+  poseidon_transmission:
+    driver_opts:
+      type: cifs
+      o: username=${CIFS_USERNAME},password=${CIFS_PASSWORD},domain=${CIFS_DOMAIN},iocharset=utf8,rw,uid=1000,gid=1000,nounix,file_mode=0777,dir_mode=0777
+      device: ${CIFS_POOL_ROOT}\Shares\Transmission (Poseidon)
+  poseidon_deluge:
+    driver_opts:
+      type: cifs
+      o: username=${CIFS_USERNAME},password=${CIFS_PASSWORD},domain=${CIFS_DOMAIN},iocharset=utf8,rw,uid=1000,gid=1000,nounix,file_mode=0777,dir_mode=0777
+      device: ${CIFS_POOL_ROOT}\Shares\Deluge (Poseidon)

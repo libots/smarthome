@@ -1,0 +1,33 @@
+# rainmachine:
+  # controllers:
+    # - ip_address: !secret rainmachine_ip
+      # password: !secret rainmachine_password
+      # scan_interval: 30
+      # zone_run_time: 600
+
+sensor:
+  - platform: template
+    sensors:
+      irrigation_program_next:
+        friendly_name: Irrigation Program Next Run Time
+        availability_template: >
+          {{
+            (states.switch.irrigation_program_morning.state is defined and states.switch.irrigation_program_morning.state != 'unavailable')
+            or
+            (states.switch.irrigation_program_evening.state is defined and states.switch.irrigation_program_evening.state != 'unavailable')
+          }}
+        value_template: >
+          {%
+            if (states.switch.irrigation_program_morning.state is defined and states.switch.irrigation_program_morning.state != 'unavailable')
+            and
+            (states.switch.irrigation_program_evening.state is defined and states.switch.irrigation_program_evening.state != 'unavailable')
+          %}
+            {{ [state_attr('switch.irrigation_program_morning', 'next_run'),state_attr('switch.irrigation_program_evening', 'next_run')]|min }}
+          {% elif (states.switch.irrigation_program_morning.state is defined and states.switch.irrigation_program_morning.state != 'unavailable') %}
+            {{ state_attr('switch.irrigation_program_morning', 'next_run') }}
+          {% elif (states.switch.irrigation_program_evening.state is defined and states.switch.irrigation_program_evening.state != 'unavailable') %}
+            {{ state_attr('switch.irrigation_program_evening', 'next_run') }}
+          {% else %}
+            0
+          {% endif %}
+        device_class: timestamp

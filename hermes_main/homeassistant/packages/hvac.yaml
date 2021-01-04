@@ -1,0 +1,11 @@
+nest:
+  client_id: !secret nest_client_id
+  client_secret: !secret nest_client_secret
+
+input_boolean:
+  hvac_upstairs_automate:
+    name: Automate Upstairs Climate
+    icon: mdi:calendar-clock
+  hvac_downstairs_automate:
+    name: Automate Downstairs Climate
+    icon: mdi:calendar-clock

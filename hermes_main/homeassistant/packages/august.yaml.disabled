@@ -1,0 +1,18 @@
+august:
+  login_method: phone
+  username: !secret august_username
+  password: !secret august_password
+
+sensor:
+  - platform: template
+    sensors:
+      battery_lock_back:
+        friendly_name: "Battery Lock Back"
+        unit_of_measurement: "%"
+        device_class: battery
+        value_template: "{{ state_attr('lock.back_august', 'battery_level') }}"
+      battery_lock_front:
+        friendly_name: "Battery Lock Front"
+        unit_of_measurement: "%"
+        device_class: battery
+        value_template: "{{ state_attr('lock.front_august', 'battery_level') }}"

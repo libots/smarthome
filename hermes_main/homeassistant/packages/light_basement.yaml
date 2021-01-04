@@ -1,0 +1,14 @@
+light:
+  - platform: switch
+    name: Basement Ceiling
+    entity_id: switch.light_basement
+  - platform: group
+    name: Basement
+    entities:
+      - light.basement_ceiling
+      - light.basement_laundry
+
+homeassistant:
+  customize:
+    light.basement:
+      icon: mdi:lightbulb

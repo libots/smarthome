@@ -1,0 +1,85 @@
+
+automation:
+
+  - id: pico_light_primary
+    alias: Pico Light Primary
+    variables:
+      picos:
+        sensor.pico_office_cans:
+          light: light.office_cans
+        sensor.pico_powder:
+          light: light.powder
+        sensor.pico_stairs_bottom:
+          light: light.stairs_hallway
+        sensor.pico_stairs_top:
+          light: light.stairs_hallway
+        sensor.pico_stairs_bedroom:
+          light: light.stairs_hallway
+        sensor.pico_lvrm:
+          light: light.lvrm_cans
+        sensor.pico_pantry:
+          light: light.pantry
+        sensor.pico_dog_cans_mbed:
+          light: light.dog_cans
+        sensor.pico_mbed_light:
+          light:
+            - light.mbed_fan
+            - light.mbed_fan_canopy
+      # new_state: "{{ trigger.event.data.new_state.state }}"
+      # light_service: light.turn_on # "{% if (trigger.event.data.new_state.state == '4') %}light.turn_off{% else %}light.turn_on{% endif %}"
+      brightness_attr: "{% if (trigger.event.data.new_state.state in ['1','2','4']) %}brightness{% else %}brightness_step{% endif %}"
+    trigger:
+      - platform: event
+        event_type: state_changed
+    condition:
+      - "{{ trigger.event.data.entity_id in picos}}"
+      - "{{ trigger.event.data.new_state.state|int > 0 }}"
+    action:
+      # - service: notify.mobile_app_miphone12
+      #   data:
+      #     title: Test
+      #     message: "{{ brightness_service }}"
+      #     # message: "{{ picos[trigger.event.data.entity_id].light }}"
+      #     # message: "{{ trigger.event.data.new_state.state }}"
+      #     # message: "{{ trigger.event.data.entity_id }}"
+      - service: light.turn_on
+        data:
+          entity_id: "{{ picos[trigger.event.data.entity_id].light }}"
+          "{{brightness_attr}}": "{% if (trigger.event.data.new_state.state == '1') %}255{% elif (trigger.event.data.new_state.state == '8') %}+25.5{% elif (trigger.event.data.new_state.state == '2') %}128{% elif (trigger.event.data.new_state.state == '16') %}-25.5{% elif (trigger.event.data.new_state.state == '4') %}0{% endif %}"
+          transition: "{% if (trigger.event.data.new_state.state in ['1','2','4']) %}1{% else %}.1{% endif %}"
+    mode: parallel
+    max: 10
+  
+  - id: pico_light_secondary
+    alias: Pico Light Secondary
+    variables:
+      picos:
+        sensor.pico_mbed_light:
+          primary: light.mbed_fan
+          secondary:
+            - light.mbed_matt
+            - light.mbed_kayla
+      # 
+    trigger:
+      - platform: event
+        event_type: state_changed
+    condition:
+      - "{{ trigger.event.data.entity_id in picos}}"
+      - "{{ trigger.event.data.new_state.state|int > 0 }}"
+    action:
+      - variables:
+         light_service: "{% if (states(picos[trigger.event.data.entity_id].primary) == 'on' and state_attr(picos[trigger.event.data.entity_id].primary, 'brightness') == 255 and trigger.event.data.new_state.state == '1') %}light.turn_on{% elif (states(picos[trigger.event.data.entity_id].primary) == 'off' and trigger.event.data.new_state.state == '4') %}light.turn_off{% else %}null{% endif %}"
+      - condition: or
+        conditions:
+          - condition: template
+            value_template: "{{ light_service in ['light.turn_on','light.turn_off'] }}"
+      - service: "{{ light_service }}"
+        data:
+          entity_id: "{{ picos[trigger.event.data.entity_id].secondary }}"
+      # - service: notify.mobile_app_miphone12
+      #   data:
+      #     title: Test
+      #     message: "{{ light_service }}"
+      #     # message: "{{ picos[trigger.event.data.entity_id].light }}"
+      #     # message: "{{ trigger.event.data.new_state.state }}"
+      #     # message: "{{ trigger.event.data.entity_id }}"

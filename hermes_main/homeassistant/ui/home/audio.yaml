@@ -1,0 +1,235 @@
+# lovelace_gen
+
+{% macro sonos(entity) -%}
+  - type: custom:mini-media-player
+    entity: {{ entity }}
+    hide:
+      power: true
+      icon: true
+      source: true
+    shortcuts: !include audio_sonos-shortcuts.yaml
+    speaker_group:
+      platform: sonos
+      show_group_count: true
+      entities:
+        - entity_id: media_player.sonos_basement
+          name: Basement
+        - entity_id: media_player.sonos_dining
+          name: Dining Room
+        - entity_id: media_player.sonos_kitchen
+          name: Kitchen
+        - entity_id: media_player.sonos_lvrm
+          name: Living Room
+        - entity_id: media_player.sonos_office
+          name: Office
+        - entity_id: media_player.sonos_hall
+          name: Hall
+        - entity_id: media_player.sonos_mbed
+          name: Master Bedroom
+        - entity_id: media_player.sonos_mbath
+          name: Master Bathroom
+        - entity_id: media_player.sonos_changing
+          name: Changing Room
+        - entity_id: media_player.sonos_patio
+          name: Patio
+{%- endmacro %}
+
+title: Audio
+path: audio
+icon: mdi:music
+cards:
+
+  {{ sonos("media_player.sonos_basement") }}
+  {{ sonos("media_player.sonos_dining") }}
+  {{ sonos("media_player.sonos_kitchen") }}
+  {{ sonos("media_player.sonos_lvrm") }}
+  {{ sonos("media_player.sonos_office") }}
+  {{ sonos("media_player.sonos_hall") }}
+  {{ sonos("media_player.sonos_mbed") }}
+  {{ sonos("media_player.sonos_mbath") }}
+  {{ sonos("media_player.sonos_changing") }}
+
+  - type: entities
+    entities:
+      - type: custom:mini-media-player
+        entity: media_player.sonos_patio
+        hide:
+          power: true
+          icon: true
+          source: true
+        shortcuts: !include audio_sonos-shortcuts.yaml
+        speaker_group:
+          platform: sonos
+          show_group_count: true
+          entities:
+            - entity_id: media_player.sonos_basement
+              name: Basement
+            - entity_id: media_player.sonos_dining
+              name: Dining Room
+            - entity_id: media_player.sonos_kitchen
+              name: Kitchen
+            - entity_id: media_player.sonos_lvrm
+              name: Living Room
+            - entity_id: media_player.sonos_office
+              name: Office
+            - entity_id: media_player.sonos_mbed
+              name: Master Bedroom
+            - entity_id: media_player.sonos_mbath
+              name: Master Bathroom
+            - entity_id: media_player.sonos_changing
+              name: Changing Room
+            - entity_id: media_player.sonos_patio
+              name: Patio
+        style: |
+          ha-card {
+            box-shadow: none;
+          }
+          ha-card .mmp-player {
+            padding: 0;
+          }
+      - entity: switch.patio_amplifier
+        name: Amplifier Power
+
+  # - type: custom:mini-media-player
+  #   entity: media_player.sonos_basement
+  #   hide:
+  #     power: true
+  #     icon: true
+  #     source: true
+  #   shortcuts: !include audio_sonos-shortcuts.yaml
+  #   speaker_group:
+  #     platform: sonos
+  #     show_group_count: true
+  #     entities:
+  #       - entity_id: media_player.sonos_basement
+  #         name: Basement
+  #       - entity_id: media_player.sonos_dining
+  #         name: Dining Room
+  #       - entity_id: media_player.sonos_kitchen
+  #         name: Kitchen
+  #       - entity_id: media_player.sonos_lvrm
+  #         name: Living Room
+  #       - entity_id: media_player.sonos_mbed
+  #         name: Master Bedroom
+  #       - entity_id: media_player.sonos_office
+  #         name: Office
+  
+  # - type: custom:mini-media-player
+  #   entity: media_player.sonos_dining
+  #   hide:
+  #     power: true
+  #     icon: true
+  #     source: true
+  #   shortcuts: !include audio_sonos-shortcuts.yaml
+  #   speaker_group:
+  #     platform: sonos
+  #     show_group_count: true
+  #     entities:
+  #       - entity_id: media_player.sonos_dining
+  #         name: Dining Room
+  #       - entity_id: media_player.sonos_basement
+  #         name: Basement
+  #       - entity_id: media_player.sonos_kitchen
+  #         name: Kitchen
+  #       - entity_id: media_player.sonos_lvrm
+  #         name: Living Room
+  #       - entity_id: media_player.sonos_mbed
+  #         name: Master Bedroom
+  #       - entity_id: media_player.sonos_office
+  #         name: Office
+  
+  # - type: custom:mini-media-player
+  #   entity: media_player.sonos_kitchen
+  #   hide:
+  #     power: true
+  #     icon: true
+  #     source: true
+  #   shortcuts: !include audio_sonos-shortcuts.yaml
+  #   speaker_group:
+  #     platform: sonos
+  #     show_group_count: true
+  #     entities:
+  #       - entity_id: media_player.sonos_kitchen
+  #         name: Kitchen
+  #       - entity_id: media_player.sonos_basement
+  #         name: Basement
+  #       - entity_id: media_player.sonos_dining
+  #         name: Dining Room
+  #       - entity_id: media_player.sonos_lvrm
+  #         name: Living Room
+  #       - entity_id: media_player.sonos_mbed
+  #         name: Master Bedroom
+  #       - entity_id: media_player.sonos_office
+  #         name: Office
+  
+  # - type: custom:mini-media-player
+  #   entity: media_player.sonos_lvrm
+  #   hide:
+  #     power: true
+  #     icon: true
+  #     source: true
+  #   shortcuts: !include audio_sonos-shortcuts.yaml
+  #   speaker_group:
+  #     platform: sonos
+  #     show_group_count: true
+  #     entities:
+  #       - entity_id: media_player.sonos_lvrm
+  #         name: Living Room
+  #       - entity_id: media_player.sonos_basement
+  #         name: Basement
+  #       - entity_id: media_player.sonos_dining
+  #         name: Dining Room
+  #       - entity_id: media_player.sonos_kitchen
+  #         name: Kitchen
+  #       - entity_id: media_player.sonos_mbed
+  #         name: Master Bedroom
+  #       - entity_id: media_player.sonos_office
+  #         name: Office
+  
+  # - type: custom:mini-media-player
+  #   entity: media_player.sonos_mbed
+  #   hide:
+  #     power: true
+  #     icon: true
+  #     source: true
+  #   shortcuts: !include audio_sonos-shortcuts.yaml
+  #   speaker_group:
+  #     platform: sonos
+  #     show_group_count: true
+  #     entities:
+  #       - entity_id: media_player.sonos_mbed
+  #         name: Master Bedroom
+  #       - entity_id: media_player.sonos_basement
+  #         name: Basement
+  #       - entity_id: media_player.sonos_dining
+  #         name: Dining Room
+  #       - entity_id: media_player.sonos_kitchen
+  #         name: Kitchen
+  #       - entity_id: media_player.sonos_lvrm
+  #         name: Living Room
+  #       - entity_id: media_player.sonos_office
+  #         name: Office
+  
+  # - type: custom:mini-media-player
+  #   entity: media_player.sonos_office
+  #   hide:
+  #     power: true
+  #     icon: true
+  #     source: true
+  #   shortcuts: !include audio_sonos-shortcuts.yaml
+  #   speaker_group:
+  #     platform: sonos
+  #     show_group_count: true
+  #     entities:
+  #       - entity_id: media_player.sonos_office
+  #         name: Office
+  #       - entity_id: media_player.sonos_basement
+  #         name: Basement
+  #       - entity_id: media_player.sonos_dining
+  #         name: Dining Room
+  #       - entity_id: media_player.sonos_kitchen
+  #         name: Kitchen
+  #       - entity_id: media_player.sonos_lvrm
+  #         name: Living Room
+  #       - entity_id: media_player.sonos_mbed
+  #         name: Master Bedroom

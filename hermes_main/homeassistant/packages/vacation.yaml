@@ -1,0 +1,7 @@
+input_boolean:
+  vacation:
+    name: Vacation Mode
+    icon: mdi:airplane
+  guest:
+    name: Guest Mode
+    icon: mdi:account

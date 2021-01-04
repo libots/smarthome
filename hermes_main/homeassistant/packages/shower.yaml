@@ -1,0 +1,31 @@
+sensor:
+  - platform: template
+    sensors:
+      mbath_shower_humidity_difference:
+        friendly_name: MBath Shower Humidity Difference
+        value_template: >
+          {% if states.sensor.thp_mbath_shower_humidity.state is defined and states.sensor.thp_mbed_humidity.state is defined %}
+            {{ (states('sensor.thp_mbath_shower_humidity')|float - states('sensor.thp_mbed_humidity')|float)|round(1) }}
+          {% else %}
+            unavailable
+          {% endif %}
+        unit_of_measurement: "%"
+
+binary_sensor:
+  - platform: trend
+    sensors:
+      mbath_shower_humidity_rise:
+        entity_id: sensor.thp_mbath_shower_humidity
+        friendly_name: MBath Shower Humidity Rise
+        sample_duration: 300
+        max_samples: 5
+        min_gradient: 0.0333 # 10/300
+        device_class: moisture
+  - platform: template
+    sensors:
+      mbath_shower_humidity_fan:
+        friendly_name: MBath Shower Humidity Fan
+        availability_template: "{{ states.sensor.thp_mbath_shower_humidity.state is defined and states.sensor.thp_mbed_humidity.state is defined }}"
+        value_template: "{{ (states('sensor.thp_mbath_shower_humidity')|float - states('sensor.thp_mbed_humidity')|float) > 8 }}"
+        delay_off:
+          minutes: 30

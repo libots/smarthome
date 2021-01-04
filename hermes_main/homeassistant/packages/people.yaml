@@ -1,0 +1,37 @@
+device_tracker:
+  - platform: whistle
+    username: !secret whistle_username
+    password: !secret whistle_password
+    monitored_variables:
+      - WHISTLE
+
+homeassistant:
+  customize:
+    person.matt:
+      entity_picture: "/local/images/matt.jpg"
+    person.kayla:
+      entity_picture: "/local/images/kayla.jpg"
+    device_tracker.whistle_alamo:
+      entity_picture: "/local/images/alamo.jpg"
+      friendly_name: Alamo
+    device_tracker.whistle_chance:
+      friendly_name: Chance
+      entity_picture: "/local/images/chance.jpg"
+    device_tracker.2008_honda_fit:
+      entity_picture: "/local/images/fit.jpg"
+    device_tracker.2010_subaru_outback:
+      entity_picture: "/local/images/outback.jpg"
+
+automation:
+  - id: people_update_location
+    alias: People Update Location
+    trigger:
+      - platform: state
+        entity_id: person.matt, person.kayla
+    action:
+      - service: notify.mobile_app_miphone12
+        data:
+          message: "request_location_update"
+      - service: notify.mobile_app_kiphone12
+        data:
+          message: "request_location_update"

@@ -1,0 +1,17 @@
+columns: 5
+buttons:
+  - name: !secret source1name
+    type: source
+    id: !secret source1id
+  - name: !secret source2name
+    type: source
+    id: !secret source2id
+  - name: Comedy
+    type: source
+    id: 'Raw Comedy Radio'
+  - name: B. Joel
+    type: source
+    id: 'Billy Joel Radio'
+  - name: Jazz
+    type: source
+    id: 'Jazz Essentials Radio'

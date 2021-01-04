@@ -1,0 +1,27 @@
+device_tracker:
+  - platform: traccar
+    host: !secret traccar_ip
+    username: !secret traccar_username
+    password: !secret traccar_password
+
+sensor:
+  - platform: sql
+    db_url: !secret db_traccar
+    queries:
+      - name: Fuel Subaru
+        query: "SELECT deviceid, CAST((median(raw) OVER (PARTITION BY deviceid)) AS INT) AS fuel FROM (SELECT id, deviceid, CAST(JSON_UNQUOTE(JSON_EXTRACT(attributes, '$.io303')) AS INT) AS raw FROM tc_positions WHERE deviceid=1 AND JSON_EXTRACT(attributes, '$.io303') > 0 ORDER BY id DESC LIMIT 5) AS raw LIMIT 1;"
+        column: 'fuel'
+        unit_of_measurement: '%'
+      - name: Fuel Frontier
+        query: "SELECT deviceid, CAST((median(raw) OVER (PARTITION BY deviceid)) AS INT) AS fuel FROM (SELECT id, deviceid, CAST(JSON_UNQUOTE(JSON_EXTRACT(attributes, '$.io303')) AS INT) AS raw FROM tc_positions WHERE deviceid=7 AND JSON_EXTRACT(attributes, '$.io303') > 0 ORDER BY id DESC LIMIT 5) AS raw LIMIT 1;"
+        column: 'fuel'
+        unit_of_measurement: '%'
+
+homeassistant:
+  customize:
+    # device_tracker.honda:
+      # entity_picture: "/local/images/fit.jpg"
+    device_tracker.subaru:
+      entity_picture: "/local/images/outback.png"
+    device_tracker.frontier:
+      entity_picture: "/local/images/frontier.jpg"

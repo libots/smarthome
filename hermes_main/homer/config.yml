@@ -1,0 +1,154 @@
+---
+# Homepage configuration
+# See https://fontawesome.com/icons for icons options
+
+title: "Bisgaier Smart Home"
+subtitle: "Homer"
+logo: "logo.png"
+# icon: "fas fa-skull-crossbones" # Optional icon
+
+header: true
+footer: > # set false if you want to hide it.
+  <p>Created with <span class="has-text-danger">❤️</span> with <a href="https://bulma.io/">bulma</a>, <a href="https://vuejs.org/">vuejs</a> & <a href="https://fontawesome.com/">font awesome</a> // Fork me on <a href="https://github.com/bastienwirtz/homer"><i class="fab fa-github-alt"></i></a></p>
+
+
+# Optional theme customization
+theme: default
+colors:
+  light:
+    highlight-primary: "#3367d6"
+    highlight-secondary: "#4285f4"
+    highlight-hover: "#5a95f5"
+    background: "#f5f5f5"
+    card-background: "#ffffff"
+    text: "#363636"
+    text-header: "#ffffff"
+    text-title: "#303030"
+    text-subtitle: "#424242"
+    card-shadow: rgba(0, 0, 0, 0.1)
+    link-hover: "#363636"
+  dark:
+    highlight-primary: "#3367d6"
+    highlight-secondary: "#4285f4"
+    highlight-hover: "#5a95f5"
+    background: "#131313"
+    card-background: "#2b2b2b"
+    text: "#eaeaea"
+    text-header: "#ffffff"
+    text-title: "#fafafa"
+    text-subtitle: "#f5f5f5"
+    card-shadow: rgba(0, 0, 0, 0.4)
+    link-hover: "#ffdd57"
+
+# Optional message
+message:
+  #url: https://b4bz.io
+  style: "is-dark" # See https://bulma.io/documentation/components/message/#colors for styling options.
+  title: "Demo !"
+  icon: "fa fa-grin"
+  content: "This is a dummy homepage demo. <br /> Find more information on <a href='https://github.com/bastienwirtz/homer'>github.com/bastienwirtz/homer</a>"
+
+# Optional navbar
+# links: [] # Allows for navbar (dark mode, layout, and search) without any links
+links:
+  - name: "Contribute"
+    icon: "fab fa-github"
+    url: "https://github.com/bastienwirtz/homer"
+    target: "_blank" # optional html a tag target attribute
+  - name: "Wiki"
+    icon: "fas fa-book"
+    url: "https://www.wikipedia.org/"
+
+# Services
+# First level array represent a group.
+# Leave only a "items" key if not using group (group name, icon & tagstyle are optional, section separation will not be displayed).
+services:
+  - name: "Home Management"
+    icon: "fas fa-home"
+    items:
+      # - name: "Awesome app"
+      #   logo: "assets/tools/sample.png"
+      #   subtitle: "Bookmark example"
+      #   tag: "app"
+      #   url: "https://www.reddit.com/r/selfhosted/"
+      #   target: "_blank" # optional html a tag target attribute
+      # - name: "Another one"
+      #   logo: "assets/tools/sample2.png"
+      #   subtitle: "Another application"
+      #   tag: "app"
+      #   url: "#"
+      - name: Home Assistant
+        logo: "assets/tools/homeassistant.svg"
+        subtitle: Smart home control
+        url: "https://ha.home.bisgaier.com/"
+      - name: Blue Iris
+        logo: "assets/tools/blueiris.png"
+        subtitle: Video surveillance system
+        url: "https://bi.home.bisgaier.com/"
+      - name: Node-RED
+        logo: "assets/tools/node-red.svg"
+        subtitle: Visual programming
+        url: "https://nodered.home.bisgaier.com/"
+      - name: Traccar
+        logo: "assets/tools/traccar.png"
+        subtitle: Location tracking and history
+        url: "https://traccar.home.bisgaier.com/"
+      - name: deCONZ
+        logo: "assets/tools/deconz.png"
+        subtitle: Zigbee network management
+        url: "https://deconz.home.bisgaier.com/"
+      - name: ZWave2mqtt
+        logo: "assets/tools/zwave_small.svg"
+        subtitle: Zwave network management
+        url: "https://zwave.home.bisgaier.com/"
+  - name: Media
+    icon: "fas fa-film"
+    items:
+      - name: Plex
+        logo: "assets/tools/plex.svg"
+        subtitle: Media server
+        url: "https://plex.home.bisgaier.com/"
+      - name: Tautulli
+        logo: "assets/tools/tautulli.png"
+        subtitle: Media logging and statistics
+        url: "https://tautulli.home.bisgaier.com/"
+      - name: Sonarr
+        logo: "assets/tools/sonarr.svg"
+        subtitle: Television library manager
+        url: "https://sonarr.home.bisgaier.com/"
+      - name: Radarr
+        logo: "assets/tools/radarr.svg"
+        subtitle: Movie library manager
+        url: "https://radarr.home.bisgaier.com/"
+      - name: Jackett
+        logo: "assets/tools/jackett.png"
+        subtitle: Tracker query proxy
+        url: "https://jackett.home.bisgaier.com/"
+  - name: Database
+    icon: "fas fa-database"
+    items:
+      - name: Grafana
+        logo: "assets/tools/grafana.svg"
+        subtitle: Visual data analytics
+        url: "https://grafana.home.bisgaier.com/"
+      - name: Chronograf
+        logo: "assets/tools/chronograf.png"
+        subtitle: InfluxDB database management
+        url: "https://chronograf.home.bisgaier.com/"
+  - name: Servers
+    icon: "fas fa-server"
+    items:
+      - name: Hermes Glances
+  - name: Administration
+    icon: "fas fa-tools"
+    items:
+      - name: Portainer
+        logo: "assets/tools/portainer.png"
+        subtitle: Docker management
+        url: "https://portainer.home.bisgaier.com/"
+      - name: Proxmox
+        logo: "assets/tools/proxmox.png"
+        subtitle: Promox cluster management
+        url: "https://proxmox.home.bisgaier.com/"
+      - name: Keycloak
+

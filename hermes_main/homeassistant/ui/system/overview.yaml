@@ -1,0 +1,435 @@
+# lovelace_gen
+
+title: Overview
+path: overview
+icon: mdi:home
+cards:
+  # Begin Zeus card
+  - type: entities
+    title: Zeus
+    show_header_toggle: false
+    entities:
+      - entity: sensor.zeus_cpu_usage
+        type: custom:multiple-entity-row
+        name: CPU
+      - !include
+        - 'templates/bar.yaml'
+        - entity: sensor.zeus_cpu_usage
+      - entity: sensor.zeus_memory_usage
+        type: custom:multiple-entity-row
+        name: RAM
+        entities:
+          - entity: sensor.zeus_memory_used
+            name: Used
+          - entity: sensor.zeus_memory_available
+            name: Free
+      - !include
+        - 'templates/bar.yaml'
+        - entity: sensor.zeus_memory_usage
+      - entity: sensor.zeus_storage_c_usage
+        type: custom:multiple-entity-row
+        name: 'C:\ (System)'
+        icon: mdi:harddisk
+        entities:
+          - entity: sensor.zeus_storage_c_used_space
+            name: Used
+          - entity: sensor.zeus_storage_c_available_free_space
+            name: Free
+      - !include
+        - 'templates/bar.yaml'
+        - entity: sensor.zeus_storage_c_usage
+      - entity: sensor.zeus_storage_n_usage
+        type: custom:multiple-entity-row
+        name: 'N:\ (Storage Pool)'
+        icon: mdi:harddisk
+        entities:
+          - entity: sensor.zeus_storage_n_used_space
+            name: Used
+          - entity: sensor.zeus_storage_n_available_free_space
+            name: Free
+      - !include
+        - 'templates/bar.yaml'
+        - entity: sensor.zeus_storage_n_usage
+      - entity: sensor.zeus_storage_v_usage
+        type: custom:multiple-entity-row
+        name: 'V:\ (SSD Space)'
+        icon: mdi:harddisk
+        entities:
+          - entity: sensor.zeus_storage_v_used_space
+            name: Used
+          - entity: sensor.zeus_storage_v_available_free_space
+            name: Free
+      - !include
+        - 'templates/bar.yaml'
+        - entity: sensor.zeus_storage_v_usage
+  # End Zeus card
+  
+  # Begin NUC card
+  - type: entities
+    title: Copper
+    show_header_toggle: false
+    entities:
+      - entity: sensor.copper_cpu_used
+        type: custom:multiple-entity-row
+        name: CPU
+        entities:
+          - entity: sensor.copper_cpu_load
+            name: Load
+            unit: false
+      - !include
+        - 'templates/bar.yaml'
+        - entity: sensor.copper_cpu_used
+      - type: custom:hui-glance-card
+        entities:
+          - entity: sensor.copper_core_0_temp
+            name: Core 0
+          - entity: sensor.copper_core_1_temp
+            name: Core 1
+          - entity: sensor.copper_core_2_temp
+            name: Core 2
+          - entity: sensor.copper_core_3_temp
+            name: Core 3
+          - entity: sensor.copper_core_4_temp
+            name: Core 4
+          - entity: sensor.copper_core_5_temp
+            name: Core 5
+        columns: 6
+        show_icon: false
+        style: |
+          ha-card {
+            box-shadow: none;
+          }
+          ha-card .entities.no-header {
+            padding: 0 !important;
+          }
+          ha-card .entities .entity {
+            margin-bottom: 0;
+          }
+      - type: custom:mini-graph-card
+        entities:
+          - sensor.copper_core_0_temp
+          - sensor.copper_core_1_temp
+          - sensor.copper_core_2_temp
+          - sensor.copper_core_3_temp
+          - sensor.copper_core_4_temp
+          - sensor.copper_core_5_temp
+        show:
+          icon: false
+          name: false
+          state: false
+          average: false
+          legend: false
+        hours_to_show: 0.5
+        points_per_hour: 120
+        line_width: 1
+        style: |
+          ha-card { padding-top: 0 !important; }
+          ha-card .info.flex { padding: 0 !important; }
+      - entity: sensor.copper_ram_used_percent
+        type: custom:multiple-entity-row
+        name: RAM
+        entities:
+          - entity: sensor.copper_ram_used
+            name: Used
+          - entity: sensor.copper_ram_free
+            name: Free
+      - !include
+        - 'templates/bar.yaml'
+        - entity: sensor.copper_ram_used_percent
+      - entity: sensor.copper_swap_used_percent
+        type: custom:multiple-entity-row
+        name: Swap
+        entities:
+          - entity: sensor.copper_swap_used
+            name: Used
+          - entity: sensor.copper_swap_free
+            name: Free
+      - !include
+        - 'templates/bar.yaml'
+        - entity: sensor.copper_swap_used_percent
+      - entity: sensor.copper_storage_local
+        type: custom:multiple-entity-row
+        name: Local
+        icon: mdi:harddisk
+        entities:
+          - attribute: gb_used
+            name: Used
+            unit: GB
+          - attribute: gb_avail
+            name: Free
+            unit: GB
+      - !include
+        - 'templates/bar.yaml'
+        - entity: sensor.copper_storage_local
+      - entity: sensor.copper_storage_local_lvm
+        type: custom:multiple-entity-row
+        name: Local LVM
+        icon: mdi:harddisk
+        entities:
+          - attribute: gb_used
+            name: Used
+            unit: GB
+          - attribute: gb_avail
+            name: Free
+            unit: GB
+      - !include
+        - 'templates/bar.yaml'
+        - entity: sensor.copper_storage_local_lvm
+      - entity: sensor.copper_storage_sata
+        type: custom:multiple-entity-row
+        name: SATA
+        icon: mdi:harddisk
+        entities:
+          - attribute: gb_used
+            name: Used
+            unit: GB
+          - attribute: gb_avail
+            name: Free
+            unit: GB
+      - !include
+        - 'templates/bar.yaml'
+        - entity: sensor.copper_storage_sata
+      - type: custom:button-card
+        color_type: blank-card
+      - type: divider
+      - type: custom:button-card
+        color_type: blank-card
+      - type: custom:hui-element
+        card_type: horizontal-stack
+        cards:
+          - entity: binary_sensor.copper_hermes_running
+            type: custom:button-card
+            name: Hermes VM
+            template: docker
+            entity_picture: "/local/images/buttons/docker.svg"
+            lock:
+              enabled: false
+          - entity: binary_sensor.copper_homeassistant_running
+            type: custom:button-card
+            name: Home Assistant VM
+            template: docker
+            entity_picture: "/local/images/buttons/homeassistant.svg?v=3"
+            lock:
+              enabled: false
+  # End NUC card
+  
+  # Begin Hermes card
+  - type: entities
+    title: Hermes (VM)
+    show_header_toggle: false
+    entities:
+      - entity: sensor.hermes_cpu_percent
+        type: custom:multiple-entity-row
+        name: CPU
+        entities:
+          - entity: sensor.hermes_cpu_load
+            name: Load
+            unit: false
+      - !include
+        - 'templates/bar.yaml'
+        - entity: sensor.hermes_cpu_percent
+      - entity: sensor.hermes_ram_percent
+        type: custom:multiple-entity-row
+        name: RAM
+        entities:
+          - entity: sensor.hermes_ram_used
+            name: Used
+          - entity: sensor.hermes_ram_free
+            name: Free
+      - !include
+        - 'templates/bar.yaml'
+        - entity: sensor.hermes_ram_percent
+      - entity: sensor.hermes_swap_percent
+        type: custom:multiple-entity-row
+        name: Swap
+        entities:
+          - entity: sensor.hermes_swap_used
+            name: Used
+          - entity: sensor.hermes_swap_free
+            name: Free
+      - !include
+        - 'templates/bar.yaml'
+        - entity: sensor.hermes_swap_percent
+      - entity: sensor.hermes_disk_percent
+        type: custom:multiple-entity-row
+        name: Disk
+        entities:
+          - entity: sensor.hermes_disk_used
+            name: Used
+          - entity: sensor.hermes_disk_free
+            name: Free
+      - !include
+        - 'templates/bar.yaml'
+        - entity: sensor.hermes_disk_percent
+      - type: custom:button-card
+        color_type: blank-card
+      - type: divider
+      - type: custom:button-card
+        color_type: blank-card
+      - type: custom:hui-element
+        card_type: horizontal-stack
+        cards:
+          - entity: switch.docker_chronograf
+            type: custom:button-card
+            name: Chronograf
+            template: docker
+            entity_picture: "/local/images/buttons/influxdb_small.svg"
+          - entity: switch.docker_deconz
+            type: custom:button-card
+            name: DeCONZ
+            template: docker
+            entity_picture: "/local/images/buttons/deconz.png"
+          - entity: switch.docker_grafana
+            type: custom:button-card
+            name: Glances
+            template: docker
+            entity_picture: "/local/images/buttons/glances.svg"
+          - entity: switch.docker_glances
+            type: custom:button-card
+            name: Grafana
+            template: docker
+            entity_picture: "/local/images/buttons/grafana.svg"
+      - type: custom:button-card
+        color_type: blank-card
+      - type: custom:button-card
+        color_type: blank-card
+      - type: custom:hui-element
+        card_type: horizontal-stack
+        cards:
+          - entity: switch.docker_influxdb
+            type: custom:button-card
+            name: InfluxDB
+            template: docker
+            entity_picture: "/local/images/buttons/influxdb.png"
+          - entity: switch.docker_mariadb
+            type: custom:button-card
+            name: MariaDB
+            template: docker
+            entity_picture: "/local/images/buttons/mariadb.svg?1"
+          - entity: switch.docker_mosquitto
+            type: custom:button-card
+            name: Mosquitto
+            template: docker
+            entity_picture: "/local/images/buttons/mosquitto.png"
+          - entity: switch.docker_node_red
+            type: custom:button-card
+            name: Node-RED
+            template: docker
+            entity_picture: "/local/images/buttons/node-red.svg"
+      - type: custom:button-card
+        color_type: blank-card
+      - type: custom:button-card
+        color_type: blank-card
+      - type: custom:hui-element
+        card_type: horizontal-stack
+        cards:
+          - entity: switch.docker_portainer
+            type: custom:button-card
+            name: Portainer
+            template: docker
+            entity_picture: "/local/images/buttons/portainer.png"
+          - entity: switch.docker_py_kms
+            type: custom:button-card
+            name: Py-KMS
+            template: docker
+            entity_picture: "/local/images/buttons/kms.svg"
+          - entity: switch.docker_samba
+            type: custom:button-card
+            name: Samba
+            template: docker
+            entity_picture: "/local/images/buttons/samba.png?v=1"
+          - entity: switch.docker_traccar
+            type: custom:button-card
+            name: Traccar
+            template: docker
+            entity_picture: "/local/images/buttons/traccar.png"
+      - type: custom:button-card
+        color_type: blank-card
+      - type: custom:button-card
+        color_type: blank-card
+      - type: custom:hui-element
+        card_type: horizontal-stack
+        cards:
+          - entity: switch.docker_traefik
+            type: custom:button-card
+            name: Traefik
+            template: docker
+            entity_picture: "/local/images/buttons/traefik.png"
+          - entity: switch.docker_unifi
+            type: custom:button-card
+            name: UniFi
+            template: docker
+            entity_picture: "/local/images/buttons/ubnt.png"
+          - entity: switch.docker_watchtower
+            type: custom:button-card
+            name: Watchtower
+            template: docker
+            entity_picture: "/local/images/buttons/watchtower.png"
+          - entity: switch.docker_wiki
+            type: custom:button-card
+            name: WikiJS
+            template: docker
+            entity_picture: "/local/images/buttons/wikijs.svg"
+      - type: custom:button-card
+        color_type: blank-card
+      - type: custom:button-card
+        color_type: blank-card
+      - type: custom:hui-element
+        card_type: horizontal-stack
+        cards:
+          - entity: switch.docker_zwave2mqtt
+            type: custom:button-card
+            name: ZWave2MQTT
+            template: docker
+            entity_picture: "/local/images/buttons/zwave_small.svg"
+  # End Hermes card
+  
+  # Begin Home Assistant card
+  - type: entities
+    title: Home Assistant (VM)
+    show_header_toggle: false
+    entities:
+      - entity: sensor.ha_cpu_used
+        type: custom:multiple-entity-row
+        name: CPU
+        entities:
+          - entity: sensor.ha_cpu_load
+            name: Load
+            unit: false
+      - !include
+        - 'templates/bar.yaml'
+        - entity: sensor.ha_cpu_used
+      - entity: sensor.ha_ram_used_percent
+        type: custom:multiple-entity-row
+        name: RAM
+        entities:
+          - entity: sensor.ha_ram_used
+            name: Used
+          - entity: sensor.ha_ram_free
+            name: Free
+      - !include
+        - 'templates/bar.yaml'
+        - entity: sensor.ha_ram_used_percent
+      - entity: sensor.ha_swap_used_percent
+        type: custom:multiple-entity-row
+        name: Swap
+        entities:
+          - entity: sensor.ha_swap_used
+            name: Used
+          - entity: sensor.ha_swap_free
+            name: Free
+      - !include
+        - 'templates/bar.yaml'
+        - entity: sensor.ha_swap_used_percent
+      - entity: sensor.ha_data_used_percent
+        type: custom:multiple-entity-row
+        name: Disk
+        entities:
+          - entity: sensor.ha_data_used
+            name: Used
+          - entity: sensor.ha_data_free
+            name: Free
+      - !include
+        - 'templates/bar.yaml'
+        - entity: sensor.ha_data_used_percent
+  # End Home Assistant card

@@ -1,0 +1,65 @@
+binary_sensor:
+  - platform: template
+    sensors:
+      laundry_dryer:
+        friendly_name: "Laundry Dryer"
+        value_template: >
+          {{ state_attr('switch.laundry_dryer', 'current_power_w')|int > 4 }}
+        delay_on: 70
+        delay_off: 30
+        icon_template: >
+          {% if is_state('binary_sensor.laundry_dryer', 'on') %}
+            mdi:tumble-dryer
+          {% else %}
+            mdi:tumble-dryer-off
+          {% endif %}
+      laundry_washer:
+        friendly_name: "Laundry Washer"
+        value_template: >
+          {{ state_attr('switch.laundry_washer', 'current_power_w')|int > 2 }}
+        delay_on: 70
+        delay_off: 75
+        icon_template: >
+          {% if is_state('binary_sensor.laundry_washer', 'on') %}
+            mdi:washing-machine
+          {% else %}
+            mdi:washing-machine-off
+          {% endif %}
+
+sensor:
+  - platform: template
+    sensors:
+      laundry_dryer_power:
+        friendly_name: "Laundry Dryer Power"
+        value_template: "{{ state_attr('switch.laundry_dryer', 'current_power_w') }}"
+        unit_of_measurement: W
+        device_class: power
+      laundry_dryer_power_log:
+        friendly_name: "Laundry Dryer Power Log"
+        value_template: "{{ log(states('sensor.laundry_dryer_power')) }}"
+        unit_of_measurement: log W
+        device_class: power
+      laundry_washer_power:
+        friendly_name: "Laundry Washer Power"
+        value_template: "{{ state_attr('switch.laundry_washer', 'current_power_w') }}"
+        unit_of_measurement: W
+        device_class: power
+      laundry_washer_power_log:
+        friendly_name: "Laundry Washer Power Log"
+        value_template: "{{ log(states('sensor.laundry_washer_power')) }}"
+        unit_of_measurement: log W
+        device_class: power
+
+amcrest:
+  - name: Laundry Dryer
+    host: !secret amcrest_dryer_ip
+    username: !secret amcrest_dryer_username
+    password: !secret amcrest_dryer_password
+
+homeassistant:
+  customize:
+    switch.laundry_dryer:
+      hidden: true
+    switch.laundry_washer:
+      hidden: true
+      

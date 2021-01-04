@@ -1,0 +1,140 @@
+# lovelace_gen
+
+title: Beer & Brewing
+path: beer
+icon: si:homebrew
+
+cards:
+
+  - title: Kegerator CO2
+    type: entities
+    entities:
+      - entity: sensor.plaato_co2_remaining
+        name: Remaining
+      - type: custom:hui-element
+        card_type: history-graph
+        hours_to_show: 168
+        entities:
+          - entity: sensor.plaato_co2_remaining
+        debug_cardmod: true
+        style:
+          .: |
+            ha-card { box-shadow: none; }
+            div.content { padding: 0 0 16px; }
+          "div.chartHeader": 
+            $: |
+              :host { display: none; }
+              ul { color: red; }
+      # - type: custom:mini-graph-card
+      #   entities:
+      #     - sensor.plaato_co2_remaining
+      #   show:
+      #     icon: false
+      #     name: false
+      #     state: false
+      #     average: false
+      #     legend: false
+      #   hours_to_show: 168
+      #   points_per_hour: 1
+      #   line_width: 1
+      #   hour24: true
+      #   style: |
+      #     ha-card { padding-top: 0 !important; }
+      #     ha-card .info.flex { padding: 0 !important; }
+      - entity: sensor.plaato_co2_remaining
+        type: custom:hui-element
+        card_type: sensor
+        graph: line
+        detail: 2
+        style: |
+          ha-card { box-shadow: none; margin: 0 -16px -16px; }
+          div.header { display: none; }
+          div.content { padding: 0 0 16px; }
+          span.value { font-size: 20px }
+
+  - title: Keg 1
+    type: entities
+    entities:
+      - entity: input_text.keg1_name
+        name: Name
+
+  - title: Keg 2
+    type: entities
+    entities:
+      - entity: sensor.plaato_keg2_remaining
+        name: Remaining
+      - entity: input_text.keg2_name
+        name: Name
+      - entity: input_datetime.keg2
+        name: Date
+      - entity: sensor.plaato_keg2_remaining
+        type: custom:hui-element
+        card_type: sensor
+        graph: line
+        detail: 2
+        style: |
+          ha-card { box-shadow: none; margin: 0 -16px -16px; }
+          div.header { display: none; }
+          div.content { padding: 0 0 16px; }
+          span.value { font-size: 20px }
+
+  - title: Keg 3
+    type: entities
+    entities:
+      - entity: sensor.plaato_keg3_remaining
+        name: Remaining
+      - entity: input_text.keg3_name
+        name: Name
+      - entity: input_datetime.keg3
+        name: Date
+      - entity: sensor.plaato_keg3_remaining
+        type: custom:hui-element
+        card_type: sensor
+        graph: line
+        detail: 2
+        style: |
+          ha-card { box-shadow: none; margin: 0 -16px -16px; }
+          div.header { display: none; }
+          div.content { padding: 0 0 16px; }
+          span.value { font-size: 20px }
+
+  - title: Keg 4
+    type: entities
+    entities:
+      - entity: sensor.plaato_keg4_remaining
+        name: Remaining
+      - entity: input_text.keg4_name
+        name: Name
+      - entity: input_datetime.keg4
+        name: Date
+      - entity: sensor.plaato_keg4_remaining
+        type: custom:hui-element
+        card_type: sensor
+        graph: line
+        detail: 2
+        style: |
+          ha-card { box-shadow: none; margin: 0 -16px -16px; }
+          div.header { display: none; }
+          div.content { padding: 0 0 16px; }
+          span.value { font-size: 20px }
+
+  - title: Brewery
+    type: entities
+    entities:
+      - type: section
+        label: Unitank 1 (UT1)
+      - entity: input_text.brew_ut1
+        name: Contents
+      - entity: input_datetime.brew_ut1
+        name: Date
+      - type: section
+        label: Unitank 2 (UT2)
+      - entity: input_text.brew_ut2
+        name: Contents
+      - entity: input_datetime.brew_ut2
+        name: Date
+  
+  # - title: Configuration
+  #   type: entities
+  #   entities:
+  #     - entity: 

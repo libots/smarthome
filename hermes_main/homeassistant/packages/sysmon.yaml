@@ -1,0 +1,53 @@
+# Monitor HASS - moved to glances
+# sensor:
+#   - platform: systemmonitor
+#     resources:
+#       - type: disk_use_percent
+#         arg: /home
+#       - type: memory_free
+#       - type: memory_use_percent
+#       - type: swap_free
+#       - type: swap_use_percent
+#       - type: load_1m
+#       - type: load_5m
+#       - type: load_15m
+#       - type: processor_use
+  # - platform: command_line
+    # name: CPU Temperature
+    # command: "cat /sys/class/thermal/thermal_zone0/temp"
+    # unit_of_measurement: "°C"
+    # value_template: '{{ value | multiply(0.001) | round(1) }}'
+#breaking_changes:
+
+# Monitor Other Servers
+binary_sensor:
+  - name: !secret ping_main_name
+    platform: ping
+    host: !secret ping_main
+  - name: !secret ping_sv_name
+    platform: ping
+    host: !secret ping_sv
+  - name: Ping VMedia
+    platform: ping
+    host: !secret ping_vmedia
+  - name: Ping SynoNAS
+    platform: ping
+    host: !secret ping_synonas
+  - name: Ping MCast
+    platform: ping
+    host: !secret ping_mcast
+  - name: Ping AP Control
+    platform: ping
+    host: !secret ping_ap_control
+  - name: Ping AP MBed
+    platform: ping
+    host: !secret ping_ap_mbed
+  - name: Ping AP GBed
+    platform: ping
+    host: !secret ping_ap_gbed
+  - name: Ping AP Garage
+    platform: ping
+    host: !secret ping_ap_garage
+  - name: Ping AP LvRm
+    platform: ping
+    host: !secret ping_ap_lvrm

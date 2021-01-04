@@ -1,0 +1,112 @@
+# lovelace_gen
+
+type: custom:hui-element
+card_type: horizontal-stack
+cards:
+  - type: custom:button-card
+    entity: remote.harmony_lvrm
+    name: "Off"
+    show_icon: false
+    tap_action:
+      action: call-service
+      service: remote.turn_off
+      service_data:
+        entity_id: remote.harmony_lvrm
+    state:
+      - value: "off"
+        styles:
+          card:
+            - background-color: var(--primary-color)
+          name:
+            - color: white
+    styles:
+      card:
+        - box-shadow: none
+      name:
+        - color: var(--state-icon-unavailable-color)
+        - font-size: 14px
+        - font-weight: bold
+  - type: custom:button-card
+    entity: remote.harmony_lvrm
+    name: Roku
+    show_icon: false
+    tap_action:
+      action: call-service
+      service: remote.turn_on
+      service_data:
+        entity_id: remote.harmony_lvrm
+        activity: "Watch Roku"
+    state:
+      - operator: template
+        value: >
+          [[[
+            if (entity.attributes.current_activity == "Watch Roku") { return true; }
+          ]]]
+        styles:
+          card:
+            - background-color: var(--primary-color)
+          name:
+            - color: white
+    styles:
+      card:
+        - box-shadow: none
+      name:
+        - color: var(--state-icon-unavailable-color)
+        - font-size: 14px
+        - font-weight: bold
+  - type: custom:button-card
+    entity: remote.harmony_lvrm
+    name: Sonos
+    show_icon: false
+    tap_action:
+      action: call-service
+      service: remote.turn_on
+      service_data:
+        entity_id: remote.harmony_lvrm
+        activity: "Listen to Sonos"
+    state:
+      - operator: template
+        value: >
+          [[[
+            if (entity.attributes.current_activity == "Listen to Sonos") { return true; }
+          ]]]
+        styles:
+          card:
+            - background-color: var(--primary-color)
+          name:
+            - color: white
+    styles:
+      card:
+        - box-shadow: none
+      name:
+        - color: var(--state-icon-unavailable-color)
+        - font-size: 14px
+        - font-weight: bold
+  - type: custom:button-card
+    entity: remote.harmony_lvrm
+    name: PS4
+    show_icon: false
+    tap_action:
+      action: call-service
+      service: remote.turn_on
+      service_data:
+        entity_id: remote.harmony_lvrm
+        activity: "Play PS4"
+    state:
+      - operator: template
+        value: >
+          [[[
+            if (entity.attributes.current_activity == "Play PS4") { return true; }
+          ]]]
+        styles:
+          card:
+            - background-color: var(--primary-color)
+          name:
+            - color: white
+    styles:
+      card:
+        - box-shadow: none
+      name:
+        - color: var(--state-icon-unavailable-color)
+        - font-size: 14px
+        - font-weight: bold

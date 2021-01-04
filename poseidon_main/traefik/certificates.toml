@@ -1,0 +1,3 @@
+[[tls.certificates]]
+   certFile = "/shared/ssl/chain.crt" 
+   keyFile = "/shared/ssl/poseidon.key"

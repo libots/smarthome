@@ -1,0 +1,21 @@
+mqtt:
+  broker: !secret mqtt_ip
+  username: !secret mqtt_username
+  password: !secret mqtt_password
+  client_id: hanuc
+  discovery: true
+  discovery_prefix: homeassistant
+  birth_message:
+    topic: 'hanuc/lwt'
+    payload: 'online'
+    qos: 1
+    retain: false
+  will_message:
+    topic: 'hanuc/lwt'
+    payload: 'offline'
+    qos: 1
+    retain: true
+# mqtt_statestream:
+  # base_topic: hanuc/state
+  # publish_attributes: true
+  # publish_timestamps: true

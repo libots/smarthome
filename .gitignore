@@ -1,0 +1,22 @@
+.deleted/
+*.crt
+*.key
+.env
+
+##############################################
+# MOST CONTAINERS
+.data/
+.log/
+# chronograf/backup/
+# deconz/
+# grafana/
+# influxdb/
+# letsencrypt/
+# mariadb/
+# mosquitto/
+# node-red/
+# portainer/data/
+# traccar/
+# traefik/
+# unifi-controller/
+# zwave2mqtt/

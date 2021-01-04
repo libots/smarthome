@@ -1,0 +1,433 @@
+title: Security
+path: security
+icon: mdi:shield
+
+cards:
+  
+  # Begin Alarm Panel
+  - title: Alarm
+    type: entities
+    show_header_toggle: false
+    entities:
+      - type: custom:hui-element
+        card_type: horizontal-stack
+        cards:
+          - entity: alarm_control_panel.abode
+            type: custom:button-card
+            size: 30px
+            icon: mdi:shield-off
+            color: var(--state-icon-unavailable-color)
+            name: Disarm
+            state:
+              - value: 'disarmed'
+                color: var(--label-badge-green)
+                name: Disarmed
+                styles:
+                  card:
+                    - border-color: var(--primary-color)
+                  name:
+                    - color: var(--label-badge-green)
+            styles:
+              card:
+                - box-shadow: none
+                - border-width: 2px
+                - border-color: var(--state-icon-unavailable-color)
+                - border-style: solid
+                - border-radius: 10px
+              name:
+                - font-size: 14px
+                - font-weight: bold
+                - color: var(--state-icon-unavailable-color)
+            tap_action:
+              action: call-service
+              service: alarm_control_panel.alarm_disarm
+              service_data:
+                entity_id: alarm_control_panel.abode
+          - entity: alarm_control_panel.abode
+            type: custom:button-card
+            size: 30px
+            icon: mdi:shield-home
+            color: var(--state-icon-unavailable-color)
+            name: Arm Home
+            state:
+              - value: 'armed_home'
+                color: var(--label-badge-red)
+                name: Armed Home
+                styles:
+                  card:
+                    - border-color: var(--primary-color)
+                  name:
+                    - color: var(--label-badge-red)
+            styles:
+              card:
+                - box-shadow: none
+                - border-width: 2px
+                - border-color: var(--state-icon-unavailable-color)
+                - border-style: solid
+                - border-radius: 10px
+              name:
+                - font-size: 14px
+                - font-weight: bold
+                - color: var(--state-icon-unavailable-color)
+            tap_action:
+              action: call-service
+              service: alarm_control_panel.alarm_arm_home
+              service_data:
+                entity_id: alarm_control_panel.abode
+          - entity: alarm_control_panel.abode
+            type: custom:button-card
+            size: 30px
+            icon: mdi:shield-lock
+            color: var(--state-icon-unavailable-color)
+            name: Arm Away
+            state:
+              - value: 'armed_away'
+                color: var(--label-badge-red)
+                name: Armed Away
+                styles:
+                  card:
+                    - border-color: var(--primary-color)
+                  name:
+                    - color: var(--label-badge-red)
+            styles:
+              card:
+                - box-shadow: none
+                - border-width: 2px
+                - border-color: var(--state-icon-unavailable-color)
+                - border-style: solid
+                - border-radius: 10px
+              name:
+                - font-size: 14px
+                - font-weight: bold
+                - color: var(--state-icon-unavailable-color)
+            tap_action:
+              action: call-service
+              service: alarm_control_panel.alarm_arm_away
+              service_data:
+                entity_id: alarm_control_panel.abode
+      - entity: alarm_control_panel.ha
+        name: Home Assistant Alarm
+        type: custom:multiple-entity-row
+        secondary_info: last-changed
+      - entity: alarm_control_panel.abode
+        type: custom:multiple-entity-row
+        secondary_info: last-changed
+        style: |
+          div.state { text-transform: capitalize; }
+          div.secondary { font-size: 12px; }
+      - entity: alarm_control_panel.alexa
+        type: custom:multiple-entity-row
+        secondary_info: last-changed
+        style: |
+          div.state { text-transform: capitalize; }
+          div.secondary { font-size: 12px; }
+      - entity: input_select.alarm_arm_mode
+  # End alarm panel
+  
+  # Begin markdown panel
+  - type: markdown
+    title: Note!
+    content: >
+      The last changed timer may be reset by restarts of Home Assistant.
+  # End markdown panel
+  
+  # Begin house panel
+  - type: entities
+    title: House
+    show_header_toggle: false
+    entities:
+      - type: custom:hui-element
+        card_type: horizontal-stack
+        cards:
+          - entity: binary_sensor.door_front
+            type: custom:button-card
+            name: Front Door
+            template: security_door_important
+            variables:
+              battery: '[[[ if (entity.attributes.battery_low==true) { return "Low"}; ]]]'
+          - entity: binary_sensor.door_back
+            type: custom:button-card
+            name: Back Door
+            template: security_door_important
+            variables:
+              battery: '[[[ if (entity.attributes.battery_low==true) { return "Low"}; ]]]'
+          - entity: binary_sensor.door_basement_outside
+            type: custom:button-card
+            name: Basement Door
+            template: security_door_important
+            variables:
+              battery: '[[[ if (entity.attributes.battery_low==true) { return "Low"}; ]]]'
+      - type: custom:button-card
+        color_type: blank-card
+      - type: custom:button-card
+        color_type: blank-card
+      - type: custom:hui-element
+        card_type: horizontal-stack
+        cards:
+          - type: custom:button-card
+            color_type: blank-card
+          - entity: lock.front
+            type: custom:button-card
+            name: Front Lock
+            template: security_lock
+            variables:
+              battery: '[[[ return states["lock.front_august"].attributes.battery_level ]]]'
+          - entity: lock.back
+            type: custom:button-card
+            name: Back Lock
+            template: security_lock
+            variables:
+              battery: '[[[ return states["lock.back_august"].attributes.battery_level ]]]'
+          - type: custom:button-card
+            color_type: blank-card
+  # End house panel
+  
+  # Begin garage panel
+  - type: entities
+    title: Garage
+    show_header_toggle: false
+    entities:
+      - type: custom:hui-element
+        card_type: horizontal-stack
+        cards:
+          - entity: binary_sensor.door_garage_left
+            type: custom:button-card
+            name: Left Door
+            template: security_door_important
+            variables:
+              battery: '[[[ if (entity.attributes.battery_low==true) { return "Low"}; ]]]'
+          - entity: binary_sensor.door_garage_right
+            type: custom:button-card
+            name: Right Door
+            template: security_door_important
+            variables:
+              battery: '[[[ if (entity.attributes.battery_low==true) { return "Low"}; ]]]'
+  # End garage panel
+  
+  # Begin basement panel
+  - type: entities
+    title: Basement
+    show_header_toggle: false
+    entities:
+      - type: custom:hui-element
+        card_type: horizontal-stack
+        cards:
+          - entity: binary_sensor.door_basement_outside
+            type: custom:button-card
+            name: Outside Door
+            template: security_door_important
+            variables:
+              battery: '[[[ if (entity.attributes.battery_low==true) { return "Low"}; ]]]'
+          - entity: binary_sensor.door_basement_coal
+            type: custom:button-card
+            name: Coal Chute
+            template: security_door_important
+            variables:
+              battery: '[[[ return states["sensor.battery_door_basement_coal"].state ]]]'
+              temperature: '[[[ return states["sensor.temp_door_basement_coal"].state ]]]'
+          - entity: binary_sensor.door_basement_inside
+            type: custom:button-card
+            name: Inside Door
+            template: security_door
+            variables:
+              battery: '[[[ return states["sensor.battery_door_basement_inside"].state ]]]'
+              temperature: '[[[ return states["sensor.temp_door_basement_inside"].state ]]]'
+          - entity: binary_sensor.door_basement_dungeon
+            type: custom:button-card
+            name: Dungeon Door
+            template: security_door
+            variables:
+              battery: '[[[ return states["sensor.battery_door_basement_dungeon"].state ]]]'
+              temperature: '[[[ return states["sensor.temp_door_basement_dungeon"].state ]]]'
+      - type: custom:button-card
+        color_type: blank-card
+      - type: custom:button-card
+        color_type: blank-card
+      - type: custom:hui-element
+        card_type: horizontal-stack
+        cards:
+          - entity: binary_sensor.motion_basement_stairs
+            type: custom:button-card
+            name: Stairs Motion
+            template: security_motion
+            variables:
+              battery: '[[[ return states["sensor.battery_motion_basement_stairs"].state ]]]'
+              temperature: '[[[ return states["sensor.temp_motion_basement_stairs"].state ]]]'
+          - entity: binary_sensor.motion_basement_1
+            type: custom:button-card
+            name: Motion 1
+            template: security_motion
+            variables:
+              temperature: '[[[ return states["sensor.temp_motion_basement_1"].state ]]]'
+          - entity: binary_sensor.motion_basement_dungeon
+            type: custom:button-card
+            name: Dungeon Motion
+            template: security_motion
+            variables:
+              battery: '[[[ return states["sensor.battery_motion_basement_dungeon"].state ]]]'
+              temperature: '[[[ return states["sensor.temp_motion_basement_dungeon"].state ]]]'
+  # End basement panel
+  
+  # Begin common areas panel
+  - type: entities
+    title: Common Areas
+    show_header_toggle: false
+    entities:
+      - type: custom:hui-element
+        card_type: horizontal-stack
+        cards:
+          - entity: binary_sensor.motion_foyer
+            type: custom:button-card
+            name: Foyer Motion
+            template: security_motion
+            variables:
+              battery: '[[[ if (states["binary_sensor.motion_foyer_abode"].attributes.battery_low==true) return "Low"; ]]]'
+          - entity: binary_sensor.motion_stairs
+            type: custom:button-card
+            name: Stairs Motion
+            template: security_motion
+            variables:
+              battery: '[[[ return states["sensor.battery_motion_stairs"].state ]]]'
+              temperature: '[[[ return states["sensor.temp_motion_stairs"].state ]]]'
+          - entity: binary_sensor.motion_hall
+            type: custom:button-card
+            name: Upstairs Hall Motion
+            template: security_motion
+            variables:
+              battery: '[[[ return states["sensor.battery_motion_hall"].state ]]]'
+              temperature: '[[[ return states["sensor.temp_motion_hall"].state ]]]'
+  # End common areas panel
+  
+  # Begin kitchen panel
+  - type: entities
+    title: Kitchen
+    show_header_toggle: false
+    entities:
+      - type: custom:hui-element
+        card_type: horizontal-stack
+        cards:
+          - entity: binary_sensor.motion_kitchen
+            type: custom:button-card
+            name: Window Motion
+            template: security_motion
+            variables:
+              # battery: '[[[ if (entity.attributes.battery_low==true) { return "Low"}; ]]]'
+              battery: '[[[ if (states["binary_sensor.motion_kitchen_abode"].attributes.battery_low==true) return "Low"; ]]]'
+          - entity: binary_sensor.motion_kitchen_cabinet
+            type: custom:button-card
+            name: Cabinet Motion
+            template: security_motion
+            variables:
+              battery: '[[[ return states["sensor.battery_motion_kitchen_cabinet"].state ]]]'
+              temperature: '[[[ return states["sensor.temp_motion_kitchen_cabinet"].state ]]]'
+          - entity: binary_sensor.motion_kitchen_door
+            type: custom:button-card
+            name: Door Motion
+            template: security_motion
+            variables:
+              battery: '[[[ return states["sensor.battery_motion_kitchen_door"].state ]]]'
+              temperature: '[[[ return states["sensor.temp_motion_kitchen_door"].state ]]]'
+  # End kitchen panel
+  
+  # Begin office panel
+  - type: entities
+    title: Office
+    show_header_toggle: false
+    entities:
+      - type: custom:hui-element
+        card_type: horizontal-stack
+        cards:
+          - entity: binary_sensor.door_office_1x
+            type: custom:button-card
+            name: Single Door
+            template: security_door
+            variables:
+              battery: '[[[ return states["sensor.battery_door_office_1x"].state ]]]'
+              temperature: '[[[ return states["sensor.temp_door_office_1x"].state ]]]'
+          - entity: binary_sensor.door_office_2x
+            type: custom:button-card
+            name: Double Door
+            template: security_door
+            variables:
+              battery: '[[[ return states["sensor.battery_door_office_2x"].state ]]]'
+              temperature: '[[[ return states["sensor.temp_door_office_2x"].state ]]]'
+          - entity: binary_sensor.motion_office
+            type: custom:button-card
+            name: Motion
+            template: security_motion
+            variables:
+              temperature: '[[[ return states["sensor.temp_motion_office"].state ]]]'
+  # End office panel
+  
+  # Begin dining room panel
+  - type: entities
+    title: Dining Room
+    show_header_toggle: false
+    entities:
+      - type: custom:hui-element
+        card_type: horizontal-stack
+        cards:
+          - entity: binary_sensor.motion_dining_abode
+            type: custom:button-card
+            name: Motion
+            template: security_motion
+            variables:
+              battery: '[[[ if (states["binary_sensor.motion_dining_abode"].attributes.battery_low==true) return "Low"; ]]]'
+  # End dining room panel
+  
+  # Begin back yard panel
+  - type: entities
+    title: Back Yard
+    show_header_toggle: false
+    entities:
+      - type: custom:hui-element
+        card_type: horizontal-stack
+        cards:
+          - entity: binary_sensor.motion_outside_patio
+            type: custom:button-card
+            name: Patio Motion
+            template: security_motion
+          - entity: binary_sensor.motion_outside_backyard
+            type: custom:button-card
+            name: Yard Motion
+            template: security_motion
+          - entity: binary_sensor.motion_outside_garage_left
+            type: custom:button-card
+            name: Garage Left Motion
+            template: security_motion
+          - entity: binary_sensor.motion_outside_garage_right
+            type: custom:button-card
+            name: Garage Right Motion
+            template: security_motion
+  # End back yard panel
+  
+  # Begin master bath panel
+  - type: entities
+    title: Master Bathroom
+    show_header_toggle: false
+    entities:
+      - type: custom:hui-element
+        card_type: horizontal-stack
+        cards:
+          - entity: binary_sensor.motion_mbath_entry
+            type: custom:button-card
+            name: Entry Motion
+            template: security_motion
+            variables:
+              battery: '[[[ return states["sensor.battery_motion_mbath_entry"].state ]]]'
+              temperature: '[[[ return states["sensor.temp_motion_mbath_entry"].state ]]]'
+          - entity: binary_sensor.motion_mbath_main
+            type: custom:button-card
+            name: Main Motion
+            template: security_motion
+            variables:
+              battery: '[[[ return states["sensor.battery_motion_mbath_main"].state ]]]'
+              temperature: '[[[ return states["sensor.temp_motion_mbath_main"].state ]]]'
+          - entity: binary_sensor.motion_mbath_closet
+            type: custom:button-card
+            name: Closet Motion
+            template: security_motion
+            variables:
+              battery: '[[[ return states["sensor.battery_motion_mbath_closet"].state ]]]'
+              temperature: '[[[ return states["sensor.temp_motion_mbath_closet"].state ]]]'
+  # End master bath panel

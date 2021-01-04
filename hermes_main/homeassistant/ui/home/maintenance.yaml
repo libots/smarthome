@@ -1,0 +1,54 @@
+# lovelace_gen
+
+title: Maintenance
+path: maintenance
+icon: mdi:tools
+
+cards:
+  # Begin smoke detector panel
+  - type: entities
+    title: Smoke/CO Detectors
+    show_header_toggle: false
+    entities:
+      {% macro smokeco(entity, disp) -%}
+      - entity: {{ entity }}
+        type: custom:multiple-entity-row
+        name: {{ disp }}
+        secondary_info:
+          entity: {{ entity }}
+          format: relative
+        entities:
+          - icon: mdi:calendar-today
+            name: false
+            tap_action:
+              action: call-service
+              service: mqtt.publish
+              service_data:
+                topic: datetimenow
+                payload: {{ entity }}
+              # service: input_datetime.set_datetime
+              # service_data:
+              #   entity_id: {{ entity }}
+              #   date: >
+              #     {% raw %}
+              #     {{ now().timestamp() | timestamp_custom("%Y-%m-%d", true) }}
+              #     {% endraw %}
+              confirmation: "Set to today's date?"
+      {%- endmacro %}
+      - type: section
+        label: Basement
+      {{ smokeco("input_datetime.smokeco_basement", "Basement") }}
+      - type: section
+        label: First Floor
+      {{ smokeco("input_datetime.smokeco_dining", "Dining Room") }}
+      {{ smokeco("input_datetime.smokeco_lvrm", "Living Room") }}
+      {{ smokeco("input_datetime.smokeco_kitchen", "Kitchen") }}
+      {{ smokeco("input_datetime.smokeco_office", "Office") }}
+      - type: section
+        label: Upstairs
+      {{ smokeco("input_datetime.smokeco_hall", "Hallway") }}
+      {{ smokeco("input_datetime.smokeco_mbed", "Master Bedroom") }}
+      {{ smokeco("input_datetime.smokeco_changing", "Changing Room") }}
+      {{ smokeco("input_datetime.smokeco_guest", "Guest Room") }}
+      {{ smokeco("input_datetime.smokeco_3f", "Third Floor") }}
+  # End smoke detector panel

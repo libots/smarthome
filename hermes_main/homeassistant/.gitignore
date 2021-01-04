@@ -1,0 +1,44 @@
+# You can whitelist files/folders with !, these will not be ignored.
+!*.yaml
+!.gitignore
+!*.md
+
+# HA
+.storage
+.cloud
+.google.token
+node-red
+
+# Custom Components
+custom_components
+www/community
+
+# Temporary Storage
+tts
+neighbours
+deps
+
+# Logs
+*.log
+*.txt
+
+# Database
+*.db
+*.db-journal
+*.sqlite
+
+# Configuration
+*.conf
+*.json
+*.xml
+
+# Sensitive
+ip_bans.yaml
+secrets.yaml
+known_devices.yaml
+*.pickle
+google_calendars.yaml
+
+www/images/*
+!www/images/buttons
+www/audio/dogs

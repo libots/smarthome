@@ -1,0 +1,79 @@
+# You can whitelist files/folders with !, these will not be ignored.
+!*.yaml
+!.gitignore
+!*.md
+
+# Logs
+*.log
+*.txt
+
+# Database
+*.db
+*.db-journal
+*.sqlite
+
+# Configuration
+*.conf
+*.json
+*.xml
+*.ini
+
+# Temporary Storage
+.config/
+.deleted/
+.local/
+*.backup
+
+# Sensitive
+.gnupg/
+*.passwd
+*.key
+.env
+
+# Bash
+.bash_history
+.bash_logout
+.bashrc
+.profile
+
+# Personal
+public/
+shared/
+
+
+nginx/
+organizr/
+
+# ##############################################
+# # HOME ASSISTANT
+# # homeassistant/
+
+# # HA
+# homeassistant/.HA_VERSION
+# homeassistant/.storage
+# homeassistant/.cloud
+# homeassistant/.google.token
+
+# # Custom Components
+# homeassistant/custom_components
+# homeassistant/www/community
+
+# # Temporary Storage
+# homeassistant/tts
+# homeassistant/neighbours
+# homeassistant/deps
+
+# # Sensitive
+# homeassistant/ip_bans.yaml
+# secrets.yaml
+# homeassistant/known_devices.yaml
+# *.pickle
+# homeassistant/google_calendars.yaml
+
+# homeassistant/www/images/*
+# !homeassistant/www/images/buttons
+# homeassistant/www/audio/dogs
+
+##############################################
+# EXCEPTIONS
+!*.declassified

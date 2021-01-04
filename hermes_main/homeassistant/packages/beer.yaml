@@ -1,0 +1,56 @@
+sensor:
+  - name: Plaato CO2 Remaining
+    platform: rest
+    resource: !secret plaato_co2_remaining
+    unit_of_measurement: lbs
+    force_update: true
+    value_template: '{{  [value_json[0]|float,0]|max }}'
+  - name: Plaato Keg2 Remaining
+    platform: rest
+    resource: !secret plaato_keg2_remaining
+    unit_of_measurement: gal
+    force_update: true
+    value_template: '{{  [value_json[0]|float,0]|max }}'
+  - name: Plaato Keg3 Remaining
+    platform: rest
+    resource: !secret plaato_keg3_remaining
+    unit_of_measurement: gal
+    force_update: true
+    value_template: '{{  [value_json[0]|float,0]|max }}'
+  - name: Plaato Keg4 Remaining
+    platform: rest
+    resource: !secret plaato_keg4_remaining
+    unit_of_measurement: gal
+    force_update: true
+    value_template: '{{  [value_json[0]|float,0]|max }}'
+
+input_text:
+  keg1_name:
+    name: Keg 1 Name
+  keg2_name:
+    name: Keg 2 Name
+  keg3_name:
+    name: Keg 3 Name
+  keg4_name:
+    name: Keg 4 Name
+  brew_ut1:
+    name: Unitank 1 Name
+  brew_ut2:
+    name: Unitank 2 Name
+
+input_datetime:
+  keg2:
+    name: Keg 2 Date
+    has_date: true
+  keg3:
+    name: Keg 3 Date
+    has_date: true
+  keg4:
+    name: Keg 4 Date
+    has_date: true
+  brew_ut1:
+    name: Unitank 1 Date
+    has_date: true
+  brew_ut2:
+    name: Unitank 2 Date
+    has_date: true

@@ -1,0 +1,124 @@
+security_sensor:
+  template:
+    - general
+    - inside
+  color: var(--paper-item-icon-color)
+  tap_action:
+    action: more-info
+  show_last_changed: true
+  custom_fields:
+    more: >
+      [[[
+        var rtn = "";
+        //return '<div class="more">';
+        if (variables.battery == -1) {  }
+        else if (variables.battery == false) {  }
+        else if (variables.battery == "unavailable") {  }
+        else if (variables.battery == undefined) {  }
+        else if (variables.battery == 100) {  }
+        else {
+          rtn += '<span class="battery';
+          if (variables.battery < 30) { rtn += ' red'; }
+          rtn += '"><ha-icon icon="mdi:battery-outline"></ha-icon>';
+          rtn += '<span class="value">';
+          //if (Number.isInteger(variables.battery)) { rtn += '%'; }
+          //if (variables.battery < 30) { rtn += 'test'; }
+          rtn += variables.battery;
+          if (Number.isInteger(variables.battery)) { rtn += '%'; }
+          rtn += '</span></span><br>';
+        }
+        if (variables.temperature == 0) {  }
+        else if (variables.temperature == false) {  }
+        else if (variables.temperature == undefined) {  }
+        else if (variables.temperature == "unavailable") {  }
+        else { rtn += '<span class="temperature"><ha-icon icon="mdi:thermometer"></ha-icon><span class="value">' + variables.temperature + '</span></span>'; }
+        //return '</div>';
+        return rtn;
+      ]]]
+    # battery: >
+      # [[[
+        # return '<ha-icon icon="mdi:battery-outline"></ha-icon>' + variables.battery;
+      # ]]]
+    # temperature: >
+      # [[[
+        # return '<ha-icon icon="mdi:thermometer"></ha-icon>' + variables.temperature;
+      # ]]]
+  variables:
+    battery: -1
+    temperature: 0
+  styles:
+    custom_fields:
+      more:
+        - left: 50%
+        - top: 0
+        - position: absolute
+        - margin-left: 10px
+        - font-size: 10px
+        - font-weight: bold
+  style: |
+    ha-card {
+      --iron-icon-width: 12px;
+      --iron-icon-height: 12px;
+    }
+    .value {
+      margin-left: -1px
+    }
+    .red {
+      color: var(--label-badge-red);
+    }
+    ha-icon {
+      height: 11px;
+      width: 11px;
+    }
+
+# security_sensor_battery:
+  # template: security_sensor
+  # variables:
+    # battery: ""
+  # styles:
+    # custom_fields:
+      # battery:
+        # - color: black
+        # - font-size: 12px
+        # - text-align: center
+  # style: |
+    # #battery::after {
+      # content: "%"
+    # }
+
+security_door:
+  template: security_sensor
+  icon: mdi:door
+  state:
+    - id: off
+      value: 'off'
+      icon: mdi:door-closed
+    - id: on
+      value: 'on'
+      icon: mdi:door-open
+
+security_door_important:
+  template: security_door
+  state:
+    - id: on
+      color: var(--label-badge-red)
+
+security_lock:
+  template: security_sensor
+  state:
+    - id: on
+      color: var(--label-badge-red)
+
+security_motion:
+  template: security_sensor
+  icon: mdi:walk
+  state:
+    - id: off
+      value: 'off'
+    - id: on
+      value: 'on'
+      icon: mdi:run-fast
+      color: var(--paper-item-icon-active-color)
+    - id: unavailable
+      value: 'unavailable'
+      color: var(--state-icon-unavailable-color)

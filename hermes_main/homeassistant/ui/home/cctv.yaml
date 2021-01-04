@@ -1,0 +1,23 @@
+# lovelace_gen
+
+{% set cameras = ['camera.cam_a_porch','camera.cam_a_porch_ad','camera.cam_a_ab','camera.cam_b_front_high','camera.cam_b_back_high','camera.cam_d_driveway','camera.cam_g_front','camera.cam_0_backdoor','camera.cam_2_dog'] %}
+
+title: CCTV
+path: cctv
+icon: mdi:cctv
+
+cards:
+
+  {% for entity in cameras %}
+  - type: picture-glance
+    entities: []
+    camera_image: {{ entity }}
+  {% endfor %}
+
+  # - type: custom:surveillance-card
+    # thumb_interval: 15
+    # update_interval: 2
+    # cameras:
+      # - entity: camera.cam_a_porch
+        # motion_entity: binary_sensor.motion_cam_a_porch
+      

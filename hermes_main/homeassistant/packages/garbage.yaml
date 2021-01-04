@@ -1,0 +1,9 @@
+garbage_collection:
+  sensors:
+    - name: Garbage Trash
+      frequency: "weekly"
+      collection_days: tue
+    - name: Garbage Recycling
+      frequency: "every-n-days"
+      period: 14
+      first_date: '2020-03-17'

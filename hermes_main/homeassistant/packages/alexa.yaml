@@ -1,0 +1,92 @@
+alexa:
+  smart_home:
+    filter:
+      include_entities:
+        - switch.light_basement
+        - light.foyer
+        - light.lvrm_cans
+        - light.lvrm_fan
+        - fan.lvrm
+        - light.dining
+        - light.kitchen_cans
+        - light.kitchen_cabinet
+        - light.pantry
+        - light.office_cans
+        - light.office_fan
+        - fan.office
+        - light.stairs_hallway
+        - light.mbed_fan
+        - light.mbed_matt
+        - light.mbed_kayla
+        - fan.mbed
+        - light.dog_cans
+        - light.dog_fan
+        - fan.dog
+        - light.mbath_ceiling
+        - light.mbath_vanity
+        - light.mbath_shower
+        - switch.mbath_fan
+        - script.goodnight
+        - scene.goodnight
+        - input_boolean.pennstate
+    entity_config:
+      switch.light_basement:
+        name: Basement Lights
+        display_categories: LIGHT
+      light.foyer:
+        name: Foyer Light
+      light.lvrm_cans:
+        name: Living Room Cans
+      light.lvrm_fan:
+        name: Living Room Fan Light
+      fan.lvrm:
+        name: Living Room Fan
+      light.dining:
+        name: Dining Room Light
+      light.kitchen_cans:
+        name: Kitchen Cans
+      light.kitchen_cabinet:
+        name: Kitchen Cabinet Lights
+      light.pantry:
+        name: Pantry Light
+      light.office_cans:
+        name: Office Cans
+      light.office_fan:
+        name: Office Fan Light
+      fan.office:
+        name: Office Fan
+      light.stairs_hallway:
+        name: Stairs Lights
+      light.mbed_fan:
+        name: Master Bedroom Fan Light
+      light.mbed_matt:
+        name: Matt's Bedside Lamp
+      light.mbed_kayla:
+        name: Kayla's Bedside Lamp
+      fan.mbed:
+        name: Master Bedroom Fan
+      light.dog_cans:
+        name: Dog Room Cans
+      light.dog_fan:
+        name: Dog Room Fan Light
+      fan.dog:
+        name: Dog Room Fan
+      light.mbath_ceiling:
+        name: Master Bathroom Ceiling Light
+      light.mbath_vanity:
+        name: Master Bathroom Vanity Lights
+      light.mbath_shower:
+        name: Master Bathroom Shower Light
+      switch.mbath_fan:
+        name: Master Bathroom Fan
+      script.goodnight:
+        name: Goodnight
+      scene.goodnight:
+        name: Goodnight Silent
+      input_boolean.pennstate:
+        name: Penn State Mode
+        description: HA Penn State mode for lighting
+
+# input_boolean:
+#   alexa_configure:
+#     name: Configure Alexa

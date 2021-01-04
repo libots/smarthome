@@ -1,0 +1,33 @@
+version: '3.6'
+
+services:
+  py-kms:
+    image: pykmsorg/py-kms:latest
+    container_name: py-kms
+    restart: unless-stopped
+    ports:
+      - "10.20.32.9:1688:1688"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${MAINDIR}/py-kms/.log:/var/log
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - 'IP=::'
+      - PORT=1688
+      # - SQLITE=true
+      - HWID=RANDOM
+      - LOGLEVEL=INFO
+      - LOGSIZE=2
+      - LOGFILE=/var/log/py3-kms.log
+    ### Startup fix
+    #entrypoint: ["/bin/sh","-c","/usr/bin/python3 pykms_Server.py :: 1688 -l 1033 -a 120 -r 10080 -w RANDOM -V INFO -F /var/log/py3-kms.log"]
+    # entrypoint: ["/bin/sh","-c","/usr/bin/python3 pykms_Server.py ${IP} ${PORT} -l ${LCID} -a ${ACTIVATION_INTERVAL} -r ${RENEWAL_INTERVAL} -w ${HWID} -V ${LOGLEVEL} -F ${LOGFILE}"]
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "10m"
+networks:
+  default:

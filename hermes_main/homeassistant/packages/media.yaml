@@ -1,0 +1,62 @@
+media_player:
+  - platform: onkyo
+    host: !secret onkyo_lvrm_ip
+    name: Receiver LvRm
+    max_volume: 100
+    receiver_max_volume: 200
+    sources:
+      dvd_bd_dvd: 'Roku'
+      cd: 'Sonos'
+
+sonos:
+  media_player:
+    interface_addr: 10.20.32.9
+    advertise_addr: 10.20.32.9
+    hosts:
+      - 10.20.34.80
+      - 10.20.34.81
+      - 10.20.34.82
+      - 10.20.34.83
+      - 10.20.34.84
+      - 10.20.34.85
+      - 10.20.34.86
+      - 10.20.34.87
+      - 10.20.34.88
+      - 10.20.34.89
+
+# plex:
+  # host: !secret plex_ip
+  # port: !secret plex_port
+  # token: !secret plex_token
+
+# roku:
+  # - host: !secret roku_lvrm_ip
+
+# remote:
+  # - platform: harmony
+    # name: Harmony LvRm
+    # host: !secret harmony_lvrm_ip
+
+sensor:
+  - platform: template
+    sensors:
+      harmony_lvrm_activity:
+        friendly_name: Harmony LvRm Activity
+        value_template: "{{ state_attr('remote.harmony_lvrm', 'current_activity') }}"
+
+#sensor:
+#  - platform: template
+#    sensors:
+#      lvrm_receiver:
+#        friendly_name: "Living Room Receiver"
+#        value_template: >-
+#          {% if is_state('media_player.living_room_receiver', 'on') %}
+#            {{ state_attr('media_player.living_room_receiver', 'source') }}
+#          {% elif is_state('media_player.living_room_receiver', 'off') %}
+#            Off
+#          {% else %}
+#            Unavailable
+#          {% endif %}
+#      lvrm_roku:
+#        friendly_name: "Living Room Roku"
+#        

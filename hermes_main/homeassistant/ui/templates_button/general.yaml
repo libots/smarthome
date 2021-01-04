@@ -1,0 +1,193 @@
+general:
+  size: 30px
+  hold_action:
+    action: more-info
+  styles:
+    name:
+      - font-size: 14px
+    label:
+      - font-size: 12px
+      - color: var(--secondary-text-color)
+    state:
+      - font-size: 14px
+    lock:
+      #- color: var(--label-badge-red)
+      - align-items: center
+      - justify-content: center
+      - padding-left: 45px
+      - padding-bottom: 22px
+    card:
+      - padding-top: 4.675px
+      - padding-bottom: 4.675px
+
+inside:
+  styles:
+    card:
+      - box-shadow: none
+      - padding-top: 0
+      - padding-bottom: 0
+
+control_motion:
+  variables:
+    motion_boolean: "input_boolean.null"
+  double_tap_action:
+    action: call-service
+    service: input_boolean.toggle
+    service_data:
+      entity_id: >
+        [[[ return variables.motion_boolean ]]]
+  custom_fields:
+    motion: >
+      [[[
+        if (states[variables.motion_boolean].state == 'on') { 
+          return '<ha-icon icon="mdi:motion-sensor"></ha-icon>';
+        } else {
+          return '<ha-icon icon="mdi:motion-sensor-off"></ha-icon>';
+        }
+      ]]]
+  styles:
+    custom_fields:
+      motion:
+        - left: 50%
+        - top: 0
+        - position: absolute
+        - margin-left: 12px
+        - font-size: 10px
+        - color: var(--secondary-text-color)
+  style: |
+    ha-icon {
+      height: 18px;
+      width: 18px;
+    }
+
+person:
+  template:
+    - general
+  size: 50px
+  show_entity_picture: true
+  show_name: false
+  show_state: true
+  styles:
+    card:
+      - height: 80px
+    entity_picture:
+      - border-radius: 50%
+
+car:
+  template:
+    - general
+  show_entity_picture: true
+  show_name: false
+  show_state: true
+  styles:
+    card:
+      - height: 80px
+
+fuel:
+  variables:
+    fuel: 0
+  custom_fields:
+    fuel: >
+      [[[
+        return variables.fuel + "%";
+      ]]]
+  styles:
+    custom_fields:
+      fuel:
+        - background-color: >
+            [[[
+              var fuel = variables.fuel
+              if (fuel >= 50) {
+                return "var(--label-badge-green)";
+              } else if (fuel >= 20) {
+                return "var(--label-badge-yellow)";
+              } else {
+                return "var(--label-badge-red)";
+              }
+            ]]]
+        - color: >
+            [[[
+              var fuel = variables.fuel
+              if (fuel >= 50) {
+                return "white";
+              } else if (fuel >= 20) {
+                return "black";
+              } else {
+                return "white";
+              }
+            ]]]
+        - border-radius: 50%
+        - position: absolute
+        - left: 50%
+        - margin-left: 20px
+        - bottom: 30%
+        - height: 25px
+        - width: 25px
+        - font-size: 10px
+        - font-weight: bold
+        - line-height: 25px
+
+fan:
+  template: general
+  tap_action:
+    action: call-service
+    service: mqtt.publish
+    service_data:
+      topic: >
+        [[[
+        return "fan_speed/" + entity.entity_id;
+        ]]]
+  hold_action:
+    action: more-info
+  double_tap_action:
+    action: call-service
+    service: fan.turn_off
+    service_data:
+      entity_id: >
+        [[[ return entity.entity_id ]]]
+  custom_fields:
+    speed: >
+      [[[
+        var speeds = entity.attributes.speed_list.length;
+        var speed = entity.attributes.speed;
+        switch (speeds) {
+          case 7: // Wink
+            switch (speed) {
+              case "on":           return "4"; break;
+              case "high":         return "3"; break;
+              case "medium":       return "2"; break;
+              case "low":          return "1"; break;
+              default:             return "";  break;
+            }
+            break;
+          case 5: // Lutron
+            switch (speed) {
+              case "high":         return "4"; break;
+              case "medium_high":  return "3"; break;
+              case "medium":       return "2"; break;
+              case "low":          return "1"; break;
+              default:             return "";  break;
+            }
+            break;
+          case 4: // HomeSeer
+            switch (speed) {
+              case "high":         return "4"; break;
+              case "medium":       return "2"; break;
+              case "low":          return "1"; break;
+              default:             return "";  break;
+            }
+            break;
+          default:
+            return "";
+            break;
+        }
+      ]]]
+  styles:
+    custom_fields:
+      speed:
+        - position: absolute
+        - left: 50%
+        - top: 0%
+        - margin-left: 8px
+        - font-size: 12px
+        - font-weight: bold

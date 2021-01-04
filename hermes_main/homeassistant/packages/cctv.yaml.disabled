@@ -1,0 +1,81 @@
+ffmpeg:
+
+amcrest:
+  - name: Cam 2 Dog
+    host: !secret cctv_cam_2_dog_host
+    username: !secret cctv_cam_2_dog_username
+    password: !secret cctv_cam_2_dog_password
+
+camera:
+  - name: Cam A Porch
+    platform: ffmpeg
+    input: !secret cctv_cam_a_porch
+  - name: Cam A Porch AD
+    platform: ffmpeg
+    input: !secret cctv_cam_a_porch_ad
+  - name: Cam A AB
+    platform: ffmpeg
+    input: !secret cctv_cam_a_ab
+  - name: Cam B Front High
+    platform: ffmpeg
+    input: !secret cctv_cam_b_front_high
+  - name: Cam B Back High
+    platform: ffmpeg
+    input: !secret cctv_cam_b_back_high
+  - name: Cam D Driveway
+    platform: ffmpeg
+    input: !secret cctv_cam_d_driveway
+  - name: Cam G Front
+    platform: ffmpeg
+    input: !secret cctv_cam_g_front
+  - name: Cam 0 Backdoor
+    platform: ffmpeg
+    input: !secret cctv_cam_0_backdoor
+
+# amcrest:
+  # - name: Cam 2 Dog
+    # host: 10.20.20.120
+    # username: admin
+    # password: gemini12
+
+# camera:
+  # - name: Cam A Porch
+    # platform: onvif
+    # username: admin
+    # password: 123456
+    # host: 10.20.20.10
+    # port: 80
+    # platform: generic
+    # still_image_url: http://10.20.20.10/snapshot.jpg?username=admin&password=E10ADC3949BA59ABBE56E057F20F883E
+    # stream_source: rtsp://10.20.20.10:554/stream0?username=admin&password=E10ADC3949BA59ABBE56E057F20F883E
+
+binary_sensor:
+  
+  - platform: mqtt
+    name: "Motion Cam A Porch"
+    state_topic: BlueIris/binary_sensor/cam_a_porch/state
+    payload_on: "ON"
+    payload_off: "OFF"
+    device_class: motion
+  
+  - platform: mqtt
+    name: "Motion Cam A Porch Alert"
+    state_topic: BlueIris/binary_sensor/cam_a_porch_alert/state
+    payload_on: "ON"
+    payload_off: "OFF"
+    device_class: motion
+  
+  - platform: mqtt
+    name: "Motion Cam G Front"
+    state_topic: BlueIris/binary_sensor/cam_g_front/state
+    payload_on: "ON"
+    payload_off: "OFF"
+    device_class: motion
+  
+  - platform: mqtt
+    name: "Motion Cam 0 Back Door"
+    state_topic: BlueIris/binary_sensor/cam_0_backdoor/state
+    payload_on: "ON"
+    payload_off: "OFF"
+    device_class: motion
+

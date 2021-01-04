@@ -1,0 +1,16 @@
+light:
+  - platform: group
+    name: Stairs Hallway
+    entities:
+      - light.hall
+      - light.stairs_1
+      - light.stairs_2
+
+input_boolean:
+  motion_light_hall:
+    name: Upstairs Hallway Motion Lights
+
+homeassistant:
+  customize:
+    light.stairs_hallway:
+      icon: mdi:lightbulb

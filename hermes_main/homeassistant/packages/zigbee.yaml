@@ -1,0 +1,28 @@
+homeassistant:
+  customize:
+    binary_sensor.door_basement_coal:
+      device_class: door
+    binary_sensor.door_basement_dungeon:
+      device_class: door
+    binary_sensor.door_basement_inside:
+      device_class: door
+    binary_sensor.door_changing:
+      device_class: door
+    binary_sensor.door_dog_1x:
+      device_class: door
+    binary_sensor.door_dog_2x:
+      device_class: door
+    binary_sensor.door_guns:
+      device_class: door
+    binary_sensor.door_mbath:
+      device_class: door
+    binary_sensor.door_mbed:
+      device_class: door
+    binary_sensor.door_office_1x:
+      device_class: door
+    binary_sensor.door_office_2x:
+      device_class: door
+    binary_sensor.door_powder:
+      device_class: door
+    binary_sensor.door_private:
+      device_class: door

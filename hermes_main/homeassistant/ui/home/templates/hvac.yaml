@@ -1,0 +1,136 @@
+# lovelace_gen
+
+type: entities
+style: |
+  ha-card > #states {
+    padding-top: 0 !important;
+  }
+entities:
+  - type: custom:simple-thermostat
+    entity: {{ entity }}
+    name: {{ name|default('Test') }}
+    icon: false
+    decimals: 0
+    step_size: 1
+    control: false
+    label:
+      temperature: Current
+    style: |
+      ha-card {
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+        box-shadow: none;
+      }
+      ha-card header {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        padding-bottom: 0 !important;
+      }
+      ha-card section.body {
+        margin-top: -25px;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        padding-bottom: 0 !important;
+      }
+      ha-card section.body .sensors {
+        font-size: 14px;
+      }
+      ha-card section.body .sensors .sensor-heading {
+        font-weight: 400;
+      }
+  - type: custom:hui-element
+    card_type: horizontal-stack
+    cards:
+      - type: custom:button-card
+        entity: {{ entity }}
+        icon: mdi:power
+        show_name: false
+        size: 30px
+        tap_action:
+          action: call-service
+          service: climate.turn_off
+          service_data:
+            entity_id: {{ entity }}
+        state:
+          - value: 'off'
+            styles:
+              card:
+                - background-color: var(--primary-color)
+              icon:
+                - color: white
+        styles:
+          card:
+            - box-shadow: none
+          icon:
+            - color: var(--state-icon-unavailable-color)
+      - type: custom:button-card
+        entity: {{ entity }}
+        icon: mdi:fire
+        show_name: false
+        size: 30px
+        tap_action:
+          action: call-service
+          service: climate.set_hvac_mode
+          service_data:
+            entity_id: {{ entity }}
+            hvac_mode: heat
+        state:
+          - value: 'heat'
+            styles:
+              card:
+                - background: var(--primary-color)
+              icon:
+                - color: white
+        styles:
+          card:
+            - box-shadow: none
+          icon:
+            - color: var(--state-icon-unavailable-color)
+      - type: custom:button-card
+        entity: {{ entity }}
+        icon: mdi:snowflake
+        show_name: false
+        size: 30px
+        tap_action:
+          action: call-service
+          service: climate.set_hvac_mode
+          service_data:
+            entity_id: {{ entity }}
+            hvac_mode: cool
+        state:
+          - value: 'cool'
+            styles:
+              card:
+                - background-color: var(--primary-color)
+              icon:
+                - color: white
+        styles:
+          card:
+            - box-shadow: none
+          icon:
+            - color: var(--state-icon-unavailable-color)
+      - type: custom:button-card
+        entity: {{ entity }}
+        icon: mdi:autorenew
+        show_name: false
+        size: 30px
+        tap_action:
+          action: call-service
+          service: climate.set_hvac_mode
+          service_data:
+            entity_id: {{ entity }}
+            hvac_mode: auto
+        state:
+          - value: 'auto'
+            styles:
+              card:
+                - background-color: var(--primary-color)
+              icon:
+                - color: white
+        styles:
+          card:
+            - box-shadow: none
+          icon:
+            - color: var(--state-icon-unavailable-color)
+  - entity: {{ automate_entity }}
+    name: Scheduled Temperatures

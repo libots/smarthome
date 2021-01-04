@@ -1,0 +1,26 @@
+homeassistant:
+  customize:
+    binary_sensor.door_back_homekit:
+      device_class: door
+    binary_sensor.door_front_homekit:
+      device_class: door
+    binary_sensor.door_basement_homekit:
+      device_class: door
+    binary_sensor.door_garage_left_homekit:
+      device_class: door
+    binary_sensor.door_garage_right_homekit:
+      device_class: door
+
+input_select:
+  alarm_arm_mode:
+    name: Alarm Auto Arm Mode
+    options:
+      - Away
+      - Home
+      - "Off"
+    icon: mdi:shield-refresh-outline
+
+alarm_control_panel:
+  - platform: manual
+    name: HA
+

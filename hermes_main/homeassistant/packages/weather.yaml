@@ -1,0 +1,21 @@
+weather:
+  - platform: darksky
+    api_key: !secret darksky_api_key
+    mode: daily
+
+# airvisual:
+  # api_key: !secret airvisual_api_key
+  # geographies:
+    # - city: !secret airvisual_city
+      # state: !secret airvisual_state
+      # country: !secret airvisual_country
+
+sensor:
+  - platform: moon
+
+binary_sensor:
+  - platform: template
+    sensors:
+      night_lighting:
+        friendly_name: "Night Lighting"
+        value_template: "{{ state_attr('sun.sun','elevation') < 5 }}"

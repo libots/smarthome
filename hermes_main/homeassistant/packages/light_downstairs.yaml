@@ -1,0 +1,52 @@
+light:
+  - platform: group
+    name: Downstairs
+    entities:
+      - light.foyer
+      - light.dining
+      - light.kitchen_cans
+      - light.kitchen_cabinet
+      - light.pantry
+      - light.powder
+      - light.lvrm_cans
+      - light.lvrm_fan
+      - light.office_cans
+      - light.office_fan
+  - platform: group
+    name: Office Cans
+    entities:
+      - light.office_kayla
+      - light.office_matt
+  - platform: group
+    name: LvRm Cans
+    entities:
+      - light.lvrm_1
+      - light.lvrm_2
+      - light.lvrm_3
+      - light.lvrm_4
+      - light.lvrm_5
+      - light.lvrm_6
+      - light.lvrm_7
+      - light.lvrm_8
+  # - platform: group
+    # name: LvRm
+    # entities:
+      # - light.lvrm_cans
+      # - light.lvrm_fan
+
+homeassistant:
+  customize:
+    light.lvrm_cans:
+      icon: mdi:lightbulb
+    light.office_cans:
+      icon: mdi:lightbulb
+
+group:
+  lvrm_surrounding:
+    name: Living Room Surrounding Lights
+    entities:
+      - light.foyer
+      - light.stairs_hallway
+      - light.office_cans
+      - light.office_fan
+      - light.dining

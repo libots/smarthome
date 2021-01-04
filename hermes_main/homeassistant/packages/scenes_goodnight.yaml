@@ -1,0 +1,24 @@
+scene:
+  - name: Goodnight
+    entities:
+      input_boolean.goodnighted: on
+      switch.light_basement: off
+      light.downstairs: off
+      fan.office: off
+      fan.lvrm: off
+      light.stairs_hallway: off
+      remote.harmony_lvrm: off
+      group.light_yard: off
+      light.outside_yard: off
+      light.pergola: off
+      fan.pergola: off
+
+script:
+  goodnight:
+    alias: Goodnight
+    sequence:
+      - scene: scene.goodnight
+
+input_boolean:
+  goodnighted:
+    name: Goodnight

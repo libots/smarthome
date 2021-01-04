@@ -1,0 +1,4 @@
+input_boolean:
+  wakeup_mbed:
+    name: Master Bedroom Wakeup Lights
+

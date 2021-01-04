@@ -1,0 +1,16 @@
+# lovelace_gen
+
+entity: {{ entity }}
+type: custom:bar-card
+entity_row: true
+icon: none
+height: 4px
+positions:
+  name: off
+  value: off
+  indicator: off
+style: |
+  ha-card {
+    margin-top: -5px;
+    height: 4px;
+  }

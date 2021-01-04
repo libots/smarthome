@@ -1,0 +1,45 @@
+input_datetime:
+  smokeco_basement:
+    name: Basement Smoke/CO
+    has_date: true
+    icon: mdi:smoke-detector
+  smokeco_dining:
+    name: Dining Room Smoke/CO
+    has_date: true
+    icon: mdi:smoke-detector
+  smokeco_lvrm:
+    name: Living Room Smoke/CO
+    has_date: true
+    icon: mdi:smoke-detector
+  smokeco_kitchen:
+    name: Kitchen Smoke/CO
+    has_date: true
+    icon: mdi:smoke-detector
+  smokeco_office:
+    name: Office Smoke/CO
+    has_date: true
+    icon: mdi:smoke-detector
+  smokeco_hall:
+    name: Hallway Smoke/CO
+    has_date: true
+    icon: mdi:smoke-detector
+  smokeco_mbed:
+    name: Master Bedroom Smoke/CO
+    has_date: true
+    icon: mdi:smoke-detector
+  smokeco_changing:
+    name: Changing Room Smoke/CO
+    has_date: true
+    icon: mdi:smoke-detector
+  smokeco_guest:
+    name: Guest Room Smoke/CO
+    has_date: true
+    icon: mdi:smoke-detector
+  smokeco_3f:
+    name: Third Floor Smoke/CO
+    has_date: true
+    icon: mdi:smoke-detector
+  smokeco_garage:
+    name: Garage Smoke/CO
+    has_date: true
+    icon: mdi:smoke-detector

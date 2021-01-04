@@ -1,0 +1,46 @@
+docker:
+  template:
+    - general
+    - inside
+  size: 45px
+  # lock:
+  #   enabled: "[[[ return entity.state === 'on'; ]]]"
+  #   duration: 5
+  show_entity_picture: true
+  custom_fields:
+    status: ''
+  styles:
+    icon:
+      - padding-bottom: 2px
+    # lock:
+    #   - color: var(--secondary-background-color)
+    #   - align-items: center
+    #   - justify-content: center
+    #   - padding-left: 75px
+    #   - padding-bottom: 30px
+    custom_fields:
+      status:
+        - border-radius: 50%
+        - position: absolute
+        - left: 50%
+        - margin-left: 25px
+        - top: 0
+        - height: 8px
+        - width: 8px
+        - font-size: 10px
+        - font-weight: bold
+  tap_action:
+    action: more-info
+  state:
+    - value: 'off'
+      styles:
+        entity_picture:
+          - filter: grayscale(100%)
+        custom_fields:
+          status:
+            - background-color: var(--label-badge-red)
+    - value: 'on'
+      styles:
+        custom_fields:
+          status:
+            - background-color: var(--label-badge-green)

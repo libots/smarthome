@@ -1,0 +1,79 @@
+
+# Configure a default setup of Home Assistant (frontend, api, etc)
+default_config:
+
+homeassistant:
+  packages: !include_dir_named packages
+  allowlist_external_dirs:
+    - '/config'
+
+api:
+ios:
+webhook:
+
+recorder:
+  db_url: !secret recorder_db_url
+  purge_keep_days: 30
+  exclude:
+    entities:
+      - sensor.pfsense_nic_wan_in_counter_raw
+      - sensor.pfsense_nic_wan_in_counter
+      - sensor.pfsense_nic_wan_out_counter_raw
+      - sensor.pfsense_nic_wan_out_counter
+      - sensor.pfsense_uptime_raw
+      - sensor.pfsense_uptime
+
+logger:
+  default: warn
+  logs:
+    custom_components.cox_sensor: debug
+
+http:
+  trusted_proxies: !secret http_trusted_proxies
+  use_x_forwarded_for: true
+
+# Text to speech
+tts:
+  - platform: google_translate
+
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+
+# logs:
+  # homeassistant.components.zha: debug
+  # zigpy: debug
+  # zigpy_deconz.zigbee.application: debug
+  # zigpy_deconz.api: debug
+
+# Integrations
+
+google:
+  client_id: !secret google_client_id
+  client_secret: !secret google_client_secret
+
+lutron_caseta_pro:
+  bridges:
+    - host: !secret lutron_bridge_ip
+      mac: !secret lutron_bridge_mac
+      fan: [ 18, 21, 22 ]
+      switch: [ 29, 32 ]
+
+# zha:
+  # usb_path: /dev/ttyUSB1
+  # database_path: /config/zigbee.db
+
+# zwave:
+  # usb_path: /dev/serial/by-id/usb-Silicon_Labs_HubZ_Smart_Home_Controller_C0F0035D-if00-port0
+  # network_key: !secret zwave_network_key
+  # device_config: !include zwave_device_config.yaml
+
+zha_map:
+
+tplink:
+  discovery: false
+  switch:
+    - host: 10.20.52.120
+    - host: 10.20.52.121
+    

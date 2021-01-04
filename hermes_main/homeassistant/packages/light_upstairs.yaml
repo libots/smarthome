@@ -1,0 +1,26 @@
+light:
+  - platform: group
+    name: Upstairs
+    entities:
+      - light.dog_cans
+      - light.dog_fan
+      - light.mbed_fan
+  - platform: group
+    name: MBed Fan
+    entities:
+      - light.mbed_1
+      - light.mbed_2
+      - light.mbed_3
+      - light.mbed_4
+  - platform: group
+    name: Dog Cans
+    entities:
+      - light.dog_back
+      - light.dog_front
+
+homeassistant:
+  customize:
+    light.mbed_fan:
+      icon: mdi:lightbulb
+    light.dog_cans:
+      icon: mdi:lightbulb

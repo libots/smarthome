@@ -1,0 +1,34 @@
+# proxmoxve:
+  # - host: !secret proxmox_host
+    # verify_ssl: false
+    # username: !secret proxmox_username
+    # password: !secret proxmox_password
+    # realm: pve
+    # nodes:
+      # - node: !secret proxmox_node
+        # vms:
+          # - 100
+          # - 101
+          # - 103
+          # - 104
+        # containers:
+          # - 102
+
+pve:
+  - host: !secret proxmox_host
+    verify_ssl: false
+    username: !secret proxmox_username
+    password: !secret proxmox_password
+    realm: pve
+    nodes:
+      - node: !secret proxmox_node
+        vms:
+          - 100 # hermes
+          - 101 # ha
+          - 104 # 
+        # containers:
+        #   - 102
+        storage:
+          - local
+          - local-lvm
+          - sata

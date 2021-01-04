@@ -1,0 +1,82 @@
+binary_sensor:
+  - platform: mqtt
+    name: "Zeus Connected"
+    state_topic: "iotlink/wnfk/zeus/lwt"
+    value_template: "{{ value }}"
+    payload_on: "ON"
+    payload_off: "OFF"
+    device_class: "connectivity"
+    qos: 1
+
+
+sensor:
+  - platform: mqtt
+    name: "Zeus CPU Usage"
+    state_topic: "iotlink/wnfk/zeus/windows-monitor/stats/cpu/usage"
+    unit_of_measurement: '%'
+    icon: mdi:speedometer
+    value_template: "{{ value }}"
+    availability_topic: "iotlink/wnfk/zeus/lwt"
+    payload_available: "ON"
+    payload_not_available: "OFF"
+    qos: 1
+  - platform: mqtt
+    name: "Zeus RAM Usage"
+    state_topic: "iotlink/wnfk/zeus/windows-monitor/stats/memory/usage"
+    unit_of_measurement: '%'
+    icon: mdi:memory
+    value_template: "{{ value }}"
+    availability_topic: "iotlink/wnfk/zeus/lwt"
+    payload_available: "ON"
+    payload_not_available: "OFF"
+    qos: 1
+  - platform: mqtt
+    name: "Zeus Storage C Free Space"
+    state_topic: "iotlink/wnfk/zeus/windows-monitor/stats/hard-drive/c/total-free-space"
+    unit_of_measurement: 'GB'
+    icon: mdi:harddisk
+    value_template: "{{ value }}"
+    availability_topic: "iotlink/wnfk/zeus/lwt"
+    payload_available: "ON"
+    payload_not_available: "OFF"
+    qos: 1
+  - platform: mqtt
+    name: "Zeus Storage N Free Space"
+    state_topic: "iotlink/wnfk/zeus/windows-monitor/stats/hard-drive/n/total-free-space"
+    unit_of_measurement: 'GB'
+    icon: mdi:harddisk
+    value_template: "{{ value }}"
+    availability_topic: "iotlink/wnfk/zeus/lwt"
+    payload_available: "ON"
+    payload_not_available: "OFF"
+    qos: 1
+  - platform: mqtt
+    name: "Zeus Storage V Free Space"
+    state_topic: "iotlink/wnfk/zeus/windows-monitor/stats/hard-drive/v/total-free-space"
+    unit_of_measurement: 'GB'
+    icon: mdi:harddisk
+    value_template: "{{ value }}"
+    availability_topic: "iotlink/wnfk/zeus/lwt"
+    payload_available: "ON"
+    payload_not_available: "OFF"
+    qos: 1
+  - platform: mqtt
+    name: "Zeus Storage H Free Space"
+    state_topic: "iotlink/wnfk/zeus/windows-monitor/stats/hard-drive/h/total-free-space"
+    unit_of_measurement: 'GB'
+    icon: mdi:harddisk
+    value_template: "{{ value }}"
+    availability_topic: "iotlink/wnfk/zeus/lwt"
+    payload_available: "ON"
+    payload_not_available: "OFF"
+    qos: 1
+  - platform: mqtt
+    name: "Zeus Uptime"
+    state_topic: "iotlink/wnfk/zeus/windows-monitor/stats/system/uptime"
+    unit_of_measurement: 's'
+    icon: mdi:harddisk
+    value_template: "{{ value }}"
+    availability_topic: "iotlink/wnfk/zeus/lwt"
+    payload_available: "ON"
+    payload_not_available: "OFF"
+    qos: 1

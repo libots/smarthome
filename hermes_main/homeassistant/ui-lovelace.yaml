@@ -1,0 +1,56 @@
+title: !secret ha_name
+
+preload_cards:
+  - conditional
+  - custom:hui-conditional-card
+
+views:
+  - !include ui/home/overview.yaml
+  - !include ui/home/floor1.yaml
+  - !include ui/home/floor2.yaml
+  - !include ui/home/audio.yaml
+  - !include ui/home/video.yaml
+  - !include ui/home/security.yaml
+  # - !include ui/home/cctv.yaml
+  - !include ui/home/irrigation.yaml
+  - title: Map
+    path: map
+    icon: mdi:map
+    cards:
+      - type: map
+        hours_to_show: 12
+        entities:
+          - person.matt
+      - type: map
+        hours_to_show: 12
+        entities:
+          - person.kayla
+  - !include ui/home/beer.yaml
+  - !include ui/home/maintenance.yaml
+
+button_card_templates: !include_dir_merge_named ui/templates_button
+# decluttering_templates: !include_dir_merge_named lovelace/decluttering
+
+# resources:
+  # - url: /hacsfiles/button-card/button-card.js
+    # type: module
+  # # - url: /hacsfiles/decluttering-card/decluttering-card.js
+    # # type: module
+  # - url: /hacsfiles/lovelace-card-mod/card-mod.js
+    # type: module
+  # - url: /hacsfiles/lovelace-multiple-entity-row/multiple-entity-row.js
+    # type: module
+  # - url: /hacsfiles/lovelace-slider-entity-row/slider-entity-row.js
+    # type: module
+  # - url: /hacsfiles/mini-media-player/mini-media-player-bundle.js
+    # type: module
+  # - url: /hacsfiles/roku-card/roku-card.js
+    # type: module
+  # - url: /hacsfiles/simple-thermostat/simple-thermostat.js
+    # type: module
+  # # - url: /hacsfiles/vertical-stack-in-card/vertical-stack-in-card.js
+    # # type: js
+  # # - url: /hacsfiles/vertical-style-card/vertical-style-card.js
+    # # type: js
+  # - url: /hacsfiles/weather-card/weather-card.js
+    # type: module

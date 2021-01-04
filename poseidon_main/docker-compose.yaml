@@ -1,0 +1,150 @@
+version: '3.6'
+
+services:
+  deluge:
+    image: ghcr.io/linuxserver/deluge
+    container_name: deluge
+    network_mode: host
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - UMASK_SET=022 #optional
+      - DELUGE_LOGLEVEL=error #optional
+    volumes:
+      - ${MAINDIR}/deluge:/config
+      - /home/deluge:/downloads
+      - deluge:/zeus
+    restart: unless-stopped
+  # portainer:
+  #   image: portainer/portainer-ce
+  #   container_name: portainer
+  #   restart: unless-stopped
+  #   command: -H unix:///var/run/docker.sock
+  #   ports:
+  #     - "9000:9000"
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #     - ${MAINDIR}/portainer/.data:/data
+  #   environment:
+  #     - TZ=${TZ}
+  #     - PUID=${PUID}
+  #     - PGID=${PGID}
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-file: "5"
+  #       max-size: "10m"
+  portainer_agent:
+    image: portainer/agent
+    container_name: portainer_agent
+    restart: unless-stopped
+    ports:
+      - "9001:9001"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker/volumes:/var/lib/docker/volumes
+    environment:
+      - AGENT_SECRET=${PORTAINER_SECRET}
+  samba:
+    image: dperson/samba
+    container_name: samba
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
+    read_only: false
+    tmpfs:
+      - /tmp
+    ports:
+      - "137:137/udp" # required to advertise shares (NMBD)
+      - "138:138/udp" # required to advertise shares (NMBD)
+      - "139:139/tcp" # default smb port
+      - "445:445/tcp" # default  smb port
+    volumes:
+      - ${USERDIR}:/mnt/docker:z
+      - /home/transmission:/mnt/transmission:z
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - NMBD=true # advertise shares
+      - USERID=${PUID}
+      - GROUPID=${PGID}
+      - WORKGROUP=WORKGROUP
+    # -u "UserName;Password"
+    # -s "ShareName;/path/in/container;browsable;read_only;guest;users;admins;writelist;comment"
+    command: '-u "${SMB_USERNAME};${SMB_PASSWORD}"
+              -s "docker;/mnt/docker;yes;no;no;${SMB_USERNAME}"
+              -s "transmission;/mnt/transmission;yes;no;no;${SMB_USERNAME}"'
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "10m"
+  traefik:
+    image: traefik:latest
+    container_name: traefik
+    restart: unless-stopped
+    domainname: ${DOMAINNAME}
+    ports:
+      - "80:80"
+      - "443:443"
+      - "${IP_VPN}:8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ${MAINDIR}/traefik:/configuration
+      - ${MAINDIR}/shared:/shared
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.web-secure.address=:443"
+      - "--providers.file.directory=/configuration"
+      - "--providers.file.watch=true"
+      - "--serversTransport.insecureSkipVerify=true"
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "10m"
+  transmission:
+    image: ghcr.io/linuxserver/transmission
+    container_name: transmission
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TRANSMISSION_WEB_HOME=/combustion-release/ #optional
+      - USER=${TRANSMISSION_USERNAME} #optional
+      - PASS=${TRANSMISSION_PASSWORD} #optional
+    volumes:
+      - ${MAINDIR}/transmission:/config
+      - /home/transmission/downloads:/downloads
+      - /home/transmission/watch:/watch
+      - transmission:/zeus
+    ports:
+      - "9091:9091"
+      - "51413:51413"
+      - "51413:51413/udp"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.services.transmission.loadbalancer.server.port=9091"
+      - "traefik.http.routers.transmission.rule=Host(`transmission.${DOMAINNAME_EXTERNAL}`,`transmission.${DOMAINNAME}`)"
+      - "traefik.http.routers.transmission.tls=true"
+    restart: unless-stopped
+volumes:
+  deluge:
+    driver_opts:
+      type: cifs
+      o: username=${CIFS_USERNAME},password=${CIFS_PASSWORD},domain=${CIFS_DOMAIN},iocharset=utf8,rw,uid=1000,gid=1000,nounix,file_mode=0777,dir_mode=0777
+      device: ${CIFS_POOL_ROOT}\Shares\Deluge (Poseidon)
+  transmission:
+    driver_opts:
+      type: cifs
+      o: username=${CIFS_USERNAME},password=${CIFS_PASSWORD},domain=${CIFS_DOMAIN},iocharset=utf8,rw,uid=1000,gid=1000,nounix,file_mode=0777,dir_mode=0777
+      device: ${CIFS_POOL_ROOT}\Shares\Transmission (Poseidon)

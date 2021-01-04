@@ -1,0 +1,727 @@
+version: '3.6'
+
+services:
+  chronograf:
+    image: chronograf:1.8
+    container_name: chronograf
+    restart: unless-stopped
+    ports:
+      - '8888:8888'
+    volumes:
+      - ${MAINDIR}/chronograf/.data:/var/lib/chronograf
+    depends_on:
+      - influxdb
+    environment:
+      - INFLUXDB_URL=http://influxdb:8086
+      - INFLUXDB_USERNAME=${INFLUXDB_USERNAME}
+      - INFLUXDB_PASSWORD=${INFLUXDB_PASSWORD}
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.chronograf.rule=Host(`chronograf.${DOMAINNAME}`,`chronograf.${DOMAINNAME_EXTERNAL}`)"
+      - "traefik.http.routers.chronograf.tls=true"
+      - "traefik.http.routers.chronograf.middlewares=traefikauth"
+      - "traefik.http.services.chronograf.loadbalancer.server.port=8888"
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "10m"
+  # coxusage:
+    # image: dejandayoff/coxusage
+    # container_name: coxusage
+    # restart: always
+    # volumes:
+      # - ${MAINDIR}/shared:/data
+    # environment:
+      # - COX_USER=${COX_USERNAME}
+      # - COX_PASSWORD=${COX_PASSWORD}
+      # - JSON_FILENAME=coxusage.json
+  deconz:
+    image: marthoc/deconz
+    #:amd64-2.05.84
+    container_name: deconz
+    restart: unless-stopped
+    ports:
+      - "8089:8089"
+      - "444:444"
+      - "5950:5950"
+    volumes:
+      - ${MAINDIR}/deconz/.data:/root/.local/share/dresden-elektronik/deCONZ
+    devices:
+      - /dev/serial/by-id/usb-dresden_elektronik_ingenieurtechnik_GmbH_ConBee_II_DE2190268-if00:/dev/ttyACM0
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - DECONZ_WEB_PORT=8089
+      - DECONZ_WS_PORT=444
+      - DECONZ_VNC_MODE=1
+      - DECONZ_VNC_PORT=5950
+      - DECONZ_VNC_PASSWORD=${DECONZ_VNC_PASSWORD}
+      - DECONZ_DEVICE=/dev/ttyACM0
+      - DEBUG_INFO=1 # Default 1
+      - DEBUG_APS=0 # Default 0
+      - DEBUG_ZCL=0 # Default 0
+      - DEBUG_ZDP=0 # Default 0
+      - DEBUG_OTAU=0 # Default 0
+      - DECONZ_UPNP=0
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.deconz.rule=Host(`deconz.${DOMAINNAME}`,`deconz.${DOMAINNAME_EXTERNAL}`)"
+      - "traefik.http.routers.deconz.tls=true"
+      - "traefik.http.routers.deconz.middlewares=traefikauth"
+      - "traefik.http.services.deconz.loadbalancer.server.port=8089"
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "10m"
+  glances:
+    image: nicolargo/glances
+    container_name: glances
+    restart: unless-stopped
+    pid: host
+    # privileged: true
+    # network_mode: host
+    # ports:
+      # - "61208:61208"
+      # - "61209:61209"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - "GLANCES_OPT=-w"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.glances.rule=Host(`glances.${DOMAINNAME}`)"
+      - "traefik.http.routers.glances.tls=true"
+      # - "traefik.http.routers.glances.entrypoints=web"
+      - "traefik.http.routers.glances.middlewares=glances"
+      - "traefik.http.middlewares.glances.basicauth.users=${GLANCES_AUTH},${AUTHM}"
+      - "traefik.port=61208"
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "10m"
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    restart: unless-stopped
+    user: ${PUID}
+    ports:
+      - '3000:3000'
+    volumes:
+      - ${MAINDIR}/grafana/.data/storage:/var/lib/grafana
+      - ${MAINDIR}/grafana/.data/provisioning/:/etc/grafana/provisioning
+    depends_on:
+      - influxdb
+    environment:
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_USERNAME}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.grafana.rule=Host(`grafana.${DOMAINNAME}`,`grafana.${DOMAINNAME_EXTERNAL}`)"
+      - "traefik.http.routers.grafana.tls=true"
+      - "traefik.http.routers.grafana.middlewares=traefikauth"
+      - "traefik.http.services.grafana.loadbalancer.server.port=3000"
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "10m"
+  ha-dockermon:
+    image: philhawthorne/ha-dockermon
+    container_name: ha-dockermon
+    restart: unless-stopped
+    # ports:
+      # - "8126:8126"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${MAINDIR}/ha-dockermon:/config
+    # environment:
+      # - PUID=${PUID}
+      # - PGID=${PGID}
+      # - TZ=${TZ}
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "10m"
+  ha-dockermon_auth:
+    image: beevelop/nginx-basic-auth
+    container_name: ha-dockermon_auth
+    restart: unless-stopped
+    depends_on:
+      - ha-dockermon
+    ports:
+      - "8126:80"
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - PORT=80
+      - FORWARD_HOST=ha-dockermon
+      - FORWARD_PORT=8126
+      - HTPASSWD=${HADOCKERMON_AUTH}
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "10m"
+  homeassistant:
+    image: homeassistant/home-assistant:latest
+    container_name: homeassistant
+    restart: always
+    depends_on:
+      - deconz
+      - mariadb
+      - mosquitto
+    privileged: true
+    network_mode: 'host'
+    volumes:
+      - ${MAINDIR}/homeassistant:/config
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    devices:
+      - /dev/serial/by-id/usb-Silicon_Labs_HubZ_Smart_Home_Controller_C0F0035D-if01-port0
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "10m"
+  homer:
+    image: b4bz/homer
+    container_name: homer
+    restart: unless-stopped
+    ports:
+      - "8084:8080"
+    volumes:
+      - ${MAINDIR}/homer:/www/assets
+    environment:
+      - UID=${PUID}
+      - GID=${PGID}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.homer.rule=Host(`homer.${DOMAINNAME}`,`${DOMAINNAME_EXTERNAL}`)"
+      - "traefik.http.routers.homer.tls=true"
+      - "traefik.http.routers.homer.middlewares=traefikauth"
+      - "traefik.http.services.homer.loadbalancer.server.port=8080"
+  influxdb:
+    image: influxdb:1.8
+    container_name: influxdb
+    restart: unless-stopped
+    ports:
+      - '8086:8086'
+    volumes:
+      - ${MAINDIR}/influxdb/.data:/var/lib/influxdb
+    environment:
+      - INFLUXDB_DB=db0
+      - INFLUXDB_ADMIN_USER=${INFLUXDB_USERNAME}
+      - INFLUXDB_ADMIN_PASSWORD=${INFLUXDB_PASSWORD}
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "10m"
+  keycloak:
+    image: quay.io/keycloak/keycloak
+    container_name: keycloak
+    restart: unless-stopped
+    depends_on:
+      - mariadb
+    ports:
+      - "8083:8080"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      DB_VENDOR: MYSQL
+      DB_ADDR: ${IP_TRUST}
+      DB_DATABASE: keycloak
+      DB_USER: ${KEYCLOAK_DB_USER}
+      DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
+      # KEYCLOAK_USER: admin # default username
+      # KEYCLOAK_PASSWORD: password # default password
+      PROXY_ADDRESS_FORWARDING: 'true'
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.kc.rule=Host(`kc.${DOMAINNAME}`,`kc.${DOMAINNAME_EXTERNAL}`)"
+      - "traefik.http.routers.kc.tls=true"
+      # - "traefik.http.routers.kc.middlewares=traefikauth" # leave disabled for keycloak!!!
+      - "traefik.http.services.kc.loadbalancer.server.port=8080"
+  mariadb:
+    image: ghcr.io/linuxserver/mariadb
+    container_name: mariadb
+    restart: unless-stopped
+    ports:
+      - "3306:3306"
+    volumes:
+      - ${MAINDIR}/mariadb/.data:/config
+      - ${MAINDIR}/mariadb/custom.cnf:/config/custom.cnf
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "10m"
+  mosquitto:
+    image: eclipse-mosquitto:latest
+    container_name: mosquitto
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
+    ports:
+      - "1883:1883"
+      - "8883:8883"
+      - "9001:9001"
+      - "9003:9003"
+    volumes:
+      - ${MAINDIR}/mosquitto/data:/mosquitto/.data
+      - ${MAINDIR}/mosquitto/log:/mosquitto/.log
+      - ${MAINDIR}/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - ${MAINDIR}/mosquitto/mosquitto.passwd:/mosquitto/config/mosquitto.passwd
+      - ${MAINDIR}/shared/ssl:/mosquitto/certs
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "10m"
+  # multicast-relay:
+    # image: scyto/multicast-relay
+    # container_name: multicast-relay
+    # network_mode: 'host'
+    # environment:
+      # - TZ=${TZ}
+      # - PUID=${PUID}
+      # - PGID=${PGID}
+      # - INTERFACES="br0 br50"
+  nginx:
+    image: ghcr.io/linuxserver/nginx
+    container_name: nginx
+    restart: unless-stopped
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+    ports:
+      - "82:80"
+    volumes:
+      - ${MAINDIR}/nginx:/config
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.nginx.rule=Host(`nginx.${DOMAINNAME}`,`nginx.${DOMAINNAME_EXTERNAL}`)"
+      - "traefik.http.routers.nginx.tls=true"
+      - "traefik.http.routers.nginx.middlewares=traefikauth"
+      - "traefik.http.services.nginx.loadbalancer.server.port=80"
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "10m"
+  node-red:
+    image: nodered/node-red:latest
+    container_name: node-red
+    restart: unless-stopped
+    # ports:
+    #   - "1880:1880"
+    volumes:
+      - ${MAINDIR}/node-red/.data:/data
+    environment:
+      - TZ=${TZ}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.nodered.rule=Host(`nodered.${DOMAINNAME}`,`nodered.${DOMAINNAME_EXTERNAL}`)"
+      - "traefik.http.routers.nodered.tls=true"
+      - "traefik.http.routers.nodered.middlewares=traefikauth"
+      - "traefik.http.services.nodered.loadbalancer.server.port=1880"
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "10m"
+  organizr:
+    image: organizr/organizr
+    container_name: organizr
+    volumes:
+      - ${MAINDIR}/organizr:/config
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.organizr.rule=Host(`organizr.${DOMAINNAME}`,`organizr.${DOMAINNAME_EXTERNAL}`)"
+      - "traefik.http.routers.organizr.tls=true"
+      - "traefik.http.routers.organizr.middlewares=traefikauth"
+      - "traefik.http.services.organizr.loadbalancer.server.port=80"
+  portainer:
+    image: portainer/portainer-ce
+    container_name: portainer
+    restart: unless-stopped
+    # command: -H unix:///var/run/docker.sock
+    command: -H tcp://tasks.portainer_agent:9001 --tlsskipverify
+    ports:
+      - "8000:8000"
+      - "9000:9000"
+    volumes:
+      # - /var/run/docker.sock:/var/run/docker.sock
+      - ${MAINDIR}/portainer/.data:/data
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - AGENT_SECRET=${PORTAINER_SECRET}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.portainer.rule=Host(`portainer.${DOMAINNAME}`,`portainer.${DOMAINNAME_EXTERNAL}`)"
+      - "traefik.http.routers.portainer.tls=true"
+      - "traefik.http.routers.portainer.middlewares=traefikauth"
+      - "traefik.http.services.portainer.loadbalancer.server.port=9000"
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "10m"
+        max-size: "10m"
+  portainer_agent:
+    image: portainer/agent
+    container_name: portainer_agent
+    restart: unless-stopped
+    # ports:
+    #   - "9001:9001"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker/volumes:/var/lib/docker/volumes
+    environment:
+      - AGENT_SECRET=${PORTAINER_SECRET}
+  py-kms:
+    image: pykmsorg/py-kms:latest
+    container_name: py-kms
+    restart: unless-stopped
+    ports:
+      - "1688:1688"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${MAINDIR}/py-kms/.log:/var/log
+    environment:
+      - 'IP=0.0.0.0'
+      # - PORT=1688
+      # - SQLITE=true
+      - HWID=RANDOM
+      - LOGLEVEL=INFO
+      - LOGSIZE=2
+      - LOGFILE=/var/log/py3-kms.log
+    ### Startup fix
+    #entrypoint: ["/bin/sh","-c","/usr/bin/python3 pykms_Server.py :: 1688 -l 1033 -a 120 -r 10080 -w RANDOM -V INFO -F /var/log/py3-kms.log"]
+    # entrypoint: ["/bin/sh","-c","/usr/bin/python3 pykms_Server.py ${IP} ${PORT} -l ${LCID} -a ${ACTIVATION_INTERVAL} -r ${RENEWAL_INTERVAL} -w ${HWID} -V ${LOGLEVEL} -F ${LOGFILE}"]
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "10m"
+  samba:
+    image: dperson/samba
+    container_name: samba
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
+    read_only: false
+    tmpfs:
+      - /tmp
+    ports:
+      - "137:137/udp" # required to advertise shares (NMBD)
+      - "138:138/udp" # required to advertise shares (NMBD)
+      - "139:139/tcp" # default smb port
+      - "445:445/tcp" # default  smb port
+    volumes:
+      - ${USERDIR}:/mnt/docker:z
+      - /home/repo:/mnt/repo:z
+      - ${USERDIR}/main:/mnt/repo/hermes_main:z
+      - ${USERDIR}/local:/mnt/repo/hermes_local:z
+      - /media/apollo/main:/mnt/repo/apollo_main:z
+      - /media/poseidon/main:/mnt/repo/poseidon_main:z
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - NMBD=true # advertise shares
+      - USERID=${PUID}
+      - GROUPID=${PGID}
+      - WORKGROUP=WORKGROUP
+    # -u "UserName;Password"
+    # -s "ShareName;/path/in/container;browsable;read_only;guest;users;admins;writelist;comment"
+    command: '-u "${SMB_USERNAME};${SMB_PASSWORD}"
+              -s "docker;/mnt/docker/main;yes;no;no;${SMB_USERNAME}"
+              -s "repo;/mnt/repo;yes;no;no;${SMB_USERNAME}"
+              -s "homeassistant;/mnt/docker/main/homeassistant;yes;no;no;${SMB_USERNAME}"
+              -s "public;/mnt/docker/main/public;yes;no;yes"
+              -s "local;/mnt/docker/local;yes;no;no;${SMB_USERNAME}"'
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+  traccar:
+    image: traccar/traccar
+    container_name: traccar
+    restart: unless-stopped
+    depends_on:
+      - mariadb
+    ports:
+      - "5055:5055"
+      - "5170:5170"
+      - "5170:5170/udp"
+      - "8082:8082"
+    volumes:
+      - ${MAINDIR}/traccar/traccar.xml:/opt/traccar/conf/traccar.xml
+      - ${MAINDIR}/traccar/.log:/opt/traccar/logs
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.traccar.rule=Host(`traccar.${DOMAINNAME}`,`traccar.${DOMAINNAME_EXTERNAL}`)"
+      - "traefik.http.routers.traccar.tls=true"
+      # - "traefik.http.routers.traccar.middlewares=traefikauth"
+      - "traefik.http.services.traccar.loadbalancer.server.port=8082"
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+    # healthcheck:
+      # test: ["CMD", "curl", "-f", "http://localhost:8082"]
+      # interval: 30s
+      # timeout: 10s
+      # retries: 4
+      # start_period: 30s
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "10m"
+  traefik:
+    image: traefik:latest
+    container_name: traefik
+    restart: unless-stopped
+    domainname: ${DOMAINNAME}
+    ports:
+      - "80:80"
+      - "443:443"
+      - "${IP_TRUST}:8080:8080"
+      - "${IP_IOT}:8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ${MAINDIR}/traefik:/configuration
+      - ${MAINDIR}/shared:/shared
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.web-secure.address=:443"
+      - "--providers.file.directory=/configuration"
+      - "--providers.file.watch=true"
+      - "--serversTransport.insecureSkipVerify=true"
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "10m"
+  traefik_auth:
+    container_name: traefik_auth
+    image: thomseddon/traefik-forward-auth
+    restart: unless-stopped
+    environment:
+      - DEFAULT_PROVIDER=oidc
+      - PROVIDERS_OIDC_CLIENT_ID=${TRAEFIKAUTH_CLIENT_ID}
+      - PROVIDERS_OIDC_CLIENT_SECRET=${TRAEFIKAUTH_CLIENT_SECRET}
+      - PROVIDERS_OIDC_ISSUER_URL=https://kc.${DOMAINNAME_EXTERNAL}/auth/realms/master
+      - SECRET=${TRAEFIKAUTH_SECRET}
+      - AUTH_HOST=auth.${DOMAINNAME_EXTERNAL}
+      - COOKIE_DOMAIN=${DOMAINNAME_EXTERNAL}
+      # - COOKIE_DOMAIN=${DOMAINNAME}
+      - LOG_LEVEL=debug
+    ports:
+      - "4181:4181"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefikauth.rule=Host(`auth.${DOMAINNAME}`,`auth.${DOMAINNAME_EXTERNAL}`)"
+      - "traefik.http.routers.traefikauth.tls=true"
+      - "traefik.http.routers.traefikauth.middlewares=traefikauth"
+      - "traefik.http.services.traefikauth.loadbalancer.server.port=4181"
+      - "traefik.http.middlewares.traefikauth.forwardauth.address=http://traefik_auth:4181"
+      - "traefik.http.middlewares.traefikauth.forwardauth.authResponseHeaders=X-Forwarded-User"
+      - "traefik.http.middlewares.traefikauth.forwardauth.trustForwardHeader=true"
+  unifi-controller:
+    image: ghcr.io/linuxserver/unifi-controller:latest
+    container_name: unifi-controller
+    restart: unless-stopped
+    # network_mode: host
+    ports:
+      - "${IP_MGMT}:3478:3478/udp"
+      - "${IP_MGMT}:8080:8080"
+      - "${IP_MGMT}:10001:10001/udp"
+      - "8443:8443"
+    volumes:
+      - ${MAINDIR}/unifi-controller/.data:/config
+    environment:
+      # - TZ=${TZ} # doesn't work
+      - PUID=${PUID}
+      - PGID=${PGID}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.unifi.rule=Host(`unifi.${DOMAINNAME}`,`unifi.${DOMAINNAME_EXTERNAL}`)"
+      - "traefik.http.routers.unifi.tls=true"
+      - "traefik.http.routers.unifi.middlewares=traefikauth"
+      - "traefik.http.services.unifi.loadbalancer.server.port=8443"
+      - "traefik.http.services.unifi.loadbalancer.server.scheme=https"
+      # - "traefik.enable=true"
+      # - "traefik.http.routers.unifi.rule=Host(`unifi.${DOMAINNAME}`)"
+      # - "traefik.http.routers.unifi.tls=true"
+      # # - "traefik.http.routers.unifi.entrypoints=web"
+      # - "traefik.http.services.unifi.loadbalancer.server.port=8443"
+      # - "traefik.http.services.unifi.loadbalancer.server.scheme=https"
+      # # - "traefik.port=8443"
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "10m"
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - TZ=${TZ}
+      # - '--cleanup'
+      # - '--monitor-only'
+    command: --interval 3600
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "10m"
+  wiki:
+    image: requarks/wiki:2
+    container_name: wiki
+    restart: unless-stopped
+    depends_on:
+      - mariadb
+    links:
+      - mariadb
+    ports:
+      - "8081:3000"
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - DB_TYPE=mariadb
+      - DB_HOST=mariadb
+      - DB_PORT=3306
+      - DB_NAME=${WIKI_DB}
+      - DB_USER=${WIKI_USER}
+      - DB_PASS=${WIKI_PASSWORD}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.wiki.rule=Host(`wiki.${DOMAINNAME}`,`wiki.${DOMAINNAME_EXTERNAL}`)"
+      - "traefik.http.routers.wiki.tls=true"
+      - "traefik.http.routers.wiki.middlewares=traefikauth"
+      - "traefik.http.services.wiki.loadbalancer.server.port=3000"
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "10m"
+  zigbee2mqtt:
+    image: koenkk/zigbee2mqtt
+    container_name: zigbee2mqtt
+    restart: unless-stopped
+    depends_on:
+      - mosquitto
+    privileged: true
+    volumes:
+      - ${MAINDIR}/zigbee2mqtt/.data:/app/data
+    devices:
+      - /dev/serial/by-id/usb-1a86_USB_Serial-if00-port0
+    environment:
+      - TZ=${TZ}
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "10m"
+  zigbee2mqttassistant:
+    image: carldebilly/zigbee2mqttassistant
+    container_name: zigbee2mqttassistant
+    restart: unless-stopped
+    depends_on:
+      - zigbee2mqtt
+    ports:
+      - "8880:80"
+    environment:
+      - Z2MA_SETTINGS__MQTTSERVER=${IP_IOT}
+      - Z2MA_SETTINGS__MQTTUSERNAME=${ZIGBEE_MQTT_USERNAME}
+      - Z2MA_SETTINGS__MQTTPASSWORD=${ZIGBEE_MQTT_PASSWORD}
+      - TZ=${TZ}
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "10m"
+  zwave2mqtt:
+    image: robertslando/zwave2mqtt:latest
+    container_name: zwave2mqtt
+    restart: unless-stopped
+    depends_on:
+      - mosquitto
+    tty: true
+    stop_signal: SIGINT
+    # networks:
+      # - traefik_proxy
+    ports:
+      - 8091:8091
+    volumes:
+      - ${MAINDIR}/zwave2mqtt/.data:/usr/src/app/store
+    devices:
+      - /dev/serial/by-id/usb-0658_0200-if00
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.zwave.rule=Host(`zwave.${DOMAINNAME}`,`zwave.${DOMAINNAME_EXTERNAL}`)"
+      - "traefik.http.routers.zwave.tls=true"
+      - "traefik.http.routers.zwave.middlewares=traefikauth"
+      - "traefik.http.services.zwave.loadbalancer.server.port=8091"
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "10m"
+networks:
+  default:
+  # traefik_proxy:
+    # external:
+      # name: traefik_proxy

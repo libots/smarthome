@@ -1,0 +1,153 @@
+# lovelace_gen
+
+title: Second Floor
+path: floor2
+icon: mdi:home-floor-2
+
+cards:
+
+  # Begin common areas card
+  - title: Common Areas
+    type: entities
+    show_header_toggle: false
+    entities:
+      - entity: light.stairs_hallway
+        name: Stairs/Hallway Lights
+        type: custom:slider-entity-row
+        toggle: true
+  # End common areas card
+  
+  # Begin master bedroom card
+  - title: Master Bedroom
+    type: entities
+    show_header_toggle: false
+    entities:
+      - entity: light.mbed_fan
+        name: Fan Light
+        type: custom:slider-entity-row
+        toggle: true
+      - entity: fan.mbed
+        name: Ceiling Fan
+        type: custom:slider-entity-row
+        toggle: true
+        max: 4
+      - entity: light.mbed_matt
+        name: Matt’s Light
+        type: custom:slider-entity-row
+        toggle: true
+      - entity: light.mbed_kayla
+        name: Kayla’s Light
+        type: custom:slider-entity-row
+        toggle: true
+      - type: section
+      - entity: input_boolean.wakeup_mbed
+        type: custom:multiple-entity-row
+        name: Wakeup Alarm Lights
+        toggle: true
+        icon: mdi:alarm
+        entities:
+            - entity: sensor.bedroom_dot_next_alarm
+              name: Alarm Time
+              format: time
+  # End master bedroom card
+  
+  # Begin master bathroom card
+  - title: Master Bathroom
+    type: entities
+    show_header_toggle: false
+    entities:
+      - entity: light.mbath_vanity
+        name: Vanity Lights
+        type: custom:slider-entity-row
+        toggle: true
+      - entity: light.mbath_ceiling
+        name: Ceiling Light
+        type: custom:slider-entity-row
+        toggle: true
+      - entity: light.mbath_shower
+        name: Shower Light
+        type: custom:slider-entity-row
+        toggle: true
+      - entity: light.mbath_closet
+        name: Closet Light
+        type: custom:slider-entity-row
+        toggle: true
+      - type: custom:hui-element
+        card_type: conditional
+        conditions:
+          - entity: binary_sensor.mbath_shower_humidity_fan
+            state: "on"
+        card:
+          entity: switch.mbath_fan
+          name: Exhaust Fan
+          icon: mdi:fan
+          type: custom:multiple-entity-row
+          toggle: true
+          secondary_info: "Warning: High Humidity"
+      - type: custom:hui-element
+        card_type: conditional
+        conditions:
+          - entity: binary_sensor.mbath_shower_humidity_fan
+            state: "off"
+        card:
+          entity: switch.mbath_fan
+          name: Exhaust Fan
+          icon: mdi:fan
+          type: custom:multiple-entity-row
+          toggle: true
+  # End master bathroom card
+  
+  # Begin dog room card
+  - title: Dog Room
+    type: entities
+    show_header_toggle: false
+    entities:
+      - type: custom:fold-entity-row
+        head:
+          entity: light.dog_cans
+          name: Recessed Lights
+          type: custom:slider-entity-row
+          toggle: true
+        group_config:
+          type: custom:slider-entity-row
+          toggle: true
+        entities:
+          - entity: light.dog_front
+            name: Front Can
+          - entity: light.dog_back
+            name: Rear Can
+      - entity: light.dog_fan
+        name: Fan Light
+        type: custom:slider-entity-row
+        toggle: true
+      - entity: fan.dog
+        name: Ceiling Fan
+        type: custom:slider-entity-row
+        toggle: true
+  # End dog room card
+  
+  # Begin guest bathroom card
+  - title: Master Bathroom
+    type: entities
+    show_header_toggle: false
+    entities:
+      - entity: light.gbath_vanity
+        name: Vanity Lights
+        type: custom:slider-entity-row
+        toggle: true
+      - entity: light.gbath_ceiling
+        name: Ceiling Light
+        type: custom:slider-entity-row
+        toggle: true
+      - entity: switch.gbath_fan
+        name: Exhaust Fan
+        icon: mdi:fan
+  # End guest bathroom card
+
+  # Begin thermostat cards
+  - !include
+    - 'templates/hvac.yaml'
+    - entity: climate.upstairs
+      name: Upstairs
+      automate_entity: input_boolean.hvac_upstairs_automate
+  # End thermostat card

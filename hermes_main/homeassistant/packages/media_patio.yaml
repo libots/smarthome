@@ -1,0 +1,10 @@
+ios:
+  push:
+    categories:
+      - name: Patio Audio
+        identifier: 'patioaudio'
+        actions:
+          - identifier: 'patioaudio_play'
+            title: Turn On Audio
+          - identifier: 'patioaudio_dont'
+            title: Cancel (Don't Play)

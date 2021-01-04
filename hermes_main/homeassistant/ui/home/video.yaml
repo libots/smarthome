@@ -1,0 +1,184 @@
+# lovelace_gen
+
+{% macro lvrm_activity(activity, name) -%}
+          - type: custom:button-card
+            entity: remote.harmony_lvrm
+            name: "{{ name }}"
+            show_icon: false
+            tap_action:
+              action: call-service
+              service: remote.turn_on
+              service_data:
+                entity_id: remote.harmony_lvrm
+                activity: {{ activity }}
+            state:
+              - operator: template
+                value: >
+                  [[[
+                    if (entity.attributes.current_activity == "{{ activity }}") { return true; }
+                  ]]]
+                styles:
+                  card:
+                    - background-color: var(--primary-color)
+                  name:
+                    - color: white
+            styles:
+              name:
+                - color: var(--state-icon-unavailable-color)
+                - font-size: 14px
+                - font-weight: bold
+{%- endmacro %}
+{% macro volume(entity) -%}
+          type: custom:mini-media-player
+          entity: {{ entity }}
+          hide:
+            icon: true
+            name: true
+            source: true
+            power: true
+            play_pause: true
+            controls: true
+            info: true
+          style: |
+            ha-card {
+              box-shadow: none;
+            }
+            ha-card .mmp-player {
+              padding: 0;
+            }
+{%- endmacro %}
+
+title: Video
+path: video
+icon: mdi:television
+cards:
+  
+  # Begin living room
+  - type: entities
+    title: Living Room
+    show_header_toggle: false
+    entities:
+      - type: custom:hui-element
+        card_type: horizontal-stack
+        cards:
+          {{ lvrm_activity("PowerOff", "Off") }}
+          {{ lvrm_activity("Watch Roku", "Roku") }}
+          {{ lvrm_activity("Listen to Sonos", "Sonos") }}
+          {{ lvrm_activity("Play PS4", "PS4") }}
+      # Begin Roku
+      - type: custom:hui-element
+        card_type: conditional
+        conditions:
+          - entity: sensor.harmony_lvrm_activity
+            state: "Watch Roku"
+        card:
+          type: custom:roku-card
+          entity: media_player.roku_lvrm
+          style: |
+            div.app { font-size: 16px; text-align: center; }
+            ha-card {
+              box-shadow: none;
+            }
+            ha-card .remote {
+              padding: 0;
+            }
+      - type: custom:hui-element
+        card_type: conditional
+        conditions:
+          - entity: sensor.harmony_lvrm_activity
+            state: "Watch Roku"
+        card:
+          {{ volume("media_player.receiver_lvrm") }}
+      # End Roku
+      # Begin Sonos
+      - type: custom:hui-element
+        card_type: conditional
+        conditions:
+          - entity: sensor.harmony_lvrm_activity
+            state: "Listen to Sonos"
+        card:
+          type: custom:mini-media-player
+          entity: media_player.sonos_lvrm
+          hide:
+            icon: true
+            power: true
+          style: |
+            ha-card {
+              box-shadow: none;
+            }
+            ha-card .mmp-player {
+              padding: 0;
+            }
+      # End Sonos
+      # Begin PS4
+      - type: custom:hui-element
+        card_type: conditional
+        conditions:
+          - entity: sensor.harmony_lvrm_activity
+            state: "Play PS4"
+        card:
+          {{ volume("media_player.receiver_lvrm") }}
+      # End PS4
+      # Begin lights
+      - type: custom:fold-entity-row
+        head:
+          type: section
+          label: Lights/Environment
+        padding: 0
+        open: true
+        entities:
+          - type: custom:fold-entity-row
+            head:
+              entity: light.lvrm_cans
+              name: Recessed Lights
+              type: custom:slider-entity-row
+              toggle: true
+            group_config:
+              type: custom:slider-entity-row
+              toggle: true
+            entities:
+              - entity: light.lvrm_1
+                name: Can 1
+              - entity: light.lvrm_2
+                name: Can 2
+              - entity: light.lvrm_3
+                name: Can 3
+              - entity: light.lvrm_4
+                name: Can 4
+              - entity: light.lvrm_5
+                name: Can 5 (TV)
+              - entity: light.lvrm_6
+                name: Can 6 (TV)
+              - entity: light.lvrm_7
+                name: Can 7
+              - entity: light.lvrm_8
+                name: Can 8
+          - entity: light.lvrm_fan
+            name: Fan Light
+            type: custom:slider-entity-row
+            toggle: true
+          - entity: fan.lvrm
+            name: Ceiling Fan
+            type: custom:slider-entity-row
+            toggle: true
+          - type: custom:fold-entity-row
+            head:
+              entity: group.lvrm_surrounding
+              name: Surrounding Lights
+              icon: mdi:floor-plan
+              # type: custom:slider-entity-row
+              # toggle: true
+            group_config:
+              type: custom:slider-entity-row
+              toggle: true
+            entities:
+              - light.foyer
+              - entity: light.stairs_hallway
+                name: Stairs Lights
+              - entity: light.office_cans
+                name: Office Recessed Lights
+              - entity: light.office_fan
+                name: Office Fan Light
+              - light.dining
+      # End lights
+  # End living room

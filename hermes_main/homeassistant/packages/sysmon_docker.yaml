@@ -1,0 +1,66 @@
+homeassistant:
+  customize:
+    package.docker: &docker
+      platform: rest
+      body_on: '{"state": "start"}'
+      body_off: '{"state": "stop"}'
+      is_on_template: '{{ value_json is not none and value_json.state == "running" }}'
+
+switch:
+  - resource: !secret docker_chronograf
+    name: Docker Chronograf
+    <<: *docker
+  - resource: !secret docker_deconz
+    name: Docker DeCONZ
+    <<: *docker
+  - resource: !secret docker_glances
+    name: Docker Glances
+    <<: *docker
+  - resource: !secret docker_grafana
+    name: Docker Grafana
+    <<: *docker
+  - resource: !secret docker_homeassistant
+    name: Docker HomeAssistant
+    <<: *docker
+  - resource: !secret docker_influxdb
+    name: Docker InfluxDB
+    <<: *docker
+  - resource: !secret docker_mariadb
+    name: Docker MariaDB
+    <<: *docker
+  - resource: !secret docker_mosquitto
+    name: Docker Mosquitto
+    <<: *docker
+  - resource: !secret docker_node-red
+    name: Docker Node-RED
+    <<: *docker
+  - resource: !secret docker_portainer
+    name: Docker Portainer
+    <<: *docker
+  - resource: !secret docker_py-kms
+    name: Docker Py-KMS
+    <<: *docker
+  - resource: !secret docker_samba
+    name: Docker Samba
+    <<: *docker
+  - resource: !secret docker_traccar
+    name: Docker Traccar
+    <<: *docker
+  - resource: !secret docker_traefik
+    name: Docker Traefik
+    <<: *docker
+  - resource: !secret docker_unifi-controller
+    name: Docker Unifi
+    <<: *docker
+  - resource: !secret docker_watchtower
+    name: Docker Watchtower
+    <<: *docker
+  - resource: !secret docker_wiki
+    name: Docker Wiki
+    <<: *docker
+  - resource: !secret docker_zwave2mqtt
+    name: Docker ZWave2MQTT
+    <<: *docker
+  - resource: !secret docker_zwave2mqtt_auth
+    name: Docker ZWave2MQTT Auth
+    <<: *docker

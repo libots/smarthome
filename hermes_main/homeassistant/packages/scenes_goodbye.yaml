@@ -1,0 +1,23 @@
+scene:
+  - name: Goodbye
+    entities:
+      alarm_control_panel.abode_alarm: armed_away
+      switch.light_basement: off
+      light.downstairs: off
+      fan.office: off
+      fan.lvrm: off
+      light.stairs_hallway: off
+      light.upstairs: off
+      fan.mbed: off
+      fan.dog: off
+      media_player.sonos_basement: paused
+      media_player.sonos_kitchen: paused
+      media_player.sonos_dining: paused
+      media_player.sonos_lvrm: paused
+      media_player.sonos_office: paused
+      media_player.sonos_mbed: paused
+      remote.harmony_lvrm: off
+      group.light_yard: off
+      light.outside_yard: off
+      light.pergola: off
+      fan.pergola: off
