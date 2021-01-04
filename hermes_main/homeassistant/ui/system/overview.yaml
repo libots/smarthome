@@ -386,7 +386,7 @@ cards:
             type: custom:button-card
             name: Traefik Auth
             template: docker
-            entity_picture: "/local/images/buttons/traefik.png"
+            entity_picture: "/local/images/buttons/oidc.png"
           - entity: switch.docker_hermes_unifi_controller
             type: custom:button-card
             name: UniFi
