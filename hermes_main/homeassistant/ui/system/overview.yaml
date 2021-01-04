@@ -215,7 +215,7 @@ cards:
   
   # Begin Hermes card
   - type: entities
-    title: Hermes (VM)
+    title: Hermes (Copper VM)
     show_header_toggle: false
     entities:
       - entity: sensor.hermes_cpu_percent
@@ -269,22 +269,22 @@ cards:
       - type: custom:hui-element
         card_type: horizontal-stack
         cards:
-          - entity: switch.docker_chronograf
+          - entity: switch.docker_hermes_chronograf
             type: custom:button-card
             name: Chronograf
             template: docker
             entity_picture: "/local/images/buttons/influxdb_small.svg"
-          - entity: switch.docker_deconz
+          - entity: switch.docker_hermes_deconz
             type: custom:button-card
             name: DeCONZ
             template: docker
             entity_picture: "/local/images/buttons/deconz.png"
-          - entity: switch.docker_grafana
+          - entity: switch.docker_hermes_glances
             type: custom:button-card
             name: Glances
             template: docker
             entity_picture: "/local/images/buttons/glances.svg"
-          - entity: switch.docker_glances
+          - entity: switch.docker_hermes_grafana
             type: custom:button-card
             name: Grafana
             template: docker
@@ -296,26 +296,26 @@ cards:
       - type: custom:hui-element
         card_type: horizontal-stack
         cards:
-          - entity: switch.docker_influxdb
+          - entity: switch.docker_hermes_homer
+            type: custom:button-card
+            name: Homer
+            template: docker
+            entity_picture: "/local/images/buttons/homer.png"
+          - entity: switch.docker_hermes_influxdb
             type: custom:button-card
             name: InfluxDB
             template: docker
             entity_picture: "/local/images/buttons/influxdb.png"
-          - entity: switch.docker_mariadb
+          - entity: switch.docker_hermes_keycloak
+            type: custom:button-card
+            name: Keycloak
+            template: docker
+            entity_picture: "/local/images/buttons/keycloak.png"
+          - entity: switch.docker_hermes_mariadb
             type: custom:button-card
             name: MariaDB
             template: docker
             entity_picture: "/local/images/buttons/mariadb.svg?1"
-          - entity: switch.docker_mosquitto
-            type: custom:button-card
-            name: Mosquitto
-            template: docker
-            entity_picture: "/local/images/buttons/mosquitto.png"
-          - entity: switch.docker_node_red
-            type: custom:button-card
-            name: Node-RED
-            template: docker
-            entity_picture: "/local/images/buttons/node-red.svg"
       - type: custom:button-card
         color_type: blank-card
       - type: custom:button-card
@@ -323,22 +323,49 @@ cards:
       - type: custom:hui-element
         card_type: horizontal-stack
         cards:
-          - entity: switch.docker_portainer
+          - entity: switch.docker_hermes_mosquitto
+            type: custom:button-card
+            name: Mosquitto
+            template: docker
+            entity_picture: "/local/images/buttons/mosquitto.png"
+          - entity: switch.docker_hermes_node_red
+            type: custom:button-card
+            name: Node-RED
+            template: docker
+            entity_picture: "/local/images/buttons/node-red.svg"
+          - entity: switch.docker_hermes_organizr
+            type: custom:button-card
+            name: Organizr
+            template: docker
+            entity_picture: "/local/images/buttons/organizr.png"
+          - entity: switch.docker_hermes_portainer
             type: custom:button-card
             name: Portainer
             template: docker
             entity_picture: "/local/images/buttons/portainer.png"
-          - entity: switch.docker_py_kms
+      - type: custom:button-card
+        color_type: blank-card
+      - type: custom:button-card
+        color_type: blank-card
+      - type: custom:hui-element
+        card_type: horizontal-stack
+        cards:
+          - entity: switch.docker_hermes_portainer_agent
+            type: custom:button-card
+            name: Portainer Agent
+            template: docker
+            entity_picture: "/local/images/buttons/portainer.png"
+          - entity: switch.docker_hermes_py_kms
             type: custom:button-card
             name: Py-KMS
             template: docker
             entity_picture: "/local/images/buttons/kms.svg"
-          - entity: switch.docker_samba
+          - entity: switch.docker_hermes_samba
             type: custom:button-card
             name: Samba
             template: docker
             entity_picture: "/local/images/buttons/samba.png?v=1"
-          - entity: switch.docker_traccar
+          - entity: switch.docker_hermes_traccar
             type: custom:button-card
             name: Traccar
             template: docker
@@ -350,26 +377,26 @@ cards:
       - type: custom:hui-element
         card_type: horizontal-stack
         cards:
-          - entity: switch.docker_traefik
+          - entity: switch.docker_hermes_traefik
             type: custom:button-card
             name: Traefik
             template: docker
             entity_picture: "/local/images/buttons/traefik.png"
-          - entity: switch.docker_unifi
+          - entity: switch.docker_hermes_traefik_auth
+            type: custom:button-card
+            name: Traefik Auth
+            template: docker
+            entity_picture: "/local/images/buttons/traefik.png"
+          - entity: switch.docker_hermes_unifi_controller
             type: custom:button-card
             name: UniFi
             template: docker
             entity_picture: "/local/images/buttons/ubnt.png"
-          - entity: switch.docker_watchtower
+          - entity: switch.docker_hermes_watchtower
             type: custom:button-card
             name: Watchtower
             template: docker
             entity_picture: "/local/images/buttons/watchtower.png"
-          - entity: switch.docker_wiki
-            type: custom:button-card
-            name: WikiJS
-            template: docker
-            entity_picture: "/local/images/buttons/wikijs.svg"
       - type: custom:button-card
         color_type: blank-card
       - type: custom:button-card
@@ -377,11 +404,20 @@ cards:
       - type: custom:hui-element
         card_type: horizontal-stack
         cards:
-          - entity: switch.docker_zwave2mqtt
+          - entity: switch.docker_hermes_wiki
+            type: custom:button-card
+            name: WikiJS
+            template: docker
+            entity_picture: "/local/images/buttons/wikijs.svg"
+          - entity: switch.docker_hermes_zwave2mqtt
             type: custom:button-card
             name: ZWave2MQTT
             template: docker
             entity_picture: "/local/images/buttons/zwave_small.svg"
+          - type: custom:button-card
+            color_type: blank-card
+          - type: custom:button-card
+            color_type: blank-card
   # End Hermes card
   
   # Begin Home Assistant card

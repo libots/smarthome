@@ -135,45 +135,45 @@ services:
       options:
         max-file: "5"
         max-size: "10m"
-  ha-dockermon:
-    image: philhawthorne/ha-dockermon
-    container_name: ha-dockermon
-    restart: unless-stopped
-    # ports:
-      # - "8126:8126"
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - ${MAINDIR}/ha-dockermon:/config
-    # environment:
-      # - PUID=${PUID}
-      # - PGID=${PGID}
-      # - TZ=${TZ}
-    logging:
-      driver: "json-file"
-      options:
-        max-file: "5"
-        max-size: "10m"
-  ha-dockermon_auth:
-    image: beevelop/nginx-basic-auth
-    container_name: ha-dockermon_auth
-    restart: unless-stopped
-    depends_on:
-      - ha-dockermon
-    ports:
-      - "8126:80"
-    environment:
-      - TZ=${TZ}
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - PORT=80
-      - FORWARD_HOST=ha-dockermon
-      - FORWARD_PORT=8126
-      - HTPASSWD=${HADOCKERMON_AUTH}
-    logging:
-      driver: "json-file"
-      options:
-        max-file: "5"
-        max-size: "10m"
+  # ha-dockermon:
+  #   image: philhawthorne/ha-dockermon
+  #   container_name: ha-dockermon
+  #   restart: unless-stopped
+  #   # ports:
+  #     # - "8126:8126"
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #     - ${MAINDIR}/ha-dockermon:/config
+  #   # environment:
+  #     # - PUID=${PUID}
+  #     # - PGID=${PGID}
+  #     # - TZ=${TZ}
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-file: "5"
+  #       max-size: "10m"
+  # ha-dockermon_auth:
+  #   image: beevelop/nginx-basic-auth
+  #   container_name: ha-dockermon_auth
+  #   restart: unless-stopped
+  #   depends_on:
+  #     - ha-dockermon
+  #   ports:
+  #     - "8126:80"
+  #   environment:
+  #     - TZ=${TZ}
+  #     - PUID=${PUID}
+  #     - PGID=${PGID}
+  #     - PORT=80
+  #     - FORWARD_HOST=ha-dockermon
+  #     - FORWARD_PORT=8126
+  #     - HTPASSWD=${HADOCKERMON_AUTH}
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-file: "5"
+  #       max-size: "10m"
   homeassistant:
     image: homeassistant/home-assistant:latest
     container_name: homeassistant
