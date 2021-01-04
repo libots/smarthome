@@ -354,7 +354,9 @@ cards:
             type: custom:button-card
             name: Portainer Agent
             template: docker
-            entity_picture: "/local/images/buttons/portainer.png"
+            # entity_picture: "/local/images/buttons/portainer.png"
+            icon: mdi:flash
+            color: rgb(51,122,183)
           - entity: switch.docker_hermes_py_kms
             type: custom:button-card
             name: Py-KMS
