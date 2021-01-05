@@ -50,5 +50,5 @@ cards:
       {{ smokeco("input_datetime.smokeco_mbed", "Master Bedroom") }}
       {{ smokeco("input_datetime.smokeco_changing", "Changing Room") }}
       {{ smokeco("input_datetime.smokeco_guest", "Guest Room") }}
-      {{ smokeco("input_datetime.smokeco_3f", "Third Floor") }}
+      {{ smokeco("input_datetime.smokeco_3f", "Third Floor (Family Room)") }}
   # End smoke detector panel
