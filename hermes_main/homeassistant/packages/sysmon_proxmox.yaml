@@ -21,14 +21,20 @@ pve:
     password: !secret proxmox_password
     realm: pve
     nodes:
-      - node: !secret proxmox_node
+      - node: copper
         vms:
           - 100 # hermes
           - 101 # ha
-          - 104 # 
-        # containers:
-        #   - 102
+          - 104 # ha-dev
+          - 105 # deblamp
         storage:
           - local
           - local-lvm
           - sata
+      - node: nickel
+        vms:
+          - 102 # printwin
+          - 103 # ubdesktop
+        storage:
+          - local
+          - local-lvm
