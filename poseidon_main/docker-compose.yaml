@@ -139,6 +139,22 @@ services:
       - "traefik.http.routers.transmission.rule=Host(`transmission.${DOMAINNAME_EXTERNAL}`,`transmission.${DOMAINNAME}`)"
       - "traefik.http.routers.transmission.tls=true"
     restart: unless-stopped
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - TZ=${TZ}
+      # - '--cleanup'
+      # - '--monitor-only'
+    command: --interval 3600
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "10m"
 volumes:
   deluge:
     driver_opts:
