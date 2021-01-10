@@ -63,6 +63,7 @@ services:
     volumes:
       - ${USERDIR}:/mnt/docker:z
       - /home/transmission:/mnt/transmission:z
+      - /home/deluge:/mnt/deluge:z
     environment:
       - TZ=${TZ}
       - PUID=${PUID}
@@ -75,7 +76,8 @@ services:
     # -s "ShareName;/path/in/container;browsable;read_only;guest;users;admins;writelist;comment"
     command: '-u "${SMB_USERNAME};${SMB_PASSWORD}"
               -s "docker;/mnt/docker;yes;no;no;${SMB_USERNAME}"
-              -s "transmission;/mnt/transmission;yes;no;no;${SMB_USERNAME}"'
+              -s "transmission;/mnt/transmission;yes;no;no;${SMB_USERNAME}"
+              -s "deluge;/mnt/deluge;yes;no;no;${SMB_USERNAME}"'
     logging:
       driver: "json-file"
       options:
