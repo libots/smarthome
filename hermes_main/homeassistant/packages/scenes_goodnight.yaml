@@ -12,6 +12,10 @@ scene:
       light.outside_yard: off
       light.pergola: off
       fan.pergola: off
+      light.mbath_vanity: off
+      light.mbath_ceiling: off
+      light.mbath_closet: off
+      light.mbath_shower: off
 
 script:
   goodnight:

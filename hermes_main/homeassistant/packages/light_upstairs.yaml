@@ -5,6 +5,10 @@ light:
       - light.dog_cans
       - light.dog_fan
       - light.mbed_fan
+      - light.mbath_vanity
+      - light.mbath_ceiling
+      - light.mbath_closet
+      - light.mbath_shower
   - platform: group
     name: MBed Fan
     entities:
