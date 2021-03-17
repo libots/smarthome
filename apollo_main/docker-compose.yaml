@@ -158,7 +158,7 @@ services:
       - /media/gyges/private/transmission/radarr:/downloads_gyges
     # ports:
     #   - 7878:7878
-    restart: unless-stopped
+    restart: always
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.radarr.rule=Host(`radarr.${DOMAINNAME}`,`radarr.${DOMAINNAME_EXTERNAL}`)"
@@ -206,9 +206,9 @@ services:
         max-file: "5"
         max-size: "10m"
   sonarr:
-    image: ghcr.io/linuxserver/sonarr:preview
+    image: ghcr.io/linuxserver/sonarr
     container_name: sonarr
-    restart: unless-stopped
+    restart: always
     environment:
       - TZ=${TZ}
       - PUID=${PUID}
