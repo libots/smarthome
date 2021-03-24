@@ -10,8 +10,10 @@
 node-red
 
 # Custom Components
-custom_components
+custom_components/*
+!custom_components/whistle
 www/community
+
 
 # Temporary Storage
 tts
