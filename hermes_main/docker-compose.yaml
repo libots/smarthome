@@ -175,7 +175,7 @@ services:
   #       max-file: "5"
   #       max-size: "10m"
   homeassistant:
-    image: homeassistant/home-assistant:latest
+    image: ghcr.io/linuxserver/homeassistant
     container_name: homeassistant
     restart: always
     depends_on:
@@ -189,7 +189,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock
     devices:
-      - /dev/serial/by-id/usb-Silicon_Labs_HubZ_Smart_Home_Controller_C0F0035D-if01-port0
+      - /dev/serial/by-id/usb-Silicon_Labs_HubZ_Smart_Home_Controller_C0F0035D-if01-port0 # /dev/ttyUSB2
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
