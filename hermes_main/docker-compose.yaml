@@ -247,7 +247,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
     environment:
-      DB_VENDOR: MYSQL
+      DB_VENDOR: mariadb
       DB_ADDR: ${IP_TRUST}
       DB_DATABASE: keycloak
       DB_USER: ${KEYCLOAK_DB_USER}
