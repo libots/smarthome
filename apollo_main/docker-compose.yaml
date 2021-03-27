@@ -149,7 +149,7 @@ services:
       - TZ=${TZ}
       - PUID=${PUID}
       - PGID=${PGID}
-      - UMASK_SET=022 #optional
+      - UMASK=022 #optional
     volumes:
       - ${MAINDIR}/radarr/.data:/config
       - movies:/movies
@@ -213,7 +213,7 @@ services:
       - TZ=${TZ}
       - PUID=${PUID}
       - PGID=${PGID}
-      # - UMASK_SET=002 #optional
+      # - UMASK=002 #optional
     volumes:
       - ${MAINDIR}/sonarr/.data:/config
       - tv:/tv

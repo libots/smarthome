@@ -9,7 +9,7 @@ services:
       - TZ=${TZ}
       - PUID=${PUID}
       - PGID=${PGID}
-      - UMASK_SET=022 #optional
+      - UMASK=022 #optional
       - DELUGE_LOGLEVEL=error #optional
     volumes:
       - ${MAINDIR}/deluge:/config
