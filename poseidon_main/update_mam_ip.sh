@@ -9,4 +9,5 @@ if [ -f .env ]; then
     # loads $VARIABLES
 fi
 
-curl -c ~/mam.cookies -b "mam_id=$MAM_KEY" https://t.myanonamouse.net/json/dynamicSeedbox.php
+curl -c ~/mam.cookies -b "mam_id=$MAM_KEY_38" https://t.myanonamouse.net/json/dynamicSeedbox.php
+curl -c ~/mam.cookies -b "mam_id=$MAM_KEY_91" https://t.myanonamouse.net/json/dynamicSeedbox.php
