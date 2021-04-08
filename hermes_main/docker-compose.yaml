@@ -176,6 +176,7 @@ services:
   #       max-size: "10m"
   homeassistant:
     image: ghcr.io/linuxserver/homeassistant
+    # image: homeassistant/home-assistant:stable
     container_name: homeassistant
     restart: always
     depends_on:
