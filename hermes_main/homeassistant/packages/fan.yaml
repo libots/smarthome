@@ -6,52 +6,57 @@ script:
         data:
           topic: fan_speed_lvrm
 
-fan:
-  - platform: template
-    fans:
-      pergola:
-        friendly_name: Pergola Fan
-        value_template: "{{ states('light.fan_pergola_dimmer') }}"
-        turn_on:
-          service: light.turn_on
-          data:
-            entity_id: light.fan_pergola_dimmer
-        turn_off:
-          service: light.turn_off
-          data:
-            entity_id: light.fan_pergola_dimmer
-        speeds:
-          - 'off'
-          - low
-          - medium
-          - medium_high
-          - high
-        speed_template: >
-          {% if (state_attr('light.fan_pergola_dimmer', 'brightness') | int) == 0 %}
-            off
-          {% elif (state_attr('light.fan_pergola_dimmer', 'brightness') | int) <= 94 %}
-            low
-          {% elif (state_attr('light.fan_pergola_dimmer', 'brightness') | int) <= 159 %}
-            medium
-          {% elif (state_attr('light.fan_pergola_dimmer', 'brightness') | int) <= 223 %}
-            medium_high
-          {% else %}
-            high
-          {% endif %}
-        set_speed:
-          service: light.turn_on
-          data_template:
-            entity_id: light.fan_pergola_dimmer
-            brightness: >
-              {% if speed == 'off' %}
-                0
-              {% elif speed == 'low' %}
-                62
-              {% elif speed == 'medium' %}
-                126
-              {% elif speed == 'medium_high' %}
-                191
-              {% else %}
-                255
-              {% endif %}
-        availability_template: "{{ not is_state('light.pergola', 'unavailable') }}"
+# homeassistant:
+#   customize:
+#     fan.pergola:
+#       speed_count: 4
+
+# fan:
+#   - platform: template
+#     fans:
+#       pergola:
+#         friendly_name: Pergola Fan
+#         value_template: "{{ states('light.fan_pergola_dimmer') }}"
+#         turn_on:
+#           service: light.turn_on
+#           data:
+#             entity_id: light.fan_pergola_dimmer
+#         turn_off:
+#           service: light.turn_off
+#           data:
+#             entity_id: light.fan_pergola_dimmer
+#         speeds:
+#           - 'off'
+#           - low
+#           - medium
+#           - medium_high
+#           - high
+#         speed_template: >
+#           {% if (state_attr('light.fan_pergola_dimmer', 'brightness') | int) == 0 %}
+#             off
+#           {% elif (state_attr('light.fan_pergola_dimmer', 'brightness') | int) <= 94 %}
+#             low
+#           {% elif (state_attr('light.fan_pergola_dimmer', 'brightness') | int) <= 159 %}
+#             medium
+#           {% elif (state_attr('light.fan_pergola_dimmer', 'brightness') | int) <= 223 %}
+#             medium_high
+#           {% else %}
+#             high
+#           {% endif %}
+#         set_speed:
+#           service: light.turn_on
+#           data_template:
+#             entity_id: light.fan_pergola_dimmer
+#             brightness: >
+#               {% if speed == 'off' %}
+#                 0
+#               {% elif speed == 'low' %}
+#                 62
+#               {% elif speed == 'medium' %}
+#                 126
+#               {% elif speed == 'medium_high' %}
+#                 191
+#               {% else %}
+#                 255
+#               {% endif %}
+#         availability_template: "{{ not is_state('light.pergola', 'unavailable') }}"

@@ -67,26 +67,26 @@ input_boolean:
 binary_sensor:
   - platform: template
     sensors:
-      motion_outside_patio:
-        friendly_name: "Motion Outside Patio"
-        device_class: motion
-        value_template: >-
-          {{ is_state('sensor.light_outside_patio_alarm_home_security', 'Motion Detected at Unknown Location') }}
-      motion_outside_backyard:
-        friendly_name: "Motion Outside Backyard"
-        device_class: motion
-        value_template: >-
-          {{ is_state('sensor.light_outside_backyard_alarm_home_security', 'Motion Detected at Unknown Location') }}
-      motion_outside_garage_left:
-        friendly_name: "Motion Outside Garage Left"
-        device_class: motion
-        value_template: >-
-          {{ is_state('sensor.light_outside_garage_left_alarm_home_security', 'Motion Detected at Unknown Location') }}
-      motion_outside_garage_right:
-        friendly_name: "Motion Outside Garage Right"
-        device_class: motion
-        value_template: >-
-          {{ is_state('sensor.light_outside_garage_right_alarm_home_security', 'Motion Detected at Unknown Location') }}
+      # motion_outside_patio:
+      #   friendly_name: "Motion Outside Patio"
+      #   device_class: motion
+      #   value_template: >-
+      #     {{ is_state('sensor.light_outside_patio_alarm_home_security', 'Motion Detected at Unknown Location') }}
+      # motion_outside_backyard:
+      #   friendly_name: "Motion Outside Backyard"
+      #   device_class: motion
+      #   value_template: >-
+      #     {{ is_state('sensor.light_outside_backyard_alarm_home_security', 'Motion Detected at Unknown Location') }}
+      # motion_outside_garage_left:
+      #   friendly_name: "Motion Outside Garage Left"
+      #   device_class: motion
+      #   value_template: >-
+      #     {{ is_state('sensor.light_outside_garage_left_alarm_home_security', 'Motion Detected at Unknown Location') }}
+      # motion_outside_garage_right:
+      #   friendly_name: "Motion Outside Garage Right"
+      #   device_class: motion
+      #   value_template: >-
+      #     {{ is_state('sensor.light_outside_garage_right_alarm_home_security', 'Motion Detected at Unknown Location') }}
       trigger_outside_patio:
         friendly_name: "Trigger Outside Patio"
         device_class: motion
