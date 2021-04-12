@@ -43,6 +43,7 @@ services:
     image: marthoc/deconz
     #:amd64-2.05.84
     container_name: deconz
+    hostname: deconz.docker
     restart: unless-stopped
     ports:
       - "8089:8089"
@@ -79,6 +80,12 @@ services:
       options:
         max-file: "5"
         max-size: "10m"
+  docker_hoster:
+    image: dvdarias/docker-hoster
+    container_name: docker-hoster
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock
+      - /etc/hosts:/tmp/hosts
   glances:
     image: nicolargo/glances
     container_name: glances
@@ -185,10 +192,15 @@ services:
       - mosquitto
     privileged: true
     network_mode: 'host'
+    # ports:
+    #   - "8123:8123"
+    # networks:
+    #   - default
     volumes:
       - ${MAINDIR}/homeassistant:/config
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock
+      - /etc/hosts:/etc/hosts:ro
     devices:
       - /dev/serial/by-id/usb-Silicon_Labs_HubZ_Smart_Home_Controller_C0F0035D-if01-port0 # /dev/ttyUSB2
     environment:
@@ -343,8 +355,8 @@ services:
     image: nodered/node-red:latest
     container_name: node-red
     restart: unless-stopped
-    # ports:
-    #   - "1880:1880"
+    ports:
+      - "1880:1880"
     volumes:
       - ${MAINDIR}/node-red/.data:/data
     environment:
@@ -690,20 +702,52 @@ services:
       options:
         max-file: "5"
         max-size: "10m"
-  zwave2mqtt:
-    image: robertslando/zwave2mqtt:latest
-    container_name: zwave2mqtt
+  # zwave2mqtt:
+  #   image: robertslando/zwave2mqtt:latest
+  #   container_name: zwave2mqtt
+  #   restart: unless-stopped
+  #   depends_on:
+  #     - mosquitto
+  #   tty: true
+  #   stop_signal: SIGINT
+  #   # networks:
+  #     # - traefik_proxy
+  #   ports:
+  #     - 8091:8091
+  #   volumes:
+  #     - ${MAINDIR}/zwave2mqtt/.data:/usr/src/app/store
+  #   devices:
+  #     - /dev/serial/by-id/usb-0658_0200-if00
+  #   environment:
+  #     - TZ=${TZ}
+  #     - PUID=${PUID}
+  #     - PGID=${PGID}
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.http.routers.zwave.rule=Host(`zwave.${DOMAINNAME}`,`zwave.${DOMAINNAME_EXTERNAL}`)"
+  #     - "traefik.http.routers.zwave.tls=true"
+  #     - "traefik.http.routers.zwave.middlewares=traefikauth"
+  #     - "traefik.http.services.zwave.loadbalancer.server.port=8091"
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-file: "5"
+  #       max-size: "10m"
+  zwavejs2mqtt:
+    image: zwavejs/zwavejs2mqtt:latest
+    container_name: zwavejs2mqtt
+    hostname: zwavejs2mqtt.docker
     restart: unless-stopped
     depends_on:
       - mosquitto
     tty: true
-    stop_signal: SIGINT
+    # stop_signal: SIGINT
     # networks:
       # - traefik_proxy
     ports:
       - 8091:8091
     volumes:
-      - ${MAINDIR}/zwave2mqtt/.data:/usr/src/app/store
+      - ${MAINDIR}/zwavejs2mqtt/.data:/usr/src/app/store
     devices:
       - /dev/serial/by-id/usb-0658_0200-if00
     environment:
