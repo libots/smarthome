@@ -1,0 +1,46 @@
+title: Alarms
+path: alarms
+icon: mdi:alarm
+
+cards:
+
+  # Begin coffee panel
+  - title: Coffee
+    type: entities
+    show_header_toggle: false
+    entities:
+      - entity: input_boolean.coffee
+        name: Enable Timer
+      - type: conditional
+        conditions:
+          - entity: input_boolean.coffee
+            state: "on"
+        row:
+          type: custom:time-picker-card
+          entity: input_datetime.coffee
+          hour_mode: 24
+          layout:
+            embedded: true
+          hide:
+            name: true
+      - type: conditional
+        conditions:
+          - entity: input_boolean.coffee
+            state: "on"
+        row:
+          type: custom:hui-element
+          card_type: markdown
+          content: |
+            **Note:** ensure that the coffee maker's power switch (bottom left of the coffee maker) is set to on.
+          card_mod:
+            style: |
+              ha-card {
+                box-shadow: none;
+              }
+              ha-card ha-markdown {
+                padding: 0 !important;
+              }
+      - type: divider
+      - entity: switch.coffee
+        name: Switch Status
+  # End coffee panel
