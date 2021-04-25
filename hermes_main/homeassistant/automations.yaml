@@ -1,1 +1,85 @@
-[]
+- id: '1618193054029'
+  alias: Coffee
+  description: ''
+  trigger:
+  - platform: time
+    at: input_datetime.coffee
+  condition:
+  - condition: state
+    entity_id: input_boolean.coffee
+    state: 'on'
+    for: 00:03:00
+  action:
+  - type: turn_on
+    device_id: e558e9911f1a92dcd944d2242e8a7667
+    entity_id: switch.coffee
+    domain: switch
+  - service: input_boolean.turn_off
+    target:
+      entity_id: input_boolean.coffee
+  mode: single
+- id: '1618195373456'
+  alias: deCONZ - Aqara Magic Cube MFKZQ01LM
+  description: ''
+  use_blueprint:
+    path: wmn79/deconz-xiaomi-aqara-mfkzq01lm-cube-controller.yaml
+    input:
+      remote: 168a79d4d75fbeb52517aaae42224d1d
+- id: '1618866374286'
+  alias: HVAC to Away
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: alarm_control_panel.ha
+    to: armed_away
+  condition: []
+  action:
+  - device_id: 37dd8ca8ef2b4afaae1fd684a313549d
+    domain: climate
+    entity_id: climate.upstairs
+    type: set_preset_mode
+    preset_mode: eco
+  - device_id: 686295c5d2484f4bb1fa7a60900c3bfb
+    domain: climate
+    entity_id: climate.downstairs
+    type: set_preset_mode
+    preset_mode: eco
+  mode: single
+- id: '1618866535465'
+  alias: HVAC from Away
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: alarm_control_panel.ha
+    from: armed_away
+  condition: []
+  action:
+  - device_id: 37dd8ca8ef2b4afaae1fd684a313549d
+    domain: climate
+    entity_id: climate.upstairs
+    type: set_preset_mode
+    preset_mode: none
+  - device_id: 686295c5d2484f4bb1fa7a60900c3bfb
+    domain: climate
+    entity_id: climate.downstairs
+    type: set_preset_mode
+    preset_mode: none
+  mode: single
+- id: '1619315340056'
+  alias: Auto Lock Front
+  description: ''
+  use_blueprint:
+    path: personal/autolock.yaml
+    input:
+      lock_target: lock.front
+      door_entity: binary_sensor.door_front_homekit
+      wait_time: 120
+- id: '1619315894699'
+  alias: Auto Lock Back
+  description: ''
+  use_blueprint:
+    path: personal/autolock.yaml
+    input:
+      lock_target: lock.back
+      door_entity: binary_sensor.door_back_homekit
+      wait_time: 600
