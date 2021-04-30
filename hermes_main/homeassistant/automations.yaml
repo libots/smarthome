@@ -39,6 +39,11 @@
     entity_id: climate.upstairs
     type: set_preset_mode
     preset_mode: eco
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 10
+      milliseconds: 0
   - device_id: 686295c5d2484f4bb1fa7a60900c3bfb
     domain: climate
     entity_id: climate.downstairs
@@ -59,27 +64,44 @@
     entity_id: climate.upstairs
     type: set_preset_mode
     preset_mode: none
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 10
+      milliseconds: 0
   - device_id: 686295c5d2484f4bb1fa7a60900c3bfb
     domain: climate
     entity_id: climate.downstairs
     type: set_preset_mode
     preset_mode: none
   mode: single
-- id: '1619315340056'
+- id: '1619812317162'
   alias: Auto Lock Front
   description: ''
-  use_blueprint:
-    path: personal/autolock.yaml
-    input:
-      lock_target: lock.front
-      door_entity: binary_sensor.door_front_homekit
-      wait_time: 120
-- id: '1619315894699'
+  trigger:
+  - platform: template
+    value_template: "{{\n  (is_state('binary_sensor.door_front_homekit', 'off'))\n\
+      \  and\n  (is_state('lock.front', 'unlocked'))\n}}"
+    for:
+      seconds: 120
+  condition: []
+  action:
+  - service: lock.lock
+    target:
+      entity_id: lock.front
+  mode: single
+- id: '1619812863492'
   alias: Auto Lock Back
   description: ''
-  use_blueprint:
-    path: personal/autolock.yaml
-    input:
-      lock_target: lock.back
-      door_entity: binary_sensor.door_back_homekit
-      wait_time: 600
+  trigger:
+  - platform: template
+    value_template: "{{\n  (is_state('binary_sensor.door_front_homekit', 'off'))\n\
+      \  and\n  (is_state('lock.front', 'unlocked'))\n}}"
+    for:
+      seconds: 600
+  condition: []
+  action:
+  - service: lock.lock
+    target:
+      entity_id: lock.back
+  mode: single

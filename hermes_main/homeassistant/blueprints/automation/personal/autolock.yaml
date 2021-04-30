@@ -1,53 +1,68 @@
-blueprint:
-  name: Auto Lock
-  description: Automatically lock locks based on door sensors.
-  domain: automation
-  input:
-    door_entity:
-      name: Door Sensor
-      selector:
-        entity:
-          domain: binary_sensor
-          device_class: door
-    lock_target:
-      name: Lock
-      selector:
-        entity:
-          domain: lock
-    wait_time:
-      name: Wait time
-      description: Time to wait before locking the door.
-      default: 120
-      selector:
-        number:
-          min: 0
-          max: 3600
-          unit_of_measurement: seconds
+# inputs do not work in trigger templates
 
-mode: single
-max_exceeded: silent
+# blueprint:
+#   name: Auto Lock
+#   description: Automatically lock locks based on door sensors.
+#   domain: automation
+#   input:
+#     door_entity:
+#       name: Door Sensor
+#       selector:
+#         entity:
+#           domain: binary_sensor
+#           device_class: door
+#     lock_target:
+#       name: Lock
+#       selector:
+#         entity:
+#           domain: lock
+#     wait_time:
+#       name: Wait time
+#       description: Time to wait before locking the door.
+#       default: 120
+#       selector:
+#         number:
+#           min: 0
+#           max: 3600
+#           unit_of_measurement: seconds
 
-trigger:
-  - platform: state
-    entity_id: !input door_entity
-    to: "off"
-    for:
-      seconds: !input wait_time
-  - platform: state
-    entity_id: !input lock_target
-    to: "unlocked"
-    for:
-      seconds: !input wait_time
+# mode: single
+# max_exceeded: silent
 
-condition:
-  - condition: state
-    entity_id: !input door_entity
-    state: "off"
-  - condition: state
-    entity_id: !input lock_target
-    state: "unlocked"
+# variables:
+#   door_entity: !input door_entity
+#   lock_target: !input lock_target
 
-action:
-  - service: lock.lock
-    target:
-      entity_id: !input lock_target
+# trigger:
+#   - platform: template
+#     value_template: >
+#       {{
+#         (is_state(door_entity, 'off'))
+#         and
+#         (is_state(lock_target, 'unlocked'))
+#       }}
+#     for:
+#       seconds: !input wait_time
+#   # - platform: state
+#   #   entity_id: !input door_entity
+#   #   to: "off"
+#   #   for:
+#   #     seconds: !input wait_time
+#   # - platform: state
+#   #   entity_id: !input lock_target
+#   #   to: "unlocked"
+#   #   for:
+#   #     seconds: !input wait_time
+
+# # condition:
+# #   - condition: state
+# #     entity_id: !input door_entity
+# #     state: "off"
+# #   - condition: state
+# #     entity_id: !input lock_target
+# #     state: "unlocked"
+
+# action:
+#   - service: lock.lock
+#     target:
+#       entity_id: !input lock_target
