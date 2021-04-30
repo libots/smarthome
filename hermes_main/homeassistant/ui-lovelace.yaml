@@ -9,7 +9,7 @@ views:
   - !include ui/home/floor1.yaml
   - !include ui/home/floor2.yaml
   - !include ui/home/alarms.yaml
-  - !include ui/home/security.yaml
+  # - !include ui/home/security.yaml
   - !include ui/home/audio.yaml
   - !include ui/home/video.yaml
   # - !include ui/home/cctv.yaml

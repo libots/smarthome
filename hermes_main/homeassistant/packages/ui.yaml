@@ -7,6 +7,13 @@ lovelace:
       # icon: mdi:home
       # show_in_sidebar: true
       # filename: ui-lovelace.yaml
+    security-ui:
+      mode: yaml
+      title: Security
+      icon: mdi:security
+      show_in_sidebar: true
+      filename: ui-security.yaml
+      require_admin: true
     system-ui:
       mode: yaml
       title: System

@@ -1,0 +1,5 @@
+back_child:
+  lock_entity_id: lock.back
+  # door_sensor_entity_id: binary_sensor.door_back_homekit
+  alarm_level_or_user_code_entity_id: sensor.fake
+  alarm_type_or_access_control_entity_id: sensor.fake

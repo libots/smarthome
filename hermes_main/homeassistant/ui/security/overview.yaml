@@ -1,6 +1,6 @@
-title: Security
-path: security
-icon: mdi:shield
+title: Overview
+path: overview
+icon: mdi:home
 
 cards:
   
@@ -171,13 +171,14 @@ cards:
             name: Front Lock
             template: security_lock
             variables:
-              battery: '[[[ return states["lock.front_august"].attributes.battery_level ]]]'
+              battery: '[[[ return states["sensor.battery_lock_front"].state ]]]'
+              # battery: '[[[ return states["lock.front_august"].attributes.battery_level ]]]'
           - entity: lock.back
             type: custom:button-card
             name: Back Lock
             template: security_lock
             variables:
-              battery: '[[[ return states["lock.back_august"].attributes.battery_level ]]]'
+              battery: '[[[ return states["sensor.battery_lock_back"].state ]]]'
           - type: custom:button-card
             color_type: blank-card
   # End house panel

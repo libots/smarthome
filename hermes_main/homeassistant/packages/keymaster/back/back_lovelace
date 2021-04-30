@@ -1,0 +1,713 @@
+  - title: 'back Codes and Configuration'
+    path: keypad-back
+    icon: 'mdi:lock-smart'
+    panel: false
+    badges:
+      - input_boolean.back_lock_notifications
+      - input_boolean.back_dooraccess_notifications
+      - input_boolean.back_garageacess_notifications
+      - entity: >-
+          lock.back
+      - entity: >-
+          binary_sensor.door_back_homekit
+    cards:
+      - type: vertical-stack
+        cards:
+          - content: |
+              ## Code 1
+            type: markdown
+          - type: entities
+            show_header_toggle: false
+            entities:
+              - entity: input_text.back_name_1
+              - entity: input_text.back_pin_1
+              - entity: input_boolean.enabled_back_1
+              - entity: input_boolean.notify_back_1
+              - type: divider
+              - entity: sensor.connected_back_1
+                state_color: true
+              - entity: binary_sensor.active_back_1
+                state_color: true
+              - entity: binary_sensor.pin_synched_back_1
+                state_color: true
+              - type: 'custom:fold-entity-row'
+                head:
+                  type: section
+                  label: Advanced Options
+                entities:
+                  - entity: input_boolean.reset_codeslot_back_1
+                  - type: divider
+                  - entity: input_boolean.accesslimit_back_1
+                  - entity: input_number.accesscount_back_1
+                    type: 'custom:numberbox-card'
+                    icon: 'mdi:key-variant'
+                    speed: 250
+                  - type: divider
+                  - entity: input_boolean.daterange_back_1
+                  - entity: input_datetime.start_date_back_1
+                  - entity: input_datetime.end_date_back_1
+                  - type: divider
+                  - input_boolean.sun_back_1
+                  - input_boolean.sun_inc_back_1
+                  - input_datetime.sun_start_date_back_1
+                  - input_datetime.sun_end_date_back_1
+                  - type: divider
+                  - input_boolean.mon_back_1
+                  - input_boolean.mon_inc_back_1
+                  - input_datetime.mon_start_date_back_1
+                  - input_datetime.mon_end_date_back_1
+                  - type: divider
+                  - input_boolean.tue_back_1
+                  - input_boolean.tue_inc_back_1
+                  - input_datetime.tue_start_date_back_1
+                  - input_datetime.tue_end_date_back_1
+                  - type: divider
+                  - input_boolean.wed_back_1
+                  - input_boolean.wed_inc_back_1
+                  - input_datetime.wed_start_date_back_1
+                  - input_datetime.wed_end_date_back_1
+                  - type: divider
+                  - input_boolean.thu_back_1
+                  - input_boolean.thu_inc_back_1
+                  - input_datetime.thu_start_date_back_1
+                  - input_datetime.thu_end_date_back_1
+                  - type: divider
+                  - input_boolean.fri_back_1
+                  - input_boolean.fri_inc_back_1
+                  - input_datetime.fri_start_date_back_1
+                  - input_datetime.fri_end_date_back_1
+                  - type: divider
+                  - input_boolean.sat_back_1
+                  - input_boolean.sat_inc_back_1
+                  - input_datetime.sat_start_date_back_1
+                  - input_datetime.sat_end_date_back_1
+      - type: vertical-stack
+        cards:
+          - content: |
+              ## Code 2
+            type: markdown
+          - type: entities
+            show_header_toggle: false
+            entities:
+              - entity: input_text.back_name_2
+              - entity: input_text.back_pin_2
+              - entity: input_boolean.enabled_back_2
+              - entity: input_boolean.notify_back_2
+              - type: divider
+              - entity: sensor.connected_back_2
+                state_color: true
+              - entity: binary_sensor.active_back_2
+                state_color: true
+              - entity: binary_sensor.pin_synched_back_2
+                state_color: true
+              - type: 'custom:fold-entity-row'
+                head:
+                  type: section
+                  label: Advanced Options
+                entities:
+                  - entity: input_boolean.reset_codeslot_back_2
+                  - type: divider
+                  - entity: input_boolean.accesslimit_back_2
+                  - entity: input_number.accesscount_back_2
+                    type: 'custom:numberbox-card'
+                    icon: 'mdi:key-variant'
+                    speed: 250
+                  - type: divider
+                  - entity: input_boolean.daterange_back_2
+                  - entity: input_datetime.start_date_back_2
+                  - entity: input_datetime.end_date_back_2
+                  - type: divider
+                  - input_boolean.sun_back_2
+                  - input_boolean.sun_inc_back_2
+                  - input_datetime.sun_start_date_back_2
+                  - input_datetime.sun_end_date_back_2
+                  - type: divider
+                  - input_boolean.mon_back_2
+                  - input_boolean.mon_inc_back_2
+                  - input_datetime.mon_start_date_back_2
+                  - input_datetime.mon_end_date_back_2
+                  - type: divider
+                  - input_boolean.tue_back_2
+                  - input_boolean.tue_inc_back_2
+                  - input_datetime.tue_start_date_back_2
+                  - input_datetime.tue_end_date_back_2
+                  - type: divider
+                  - input_boolean.wed_back_2
+                  - input_boolean.wed_inc_back_2
+                  - input_datetime.wed_start_date_back_2
+                  - input_datetime.wed_end_date_back_2
+                  - type: divider
+                  - input_boolean.thu_back_2
+                  - input_boolean.thu_inc_back_2
+                  - input_datetime.thu_start_date_back_2
+                  - input_datetime.thu_end_date_back_2
+                  - type: divider
+                  - input_boolean.fri_back_2
+                  - input_boolean.fri_inc_back_2
+                  - input_datetime.fri_start_date_back_2
+                  - input_datetime.fri_end_date_back_2
+                  - type: divider
+                  - input_boolean.sat_back_2
+                  - input_boolean.sat_inc_back_2
+                  - input_datetime.sat_start_date_back_2
+                  - input_datetime.sat_end_date_back_2
+      - type: vertical-stack
+        cards:
+          - content: |
+              ## Code 3
+            type: markdown
+          - type: entities
+            show_header_toggle: false
+            entities:
+              - entity: input_text.back_name_3
+              - entity: input_text.back_pin_3
+              - entity: input_boolean.enabled_back_3
+              - entity: input_boolean.notify_back_3
+              - type: divider
+              - entity: sensor.connected_back_3
+                state_color: true
+              - entity: binary_sensor.active_back_3
+                state_color: true
+              - entity: binary_sensor.pin_synched_back_3
+                state_color: true
+              - type: 'custom:fold-entity-row'
+                head:
+                  type: section
+                  label: Advanced Options
+                entities:
+                  - entity: input_boolean.reset_codeslot_back_3
+                  - type: divider
+                  - entity: input_boolean.accesslimit_back_3
+                  - entity: input_number.accesscount_back_3
+                    type: 'custom:numberbox-card'
+                    icon: 'mdi:key-variant'
+                    speed: 250
+                  - type: divider
+                  - entity: input_boolean.daterange_back_3
+                  - entity: input_datetime.start_date_back_3
+                  - entity: input_datetime.end_date_back_3
+                  - type: divider
+                  - input_boolean.sun_back_3
+                  - input_boolean.sun_inc_back_3
+                  - input_datetime.sun_start_date_back_3
+                  - input_datetime.sun_end_date_back_3
+                  - type: divider
+                  - input_boolean.mon_back_3
+                  - input_boolean.mon_inc_back_3
+                  - input_datetime.mon_start_date_back_3
+                  - input_datetime.mon_end_date_back_3
+                  - type: divider
+                  - input_boolean.tue_back_3
+                  - input_boolean.tue_inc_back_3
+                  - input_datetime.tue_start_date_back_3
+                  - input_datetime.tue_end_date_back_3
+                  - type: divider
+                  - input_boolean.wed_back_3
+                  - input_boolean.wed_inc_back_3
+                  - input_datetime.wed_start_date_back_3
+                  - input_datetime.wed_end_date_back_3
+                  - type: divider
+                  - input_boolean.thu_back_3
+                  - input_boolean.thu_inc_back_3
+                  - input_datetime.thu_start_date_back_3
+                  - input_datetime.thu_end_date_back_3
+                  - type: divider
+                  - input_boolean.fri_back_3
+                  - input_boolean.fri_inc_back_3
+                  - input_datetime.fri_start_date_back_3
+                  - input_datetime.fri_end_date_back_3
+                  - type: divider
+                  - input_boolean.sat_back_3
+                  - input_boolean.sat_inc_back_3
+                  - input_datetime.sat_start_date_back_3
+                  - input_datetime.sat_end_date_back_3
+      - type: vertical-stack
+        cards:
+          - content: |
+              ## Code 4
+            type: markdown
+          - type: entities
+            show_header_toggle: false
+            entities:
+              - entity: input_text.back_name_4
+              - entity: input_text.back_pin_4
+              - entity: input_boolean.enabled_back_4
+              - entity: input_boolean.notify_back_4
+              - type: divider
+              - entity: sensor.connected_back_4
+                state_color: true
+              - entity: binary_sensor.active_back_4
+                state_color: true
+              - entity: binary_sensor.pin_synched_back_4
+                state_color: true
+              - type: 'custom:fold-entity-row'
+                head:
+                  type: section
+                  label: Advanced Options
+                entities:
+                  - entity: input_boolean.reset_codeslot_back_4
+                  - type: divider
+                  - entity: input_boolean.accesslimit_back_4
+                  - entity: input_number.accesscount_back_4
+                    type: 'custom:numberbox-card'
+                    icon: 'mdi:key-variant'
+                    speed: 250
+                  - type: divider
+                  - entity: input_boolean.daterange_back_4
+                  - entity: input_datetime.start_date_back_4
+                  - entity: input_datetime.end_date_back_4
+                  - type: divider
+                  - input_boolean.sun_back_4
+                  - input_boolean.sun_inc_back_4
+                  - input_datetime.sun_start_date_back_4
+                  - input_datetime.sun_end_date_back_4
+                  - type: divider
+                  - input_boolean.mon_back_4
+                  - input_boolean.mon_inc_back_4
+                  - input_datetime.mon_start_date_back_4
+                  - input_datetime.mon_end_date_back_4
+                  - type: divider
+                  - input_boolean.tue_back_4
+                  - input_boolean.tue_inc_back_4
+                  - input_datetime.tue_start_date_back_4
+                  - input_datetime.tue_end_date_back_4
+                  - type: divider
+                  - input_boolean.wed_back_4
+                  - input_boolean.wed_inc_back_4
+                  - input_datetime.wed_start_date_back_4
+                  - input_datetime.wed_end_date_back_4
+                  - type: divider
+                  - input_boolean.thu_back_4
+                  - input_boolean.thu_inc_back_4
+                  - input_datetime.thu_start_date_back_4
+                  - input_datetime.thu_end_date_back_4
+                  - type: divider
+                  - input_boolean.fri_back_4
+                  - input_boolean.fri_inc_back_4
+                  - input_datetime.fri_start_date_back_4
+                  - input_datetime.fri_end_date_back_4
+                  - type: divider
+                  - input_boolean.sat_back_4
+                  - input_boolean.sat_inc_back_4
+                  - input_datetime.sat_start_date_back_4
+                  - input_datetime.sat_end_date_back_4
+      - type: vertical-stack
+        cards:
+          - content: |
+              ## Code 5
+            type: markdown
+          - type: entities
+            show_header_toggle: false
+            entities:
+              - entity: input_text.back_name_5
+              - entity: input_text.back_pin_5
+              - entity: input_boolean.enabled_back_5
+              - entity: input_boolean.notify_back_5
+              - type: divider
+              - entity: sensor.connected_back_5
+                state_color: true
+              - entity: binary_sensor.active_back_5
+                state_color: true
+              - entity: binary_sensor.pin_synched_back_5
+                state_color: true
+              - type: 'custom:fold-entity-row'
+                head:
+                  type: section
+                  label: Advanced Options
+                entities:
+                  - entity: input_boolean.reset_codeslot_back_5
+                  - type: divider
+                  - entity: input_boolean.accesslimit_back_5
+                  - entity: input_number.accesscount_back_5
+                    type: 'custom:numberbox-card'
+                    icon: 'mdi:key-variant'
+                    speed: 250
+                  - type: divider
+                  - entity: input_boolean.daterange_back_5
+                  - entity: input_datetime.start_date_back_5
+                  - entity: input_datetime.end_date_back_5
+                  - type: divider
+                  - input_boolean.sun_back_5
+                  - input_boolean.sun_inc_back_5
+                  - input_datetime.sun_start_date_back_5
+                  - input_datetime.sun_end_date_back_5
+                  - type: divider
+                  - input_boolean.mon_back_5
+                  - input_boolean.mon_inc_back_5
+                  - input_datetime.mon_start_date_back_5
+                  - input_datetime.mon_end_date_back_5
+                  - type: divider
+                  - input_boolean.tue_back_5
+                  - input_boolean.tue_inc_back_5
+                  - input_datetime.tue_start_date_back_5
+                  - input_datetime.tue_end_date_back_5
+                  - type: divider
+                  - input_boolean.wed_back_5
+                  - input_boolean.wed_inc_back_5
+                  - input_datetime.wed_start_date_back_5
+                  - input_datetime.wed_end_date_back_5
+                  - type: divider
+                  - input_boolean.thu_back_5
+                  - input_boolean.thu_inc_back_5
+                  - input_datetime.thu_start_date_back_5
+                  - input_datetime.thu_end_date_back_5
+                  - type: divider
+                  - input_boolean.fri_back_5
+                  - input_boolean.fri_inc_back_5
+                  - input_datetime.fri_start_date_back_5
+                  - input_datetime.fri_end_date_back_5
+                  - type: divider
+                  - input_boolean.sat_back_5
+                  - input_boolean.sat_inc_back_5
+                  - input_datetime.sat_start_date_back_5
+                  - input_datetime.sat_end_date_back_5
+      - type: vertical-stack
+        cards:
+          - content: |
+              ## Code 6
+            type: markdown
+          - type: entities
+            show_header_toggle: false
+            entities:
+              - entity: input_text.back_name_6
+              - entity: input_text.back_pin_6
+              - entity: input_boolean.enabled_back_6
+              - entity: input_boolean.notify_back_6
+              - type: divider
+              - entity: sensor.connected_back_6
+                state_color: true
+              - entity: binary_sensor.active_back_6
+                state_color: true
+              - entity: binary_sensor.pin_synched_back_6
+                state_color: true
+              - type: 'custom:fold-entity-row'
+                head:
+                  type: section
+                  label: Advanced Options
+                entities:
+                  - entity: input_boolean.reset_codeslot_back_6
+                  - type: divider
+                  - entity: input_boolean.accesslimit_back_6
+                  - entity: input_number.accesscount_back_6
+                    type: 'custom:numberbox-card'
+                    icon: 'mdi:key-variant'
+                    speed: 250
+                  - type: divider
+                  - entity: input_boolean.daterange_back_6
+                  - entity: input_datetime.start_date_back_6
+                  - entity: input_datetime.end_date_back_6
+                  - type: divider
+                  - input_boolean.sun_back_6
+                  - input_boolean.sun_inc_back_6
+                  - input_datetime.sun_start_date_back_6
+                  - input_datetime.sun_end_date_back_6
+                  - type: divider
+                  - input_boolean.mon_back_6
+                  - input_boolean.mon_inc_back_6
+                  - input_datetime.mon_start_date_back_6
+                  - input_datetime.mon_end_date_back_6
+                  - type: divider
+                  - input_boolean.tue_back_6
+                  - input_boolean.tue_inc_back_6
+                  - input_datetime.tue_start_date_back_6
+                  - input_datetime.tue_end_date_back_6
+                  - type: divider
+                  - input_boolean.wed_back_6
+                  - input_boolean.wed_inc_back_6
+                  - input_datetime.wed_start_date_back_6
+                  - input_datetime.wed_end_date_back_6
+                  - type: divider
+                  - input_boolean.thu_back_6
+                  - input_boolean.thu_inc_back_6
+                  - input_datetime.thu_start_date_back_6
+                  - input_datetime.thu_end_date_back_6
+                  - type: divider
+                  - input_boolean.fri_back_6
+                  - input_boolean.fri_inc_back_6
+                  - input_datetime.fri_start_date_back_6
+                  - input_datetime.fri_end_date_back_6
+                  - type: divider
+                  - input_boolean.sat_back_6
+                  - input_boolean.sat_inc_back_6
+                  - input_datetime.sat_start_date_back_6
+                  - input_datetime.sat_end_date_back_6
+      - type: vertical-stack
+        cards:
+          - content: |
+              ## Code 7
+            type: markdown
+          - type: entities
+            show_header_toggle: false
+            entities:
+              - entity: input_text.back_name_7
+              - entity: input_text.back_pin_7
+              - entity: input_boolean.enabled_back_7
+              - entity: input_boolean.notify_back_7
+              - type: divider
+              - entity: sensor.connected_back_7
+                state_color: true
+              - entity: binary_sensor.active_back_7
+                state_color: true
+              - entity: binary_sensor.pin_synched_back_7
+                state_color: true
+              - type: 'custom:fold-entity-row'
+                head:
+                  type: section
+                  label: Advanced Options
+                entities:
+                  - entity: input_boolean.reset_codeslot_back_7
+                  - type: divider
+                  - entity: input_boolean.accesslimit_back_7
+                  - entity: input_number.accesscount_back_7
+                    type: 'custom:numberbox-card'
+                    icon: 'mdi:key-variant'
+                    speed: 250
+                  - type: divider
+                  - entity: input_boolean.daterange_back_7
+                  - entity: input_datetime.start_date_back_7
+                  - entity: input_datetime.end_date_back_7
+                  - type: divider
+                  - input_boolean.sun_back_7
+                  - input_boolean.sun_inc_back_7
+                  - input_datetime.sun_start_date_back_7
+                  - input_datetime.sun_end_date_back_7
+                  - type: divider
+                  - input_boolean.mon_back_7
+                  - input_boolean.mon_inc_back_7
+                  - input_datetime.mon_start_date_back_7
+                  - input_datetime.mon_end_date_back_7
+                  - type: divider
+                  - input_boolean.tue_back_7
+                  - input_boolean.tue_inc_back_7
+                  - input_datetime.tue_start_date_back_7
+                  - input_datetime.tue_end_date_back_7
+                  - type: divider
+                  - input_boolean.wed_back_7
+                  - input_boolean.wed_inc_back_7
+                  - input_datetime.wed_start_date_back_7
+                  - input_datetime.wed_end_date_back_7
+                  - type: divider
+                  - input_boolean.thu_back_7
+                  - input_boolean.thu_inc_back_7
+                  - input_datetime.thu_start_date_back_7
+                  - input_datetime.thu_end_date_back_7
+                  - type: divider
+                  - input_boolean.fri_back_7
+                  - input_boolean.fri_inc_back_7
+                  - input_datetime.fri_start_date_back_7
+                  - input_datetime.fri_end_date_back_7
+                  - type: divider
+                  - input_boolean.sat_back_7
+                  - input_boolean.sat_inc_back_7
+                  - input_datetime.sat_start_date_back_7
+                  - input_datetime.sat_end_date_back_7
+      - type: vertical-stack
+        cards:
+          - content: |
+              ## Code 8
+            type: markdown
+          - type: entities
+            show_header_toggle: false
+            entities:
+              - entity: input_text.back_name_8
+              - entity: input_text.back_pin_8
+              - entity: input_boolean.enabled_back_8
+              - entity: input_boolean.notify_back_8
+              - type: divider
+              - entity: sensor.connected_back_8
+                state_color: true
+              - entity: binary_sensor.active_back_8
+                state_color: true
+              - entity: binary_sensor.pin_synched_back_8
+                state_color: true
+              - type: 'custom:fold-entity-row'
+                head:
+                  type: section
+                  label: Advanced Options
+                entities:
+                  - entity: input_boolean.reset_codeslot_back_8
+                  - type: divider
+                  - entity: input_boolean.accesslimit_back_8
+                  - entity: input_number.accesscount_back_8
+                    type: 'custom:numberbox-card'
+                    icon: 'mdi:key-variant'
+                    speed: 250
+                  - type: divider
+                  - entity: input_boolean.daterange_back_8
+                  - entity: input_datetime.start_date_back_8
+                  - entity: input_datetime.end_date_back_8
+                  - type: divider
+                  - input_boolean.sun_back_8
+                  - input_boolean.sun_inc_back_8
+                  - input_datetime.sun_start_date_back_8
+                  - input_datetime.sun_end_date_back_8
+                  - type: divider
+                  - input_boolean.mon_back_8
+                  - input_boolean.mon_inc_back_8
+                  - input_datetime.mon_start_date_back_8
+                  - input_datetime.mon_end_date_back_8
+                  - type: divider
+                  - input_boolean.tue_back_8
+                  - input_boolean.tue_inc_back_8
+                  - input_datetime.tue_start_date_back_8
+                  - input_datetime.tue_end_date_back_8
+                  - type: divider
+                  - input_boolean.wed_back_8
+                  - input_boolean.wed_inc_back_8
+                  - input_datetime.wed_start_date_back_8
+                  - input_datetime.wed_end_date_back_8
+                  - type: divider
+                  - input_boolean.thu_back_8
+                  - input_boolean.thu_inc_back_8
+                  - input_datetime.thu_start_date_back_8
+                  - input_datetime.thu_end_date_back_8
+                  - type: divider
+                  - input_boolean.fri_back_8
+                  - input_boolean.fri_inc_back_8
+                  - input_datetime.fri_start_date_back_8
+                  - input_datetime.fri_end_date_back_8
+                  - type: divider
+                  - input_boolean.sat_back_8
+                  - input_boolean.sat_inc_back_8
+                  - input_datetime.sat_start_date_back_8
+                  - input_datetime.sat_end_date_back_8
+      - type: vertical-stack
+        cards:
+          - content: |
+              ## Code 9
+            type: markdown
+          - type: entities
+            show_header_toggle: false
+            entities:
+              - entity: input_text.back_name_9
+              - entity: input_text.back_pin_9
+              - entity: input_boolean.enabled_back_9
+              - entity: input_boolean.notify_back_9
+              - type: divider
+              - entity: sensor.connected_back_9
+                state_color: true
+              - entity: binary_sensor.active_back_9
+                state_color: true
+              - entity: binary_sensor.pin_synched_back_9
+                state_color: true
+              - type: 'custom:fold-entity-row'
+                head:
+                  type: section
+                  label: Advanced Options
+                entities:
+                  - entity: input_boolean.reset_codeslot_back_9
+                  - type: divider
+                  - entity: input_boolean.accesslimit_back_9
+                  - entity: input_number.accesscount_back_9
+                    type: 'custom:numberbox-card'
+                    icon: 'mdi:key-variant'
+                    speed: 250
+                  - type: divider
+                  - entity: input_boolean.daterange_back_9
+                  - entity: input_datetime.start_date_back_9
+                  - entity: input_datetime.end_date_back_9
+                  - type: divider
+                  - input_boolean.sun_back_9
+                  - input_boolean.sun_inc_back_9
+                  - input_datetime.sun_start_date_back_9
+                  - input_datetime.sun_end_date_back_9
+                  - type: divider
+                  - input_boolean.mon_back_9
+                  - input_boolean.mon_inc_back_9
+                  - input_datetime.mon_start_date_back_9
+                  - input_datetime.mon_end_date_back_9
+                  - type: divider
+                  - input_boolean.tue_back_9
+                  - input_boolean.tue_inc_back_9
+                  - input_datetime.tue_start_date_back_9
+                  - input_datetime.tue_end_date_back_9
+                  - type: divider
+                  - input_boolean.wed_back_9
+                  - input_boolean.wed_inc_back_9
+                  - input_datetime.wed_start_date_back_9
+                  - input_datetime.wed_end_date_back_9
+                  - type: divider
+                  - input_boolean.thu_back_9
+                  - input_boolean.thu_inc_back_9
+                  - input_datetime.thu_start_date_back_9
+                  - input_datetime.thu_end_date_back_9
+                  - type: divider
+                  - input_boolean.fri_back_9
+                  - input_boolean.fri_inc_back_9
+                  - input_datetime.fri_start_date_back_9
+                  - input_datetime.fri_end_date_back_9
+                  - type: divider
+                  - input_boolean.sat_back_9
+                  - input_boolean.sat_inc_back_9
+                  - input_datetime.sat_start_date_back_9
+                  - input_datetime.sat_end_date_back_9
+      - type: vertical-stack
+        cards:
+          - content: |
+              ## Code 10
+            type: markdown
+          - type: entities
+            show_header_toggle: false
+            entities:
+              - entity: input_text.back_name_10
+              - entity: input_text.back_pin_10
+              - entity: input_boolean.enabled_back_10
+              - entity: input_boolean.notify_back_10
+              - type: divider
+              - entity: sensor.connected_back_10
+                state_color: true
+              - entity: binary_sensor.active_back_10
+                state_color: true
+              - entity: binary_sensor.pin_synched_back_10
+                state_color: true
+              - type: 'custom:fold-entity-row'
+                head:
+                  type: section
+                  label: Advanced Options
+                entities:
+                  - entity: input_boolean.reset_codeslot_back_10
+                  - type: divider
+                  - entity: input_boolean.accesslimit_back_10
+                  - entity: input_number.accesscount_back_10
+                    type: 'custom:numberbox-card'
+                    icon: 'mdi:key-variant'
+                    speed: 250
+                  - type: divider
+                  - entity: input_boolean.daterange_back_10
+                  - entity: input_datetime.start_date_back_10
+                  - entity: input_datetime.end_date_back_10
+                  - type: divider
+                  - input_boolean.sun_back_10
+                  - input_boolean.sun_inc_back_10
+                  - input_datetime.sun_start_date_back_10
+                  - input_datetime.sun_end_date_back_10
+                  - type: divider
+                  - input_boolean.mon_back_10
+                  - input_boolean.mon_inc_back_10
+                  - input_datetime.mon_start_date_back_10
+                  - input_datetime.mon_end_date_back_10
+                  - type: divider
+                  - input_boolean.tue_back_10
+                  - input_boolean.tue_inc_back_10
+                  - input_datetime.tue_start_date_back_10
+                  - input_datetime.tue_end_date_back_10
+                  - type: divider
+                  - input_boolean.wed_back_10
+                  - input_boolean.wed_inc_back_10
+                  - input_datetime.wed_start_date_back_10
+                  - input_datetime.wed_end_date_back_10
+                  - type: divider
+                  - input_boolean.thu_back_10
+                  - input_boolean.thu_inc_back_10
+                  - input_datetime.thu_start_date_back_10
+                  - input_datetime.thu_end_date_back_10
+                  - type: divider
+                  - input_boolean.fri_back_10
+                  - input_boolean.fri_inc_back_10
+                  - input_datetime.fri_start_date_back_10
+                  - input_datetime.fri_end_date_back_10
+                  - type: divider
+                  - input_boolean.sat_back_10
+                  - input_boolean.sat_inc_back_10
+                  - input_datetime.sat_start_date_back_10
+                  - input_datetime.sat_end_date_back_10

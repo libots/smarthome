@@ -1,0 +1,10 @@
+title: Security
+
+views:
+  - !include ui/security/overview.yaml
+  - !include ui/security/keymaster_front.yaml
+  - !include ui/security/keymaster_back.yaml
+  - !include ui/security/keymaster_garage_left.yaml
+  - !include ui/security/keymaster_garage_right.yaml
+
+button_card_templates: !include_dir_merge_named ui/templates_button
