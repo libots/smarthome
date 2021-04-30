@@ -673,12 +673,20 @@ services:
     depends_on:
       - mosquitto
     privileged: true
+    # ports:
+    #   - "8085:8080"
     volumes:
       - ${MAINDIR}/zigbee2mqtt/.data:/app/data
     devices:
       - /dev/serial/by-id/usb-1a86_USB_Serial-if00-port0
     environment:
       - TZ=${TZ}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.zigbee.rule=Host(`zigbee.${DOMAINNAME}`,`zigbee.${DOMAINNAME_EXTERNAL}`)"
+      - "traefik.http.routers.zigbee.tls=true"
+      - "traefik.http.routers.zigbee.middlewares=traefikauth"
+      - "traefik.http.services.zigbee.loadbalancer.server.port=8080"
     logging:
       driver: "json-file"
       options:
@@ -690,13 +698,19 @@ services:
     restart: unless-stopped
     depends_on:
       - zigbee2mqtt
-    ports:
-      - "8880:80"
+    # ports:
+    #   - "8880:80"
     environment:
       - Z2MA_SETTINGS__MQTTSERVER=${IP_IOT}
       - Z2MA_SETTINGS__MQTTUSERNAME=${ZIGBEE_MQTT_USERNAME}
       - Z2MA_SETTINGS__MQTTPASSWORD=${ZIGBEE_MQTT_PASSWORD}
       - TZ=${TZ}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.zigbee_asst.rule=Host(`zigbee_asst.${DOMAINNAME}`,`zigbee_asst.${DOMAINNAME_EXTERNAL}`)"
+      - "traefik.http.routers.zigbee_asst.tls=true"
+      - "traefik.http.routers.zigbee_asst.middlewares=traefikauth"
+      - "traefik.http.services.zigbee_asst.loadbalancer.server.port=80"
     logging:
       driver: "json-file"
       options:
