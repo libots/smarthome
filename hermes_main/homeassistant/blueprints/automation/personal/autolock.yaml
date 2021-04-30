@@ -43,6 +43,9 @@ condition:
   - condition: state
     entity_id: !input door_entity
     state: "off"
+  - condition: state
+    entity_id: !input lock_target
+    state: "unlocked"
 
 action:
   - service: lock.lock
