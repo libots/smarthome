@@ -95,8 +95,8 @@
   description: ''
   trigger:
   - platform: template
-    value_template: "{{\n  (is_state('binary_sensor.door_front_homekit', 'off'))\n\
-      \  and\n  (is_state('lock.front', 'unlocked'))\n}}"
+    value_template: "{{\n  (is_state('binary_sensor.door_back_homekit', 'off'))\n\
+      \  and\n  (is_state('lock.back', 'unlocked'))\n}}"
     for:
       seconds: 600
   condition: []
@@ -104,4 +104,20 @@
   - service: lock.lock
     target:
       entity_id: lock.back
+  mode: single
+- id: '1619927600786'
+  alias: Irrigation Override Dog Schedule
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: switch.irrigation_program_dogs
+    to: 'on'
+  condition:
+  - condition: time
+    after: 02:55:00
+    before: 03:05:00
+  action:
+  - service: switch.turn_off
+    target:
+      entity_id: switch.irrigation_program_dogs
   mode: single

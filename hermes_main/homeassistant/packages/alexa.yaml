@@ -29,6 +29,7 @@ alexa:
         - script.goodnight
         - scene.goodnight
         - input_boolean.pennstate
+        - switch.irrigation_program_dogs
     entity_config:
       switch.light_basement:
         name: Basement Lights
@@ -86,6 +87,8 @@ alexa:
       input_boolean.pennstate:
         name: Penn State Mode
         description: HA Penn State mode for lighting
+      switch.irrigation_program_dogs:
+        name: Dog Irrigation
 
 # input_boolean:
 #   alexa_configure:

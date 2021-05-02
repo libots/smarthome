@@ -565,6 +565,12 @@ cards:
             template:
               - general
               - inside
+          - entity: switch.irrigation_program_dogs
+            type: custom:button-card
+            name: Flush
+            template:
+              - general
+              - inside
       - type: custom:button-card
         color_type: blank-card
       - entity: input_boolean.light_yard_motion
