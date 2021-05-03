@@ -5,6 +5,114 @@ script:
       - service: mqtt.publish
         data:
           topic: fan_speed_lvrm
+  fan_toggle:
+    alias: Toggle Fan Speed
+    variables:
+      fan_entity: fan.mbed # generic choice for default fan (entity must exist!)
+    sequence:
+      - choose:
+          - conditions:
+              - condition: template
+                value_template: "{{ is_state(fan_entity, 'off') }}"
+              # - condition: state
+              #   entity_id: "{{ fan_entity }}"
+              #   state: 'off'
+            sequence:
+              - service: fan.turn_on
+                target:
+                  entity_id: "{{ fan_entity }}"
+                data:
+                  percentage: 100
+          - conditions:
+              - condition: template
+                value_template: "{{ is_state(fan_entity, 'on') }}"
+              # - condition: state
+              #   entity_id: "{{ fan_entity }}"
+              #   state: 'on'
+            sequence:
+              - service: fan.decrease_speed
+                target:
+                  entity_id: "{{ fan_entity }}"
+                data: {}
+        default: []
+    mode: single
+
+fan:
+  # - platform: mqtt
+  #   name: Fan Test Manual
+  #   availability:
+  #     - topic: zigbee2mqtt/bridge/state
+  #   command_topic: zigbee2mqtt/Fan Test/set/fan_state
+  #   json_attributes_topic: zigbee2mqtt/Fan Test
+  #   preset_mode_command_topic: zigbee2mqtt/Fan Test/set/fan_mode
+  #   preset_mode_command_template: '{{ value }}'
+  #   preset_mode_value_template: '{{ value_json.fan_mode }}'
+  #   preset_modes:
+  #     - 'off'
+  #     - low
+  #     - medium
+  #     - high
+  #     - 'on'
+  #     - auto
+  #     - smart
+  #   speed_command_topic: zigbee2mqtt/Fan Test/set/fan_mode
+  #   speed_range_max: 4
+  #   state_topic: zigbee2mqtt/Fan Test
+  #   state_value_template: '{{ value_json.fan_state }}'
+  - platform: template
+    fans:
+      mbed:
+        friendly_name: Master Bedroom Fan
+        value_template: "{{ states('fan.fan_mbed') }}"
+        turn_on:
+          service: mqtt.publish
+          data:
+            topic: zigbee2mqtt/Fan MBed/set/fan_state
+            payload: 'on'
+        turn_off:
+          service: mqtt.publish
+          data:
+            topic: zigbee2mqtt/Fan MBed/set/fan_state
+            payload: 'off'
+        speed_count: 4
+        percentage_template: >
+          {% if is_state_attr('fan.fan_mbed', 'fan_mode', 'off') %}
+            0
+          {% elif is_state_attr('fan.fan_mbed', 'fan_mode', 'low') %}
+            25
+          {% elif is_state_attr('fan.fan_mbed', 'fan_mode', 'medium') %}
+            50
+          {% elif is_state_attr('fan.fan_mbed', 'fan_mode', 'high') %}
+            75
+          {% elif is_state_attr('fan.fan_mbed', 'fan_mode', 'on') %}
+            100
+          {% endif %}
+        set_percentage:
+          service: mqtt.publish
+          data_template:
+            topic: zigbee2mqtt/Fan MBed/set/fan_mode
+            payload: >
+              {% if percentage == 0 %}
+                off
+              {% elif percentage == 25 %}
+                low
+              {% elif percentage == 50 %}
+                medium
+              {% elif percentage == 75 %}
+                high
+              {% elif percentage == 100 %}
+                on
+              {% endif %}
+        # preset_modes:
+        #   - auto
+        #   - smart
+        # preset_mode_template: "{{ state_attr('fan.fan_test', 'fan_mode') }}"
+        # set_preset_mode:
+        #   service: mqtt.publish
+        #   data:
+        #     topic: zigbee2mqtt/Fan Test/set/fan_mode
+        #     payload: "{{ preset_mode }}"
+
 
 # homeassistant:
 #   customize:
