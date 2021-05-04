@@ -44,3 +44,4 @@ cards:
       - entity: switch.coffee
         name: Switch Status
   # End coffee panel
+  - type: custom:scheduler-card
