@@ -83,6 +83,7 @@ services:
   docker_hoster:
     image: dvdarias/docker-hoster
     container_name: docker-hoster
+    restart: unless-stopped
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock
       - /etc/hosts:/tmp/hosts
@@ -375,6 +376,7 @@ services:
   organizr:
     image: organizr/organizr
     container_name: organizr
+    restart: unless-stopped
     volumes:
       - ${MAINDIR}/organizr:/config
     environment:
