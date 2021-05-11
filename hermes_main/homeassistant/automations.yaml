@@ -80,8 +80,8 @@
   description: ''
   trigger:
   - platform: template
-    value_template: "{{\n  (is_state('binary_sensor.door_front_homekit', 'off'))\n\
-      \  and\n  (is_state('lock.front', 'unlocked'))\n}}"
+    value_template: "{{\n  (is_state('binary_sensor.door_front', 'off'))\n  and\n\
+      \  (is_state('lock.front', 'unlocked'))\n}}"
     for:
       seconds: 120
   condition: []
@@ -95,8 +95,8 @@
   description: ''
   trigger:
   - platform: template
-    value_template: "{{\n  (is_state('binary_sensor.door_back_homekit', 'off'))\n\
-      \  and\n  (is_state('lock.back', 'unlocked'))\n}}"
+    value_template: "{{\n  (is_state('binary_sensor.door_back', 'off'))\n  and\n \
+      \ (is_state('lock.back', 'unlocked'))\n}}"
     for:
       seconds: 600
   condition: []
