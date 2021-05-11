@@ -30,6 +30,8 @@
           name: Master Bathroom
         - entity_id: media_player.sonos_changing
           name: Changing Room
+        - entity_id: media_player.sonos_roam
+          name: Roam
         - entity_id: media_player.sonos_patio
           name: Patio
 {%- endmacro %}
@@ -47,6 +49,7 @@ cards:
   {{ sonos("media_player.sonos_hall") }}
   {{ sonos("media_player.sonos_mbed") }}
   {{ sonos("media_player.sonos_mbath") }}
+  {{ sonos("media_player.sonos_roam") }}
   {{ sonos("media_player.sonos_changing") }}
 
   - type: entities
@@ -78,6 +81,8 @@ cards:
               name: Master Bathroom
             - entity_id: media_player.sonos_changing
               name: Changing Room
+            - entity_id: media_player.sonos_roam
+              name: Roam
             - entity_id: media_player.sonos_patio
               name: Patio
         style: |
