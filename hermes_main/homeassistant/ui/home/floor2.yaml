@@ -31,6 +31,9 @@ cards:
         type: custom:slider-entity-row
         toggle: true
         max: 4
+        min: 0
+        max: 100
+        step: 25
       - entity: light.mbed_matt
         name: Matt’s Light
         type: custom:slider-entity-row
