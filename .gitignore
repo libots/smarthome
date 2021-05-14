@@ -5,7 +5,7 @@
 
 ##############################################
 # MOST CONTAINERS
-.data/
+.data*
 .log/
 # chronograf/backup/
 # deconz/
