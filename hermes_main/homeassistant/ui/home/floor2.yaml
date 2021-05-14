@@ -78,7 +78,7 @@ cards:
       - type: custom:hui-element
         card_type: conditional
         conditions:
-          - entity: binary_sensor.mbath_shower_humidity_fan
+          - entity: binary_sensor.mbath_humidity_fan
             state: "on"
         card:
           entity: switch.mbath_fan
@@ -90,7 +90,7 @@ cards:
       - type: custom:hui-element
         card_type: conditional
         conditions:
-          - entity: binary_sensor.mbath_shower_humidity_fan
+          - entity: binary_sensor.mbath_humidity_fan
             state: "off"
         card:
           entity: switch.mbath_fan
