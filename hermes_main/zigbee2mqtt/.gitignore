@@ -1,0 +1,10 @@
+# Whitelist all
+!.data/
+
+# Blacklist backups
+.data/.old/
+
+# Blacklist configuration
+.data/configuration.yaml
+
+# External converters should remain
