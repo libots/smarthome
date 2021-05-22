@@ -130,7 +130,7 @@ cards:
   # End dog room card
   
   # Begin guest bathroom card
-  - title: Master Bathroom
+  - title: Guest Bathroom
     type: entities
     show_header_toggle: false
     entities:
