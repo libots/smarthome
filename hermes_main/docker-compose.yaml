@@ -39,47 +39,47 @@ services:
       # - COX_USER=${COX_USERNAME}
       # - COX_PASSWORD=${COX_PASSWORD}
       # - JSON_FILENAME=coxusage.json
-  deconz:
-    image: marthoc/deconz
-    #:amd64-2.05.84
-    container_name: deconz
-    hostname: deconz.docker
-    restart: unless-stopped
-    ports:
-      - "8089:8089"
-      - "444:444"
-      - "5950:5950"
-    volumes:
-      - ${MAINDIR}/deconz/.data:/root/.local/share/dresden-elektronik/deCONZ
-    devices:
-      - /dev/serial/by-id/usb-dresden_elektronik_ingenieurtechnik_GmbH_ConBee_II_DE2190268-if00:/dev/ttyACM0
-    environment:
-      - TZ=${TZ}
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - DECONZ_WEB_PORT=8089
-      - DECONZ_WS_PORT=444
-      - DECONZ_VNC_MODE=1
-      - DECONZ_VNC_PORT=5950
-      - DECONZ_VNC_PASSWORD=${DECONZ_VNC_PASSWORD}
-      - DECONZ_DEVICE=/dev/ttyACM0
-      - DEBUG_INFO=1 # Default 1
-      - DEBUG_APS=0 # Default 0
-      - DEBUG_ZCL=0 # Default 0
-      - DEBUG_ZDP=0 # Default 0
-      - DEBUG_OTAU=0 # Default 0
-      - DECONZ_UPNP=0
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.deconz.rule=Host(`deconz.${DOMAINNAME}`,`deconz.${DOMAINNAME_EXTERNAL}`)"
-      - "traefik.http.routers.deconz.tls=true"
-      - "traefik.http.routers.deconz.middlewares=traefikauth"
-      - "traefik.http.services.deconz.loadbalancer.server.port=8089"
-    logging:
-      driver: "json-file"
-      options:
-        max-file: "5"
-        max-size: "10m"
+  # deconz:
+  #   image: marthoc/deconz
+  #   #:amd64-2.05.84
+  #   container_name: deconz
+  #   hostname: deconz.docker
+  #   restart: unless-stopped
+  #   ports:
+  #     - "8089:8089"
+  #     - "444:444"
+  #     - "5950:5950"
+  #   volumes:
+  #     - ${MAINDIR}/deconz/.data:/root/.local/share/dresden-elektronik/deCONZ
+  #   devices:
+  #     - /dev/serial/by-id/usb-dresden_elektronik_ingenieurtechnik_GmbH_ConBee_II_DE2190268-if00:/dev/ttyACM0
+  #   environment:
+  #     - TZ=${TZ}
+  #     - PUID=${PUID}
+  #     - PGID=${PGID}
+  #     - DECONZ_WEB_PORT=8089
+  #     - DECONZ_WS_PORT=444
+  #     - DECONZ_VNC_MODE=1
+  #     - DECONZ_VNC_PORT=5950
+  #     - DECONZ_VNC_PASSWORD=${DECONZ_VNC_PASSWORD}
+  #     - DECONZ_DEVICE=/dev/ttyACM0
+  #     - DEBUG_INFO=1 # Default 1
+  #     - DEBUG_APS=0 # Default 0
+  #     - DEBUG_ZCL=0 # Default 0
+  #     - DEBUG_ZDP=0 # Default 0
+  #     - DEBUG_OTAU=0 # Default 0
+  #     - DECONZ_UPNP=0
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.http.routers.deconz.rule=Host(`deconz.${DOMAINNAME}`,`deconz.${DOMAINNAME_EXTERNAL}`)"
+  #     - "traefik.http.routers.deconz.tls=true"
+  #     - "traefik.http.routers.deconz.middlewares=traefikauth"
+  #     - "traefik.http.services.deconz.loadbalancer.server.port=8089"
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-file: "5"
+  #       max-size: "10m"
   docker_hoster:
     image: dvdarias/docker-hoster
     container_name: docker-hoster
@@ -188,7 +188,6 @@ services:
     container_name: homeassistant
     restart: always
     depends_on:
-      - deconz
       - mariadb
       - mosquitto
     privileged: true
@@ -675,10 +674,11 @@ services:
     depends_on:
       - mosquitto
     privileged: true
-    # ports:
-    #   - "8085:8080"
+    ports:
+      - "8085:8080"
     volumes:
       - ${MAINDIR}/zigbee2mqtt/.data:/app/data
+      - /run/udev:/run/udev:ro
     devices:
       - /dev/serial/by-id/usb-1a86_USB_Serial-if00-port0
     environment:
@@ -700,8 +700,8 @@ services:
     restart: unless-stopped
     depends_on:
       - zigbee2mqtt
-    # ports:
-    #   - "8880:80"
+    ports:
+      - "8880:80"
     environment:
       - Z2MA_SETTINGS__MQTTSERVER=${IP_IOT}
       - Z2MA_SETTINGS__MQTTUSERNAME=${ZIGBEE_MQTT_USERNAME}
