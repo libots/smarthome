@@ -19,6 +19,7 @@ www/community
 tts
 neighbours
 deps
+.cache
 
 # Logs
 *.log
