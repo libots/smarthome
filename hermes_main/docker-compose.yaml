@@ -471,6 +471,7 @@ services:
       - /home/repo:/mnt/repo:z
       - ${USERDIR}/main:/mnt/repo/hermes_main:z
       - ${USERDIR}/local:/mnt/repo/hermes_local:z
+      - /media/ares/main:/mnt/repo/ares_main:z
       - /media/apollo/main:/mnt/repo/apollo_main:z
       - /media/poseidon/main:/mnt/repo/poseidon_main:z
     environment:
