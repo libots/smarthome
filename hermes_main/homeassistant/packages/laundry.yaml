@@ -50,11 +50,11 @@ sensor:
         unit_of_measurement: log W
         device_class: power
 
-amcrest:
-  - name: Laundry Dryer
-    host: !secret amcrest_dryer_ip
-    username: !secret amcrest_dryer_username
-    password: !secret amcrest_dryer_password
+# amcrest:
+#   - name: Laundry Dryer
+#     host: !secret amcrest_dryer_ip
+#     username: !secret amcrest_dryer_username
+#     password: !secret amcrest_dryer_password
 
 homeassistant:
   customize:
