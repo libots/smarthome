@@ -1,0 +1,138 @@
+version: '3.6'
+
+services:
+  # portainer:
+  #   image: portainer/portainer-ce
+  #   container_name: portainer
+  #   restart: unless-stopped
+  #   command: -H unix:///var/run/docker.sock
+  #   ports:
+  #     - "9000:9000"
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #     - ${MAINDIR}/portainer/.data:/data
+  #   environment:
+  #     - TZ=${TZ}
+  #     - PUID=${PUID}
+  #     - PGID=${PGID}
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-file: "5"
+  #       max-size: "10m"
+  portainer_agent:
+    image: portainer/agent
+    container_name: portainer_agent
+    restart: unless-stopped
+    ports:
+      - "9001:9001"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker/volumes:/var/lib/docker/volumes
+    environment:
+      - AGENT_SECRET=${PORTAINER_SECRET}
+  samba:
+    image: dperson/samba
+    container_name: samba
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
+    read_only: false
+    tmpfs:
+      - /tmp
+    ports:
+      - "137:137/udp" # required to advertise shares (NMBD)
+      - "138:138/udp" # required to advertise shares (NMBD)
+      - "139:139/tcp" # default smb port
+      - "445:445/tcp" # default  smb port
+    volumes:
+      - ${USERDIR}:/mnt/docker:z
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - NMBD=true # advertise shares
+      - USERID=${PUID}
+      - GROUPID=${PGID}
+      - WORKGROUP=WORKGROUP
+    # -u "UserName;Password"
+    # -s "ShareName;/path/in/container;browsable;read_only;guest;users;admins;writelist;comment"
+    command: '-u "${SMB_USERNAME};${SMB_PASSWORD}"
+              -s "docker;/mnt/docker;yes;no;no;${SMB_USERNAME}"'
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "10m"
+  traefik:
+    image: traefik:latest
+    container_name: traefik
+    restart: unless-stopped
+    domainname: ${DOMAINNAME}
+    ports:
+      - "80:80"
+      - "443:443"
+      - "${IP_TRUST}:8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ${MAINDIR}/traefik:/configuration
+      - ${MAINDIR}/shared:/shared
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.web-secure.address=:443"
+      - "--providers.file.directory=/configuration"
+      - "--providers.file.watch=true"
+      - "--serversTransport.insecureSkipVerify=true"
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "10m"
+  traefik_auth:
+    container_name: traefik_auth
+    image: thomseddon/traefik-forward-auth
+    restart: unless-stopped
+    environment:
+      - DEFAULT_PROVIDER=oidc
+      - PROVIDERS_OIDC_CLIENT_ID=${TRAEFIKAUTH_CLIENT_ID}
+      - PROVIDERS_OIDC_CLIENT_SECRET=${TRAEFIKAUTH_CLIENT_SECRET}
+      - PROVIDERS_OIDC_ISSUER_URL=https://kc.${DOMAINNAME_EXTERNAL}/auth/realms/master
+      - SECRET=${TRAEFIKAUTH_SECRET}
+      - AUTH_HOST=auth.${DOMAINNAME_EXTERNAL}
+      - COOKIE_DOMAIN=${DOMAINNAME_EXTERNAL}
+      # - COOKIE_DOMAIN=${DOMAINNAME}
+      - LOG_LEVEL=debug
+    ports:
+      - "4181:4181"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefikauth.rule=Host(`auth.${DOMAINNAME}`,`auth.${DOMAINNAME_EXTERNAL}`)"
+      - "traefik.http.routers.traefikauth.tls=true"
+      - "traefik.http.routers.traefikauth.middlewares=traefikauth"
+      - "traefik.http.services.traefikauth.loadbalancer.server.port=4181"
+      # - "traefik.http.middlewares.traefikauth.forwardauth.address=http://10.20.32.9:4181"
+      # - "traefik.http.middlewares.traefikauth.forwardauth.authResponseHeaders=X-Forwarded-User"
+      # - "traefik.http.middlewares.traefikauth.forwardauth.trustForwardHeader=true"
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - TZ=${TZ}
+      - '--cleanup'
+      # - '--monitor-only'
+    command: --interval 3600
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "10m"
