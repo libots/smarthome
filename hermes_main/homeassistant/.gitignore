@@ -20,6 +20,7 @@ tts
 neighbours
 deps
 .cache
+__pycache__
 
 # Logs
 *.log
