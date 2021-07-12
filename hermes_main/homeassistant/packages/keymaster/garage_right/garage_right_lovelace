@@ -3,6 +3,8 @@
     icon: 'mdi:lock-smart'
     panel: false
     badges:
+      - input_text.garage_right_lockname
+      - input_text.garage_right_garage_left_parent
       - input_boolean.garage_right_lock_notifications
       - input_boolean.garage_right_dooraccess_notifications
       - input_boolean.garage_right_garageacess_notifications
@@ -10,6 +12,10 @@
           lock.garage_right
       - entity: >-
           binary_sensor.door_garage_right_homekit
+      - entity: input_text.keymaster_garage_right_autolock_door_time_day
+      - entity: input_text.keymaster_garage_right_autolock_door_time_night
+      - entity: input_boolean.keymaster_garage_right_autolock
+      - entity: timer.keymaster_garage_right_autolock
     cards:
       - type: vertical-stack
         cards:
@@ -24,11 +30,11 @@
               - entity: input_boolean.enabled_garage_right_1
               - entity: input_boolean.notify_garage_right_1
               - type: divider
+              - entity: input_boolean.override_parent_garage_right_1
+              - type: divider
               - entity: sensor.connected_garage_right_1
                 state_color: true
               - entity: binary_sensor.active_garage_right_1
-                state_color: true
-              - entity: binary_sensor.pin_synched_garage_right_1
                 state_color: true
               - type: 'custom:fold-entity-row'
                 head:
@@ -46,41 +52,45 @@
                   - entity: input_boolean.daterange_garage_right_1
                   - entity: input_datetime.start_date_garage_right_1
                   - entity: input_datetime.end_date_garage_right_1
-                  - type: divider
-                  - input_boolean.sun_garage_right_1
-                  - input_boolean.sun_inc_garage_right_1
-                  - input_datetime.sun_start_date_garage_right_1
-                  - input_datetime.sun_end_date_garage_right_1
-                  - type: divider
-                  - input_boolean.mon_garage_right_1
-                  - input_boolean.mon_inc_garage_right_1
-                  - input_datetime.mon_start_date_garage_right_1
-                  - input_datetime.mon_end_date_garage_right_1
-                  - type: divider
-                  - input_boolean.tue_garage_right_1
-                  - input_boolean.tue_inc_garage_right_1
-                  - input_datetime.tue_start_date_garage_right_1
-                  - input_datetime.tue_end_date_garage_right_1
-                  - type: divider
-                  - input_boolean.wed_garage_right_1
-                  - input_boolean.wed_inc_garage_right_1
-                  - input_datetime.wed_start_date_garage_right_1
-                  - input_datetime.wed_end_date_garage_right_1
-                  - type: divider
-                  - input_boolean.thu_garage_right_1
-                  - input_boolean.thu_inc_garage_right_1
-                  - input_datetime.thu_start_date_garage_right_1
-                  - input_datetime.thu_end_date_garage_right_1
-                  - type: divider
-                  - input_boolean.fri_garage_right_1
-                  - input_boolean.fri_inc_garage_right_1
-                  - input_datetime.fri_start_date_garage_right_1
-                  - input_datetime.fri_end_date_garage_right_1
-                  - type: divider
-                  - input_boolean.sat_garage_right_1
-                  - input_boolean.sat_inc_garage_right_1
-                  - input_datetime.sat_start_date_garage_right_1
-                  - input_datetime.sat_end_date_garage_right_1
+                  - type: 'custom:fold-entity-row'
+                    head:
+                      type: section
+                      label: Custom Weekdays
+                    entities:
+                      - input_boolean.sun_garage_right_1
+                      - input_boolean.sun_inc_garage_right_1
+                      - input_datetime.sun_start_date_garage_right_1
+                      - input_datetime.sun_end_date_garage_right_1
+                      - type: divider
+                      - input_boolean.mon_garage_right_1
+                      - input_boolean.mon_inc_garage_right_1
+                      - input_datetime.mon_start_date_garage_right_1
+                      - input_datetime.mon_end_date_garage_right_1
+                      - type: divider
+                      - input_boolean.tue_garage_right_1
+                      - input_boolean.tue_inc_garage_right_1
+                      - input_datetime.tue_start_date_garage_right_1
+                      - input_datetime.tue_end_date_garage_right_1
+                      - type: divider
+                      - input_boolean.wed_garage_right_1
+                      - input_boolean.wed_inc_garage_right_1
+                      - input_datetime.wed_start_date_garage_right_1
+                      - input_datetime.wed_end_date_garage_right_1
+                      - type: divider
+                      - input_boolean.thu_garage_right_1
+                      - input_boolean.thu_inc_garage_right_1
+                      - input_datetime.thu_start_date_garage_right_1
+                      - input_datetime.thu_end_date_garage_right_1
+                      - type: divider
+                      - input_boolean.fri_garage_right_1
+                      - input_boolean.fri_inc_garage_right_1
+                      - input_datetime.fri_start_date_garage_right_1
+                      - input_datetime.fri_end_date_garage_right_1
+                      - type: divider
+                      - input_boolean.sat_garage_right_1
+                      - input_boolean.sat_inc_garage_right_1
+                      - input_datetime.sat_start_date_garage_right_1
+                      - input_datetime.sat_end_date_garage_right_1
       - type: vertical-stack
         cards:
           - content: |
@@ -94,11 +104,11 @@
               - entity: input_boolean.enabled_garage_right_2
               - entity: input_boolean.notify_garage_right_2
               - type: divider
+              - entity: input_boolean.override_parent_garage_right_2
+              - type: divider
               - entity: sensor.connected_garage_right_2
                 state_color: true
               - entity: binary_sensor.active_garage_right_2
-                state_color: true
-              - entity: binary_sensor.pin_synched_garage_right_2
                 state_color: true
               - type: 'custom:fold-entity-row'
                 head:
@@ -116,41 +126,45 @@
                   - entity: input_boolean.daterange_garage_right_2
                   - entity: input_datetime.start_date_garage_right_2
                   - entity: input_datetime.end_date_garage_right_2
-                  - type: divider
-                  - input_boolean.sun_garage_right_2
-                  - input_boolean.sun_inc_garage_right_2
-                  - input_datetime.sun_start_date_garage_right_2
-                  - input_datetime.sun_end_date_garage_right_2
-                  - type: divider
-                  - input_boolean.mon_garage_right_2
-                  - input_boolean.mon_inc_garage_right_2
-                  - input_datetime.mon_start_date_garage_right_2
-                  - input_datetime.mon_end_date_garage_right_2
-                  - type: divider
-                  - input_boolean.tue_garage_right_2
-                  - input_boolean.tue_inc_garage_right_2
-                  - input_datetime.tue_start_date_garage_right_2
-                  - input_datetime.tue_end_date_garage_right_2
-                  - type: divider
-                  - input_boolean.wed_garage_right_2
-                  - input_boolean.wed_inc_garage_right_2
-                  - input_datetime.wed_start_date_garage_right_2
-                  - input_datetime.wed_end_date_garage_right_2
-                  - type: divider
-                  - input_boolean.thu_garage_right_2
-                  - input_boolean.thu_inc_garage_right_2
-                  - input_datetime.thu_start_date_garage_right_2
-                  - input_datetime.thu_end_date_garage_right_2
-                  - type: divider
-                  - input_boolean.fri_garage_right_2
-                  - input_boolean.fri_inc_garage_right_2
-                  - input_datetime.fri_start_date_garage_right_2
-                  - input_datetime.fri_end_date_garage_right_2
-                  - type: divider
-                  - input_boolean.sat_garage_right_2
-                  - input_boolean.sat_inc_garage_right_2
-                  - input_datetime.sat_start_date_garage_right_2
-                  - input_datetime.sat_end_date_garage_right_2
+                  - type: 'custom:fold-entity-row'
+                    head:
+                      type: section
+                      label: Custom Weekdays
+                    entities:
+                      - input_boolean.sun_garage_right_2
+                      - input_boolean.sun_inc_garage_right_2
+                      - input_datetime.sun_start_date_garage_right_2
+                      - input_datetime.sun_end_date_garage_right_2
+                      - type: divider
+                      - input_boolean.mon_garage_right_2
+                      - input_boolean.mon_inc_garage_right_2
+                      - input_datetime.mon_start_date_garage_right_2
+                      - input_datetime.mon_end_date_garage_right_2
+                      - type: divider
+                      - input_boolean.tue_garage_right_2
+                      - input_boolean.tue_inc_garage_right_2
+                      - input_datetime.tue_start_date_garage_right_2
+                      - input_datetime.tue_end_date_garage_right_2
+                      - type: divider
+                      - input_boolean.wed_garage_right_2
+                      - input_boolean.wed_inc_garage_right_2
+                      - input_datetime.wed_start_date_garage_right_2
+                      - input_datetime.wed_end_date_garage_right_2
+                      - type: divider
+                      - input_boolean.thu_garage_right_2
+                      - input_boolean.thu_inc_garage_right_2
+                      - input_datetime.thu_start_date_garage_right_2
+                      - input_datetime.thu_end_date_garage_right_2
+                      - type: divider
+                      - input_boolean.fri_garage_right_2
+                      - input_boolean.fri_inc_garage_right_2
+                      - input_datetime.fri_start_date_garage_right_2
+                      - input_datetime.fri_end_date_garage_right_2
+                      - type: divider
+                      - input_boolean.sat_garage_right_2
+                      - input_boolean.sat_inc_garage_right_2
+                      - input_datetime.sat_start_date_garage_right_2
+                      - input_datetime.sat_end_date_garage_right_2
       - type: vertical-stack
         cards:
           - content: |
@@ -164,11 +178,11 @@
               - entity: input_boolean.enabled_garage_right_3
               - entity: input_boolean.notify_garage_right_3
               - type: divider
+              - entity: input_boolean.override_parent_garage_right_3
+              - type: divider
               - entity: sensor.connected_garage_right_3
                 state_color: true
               - entity: binary_sensor.active_garage_right_3
-                state_color: true
-              - entity: binary_sensor.pin_synched_garage_right_3
                 state_color: true
               - type: 'custom:fold-entity-row'
                 head:
@@ -186,41 +200,45 @@
                   - entity: input_boolean.daterange_garage_right_3
                   - entity: input_datetime.start_date_garage_right_3
                   - entity: input_datetime.end_date_garage_right_3
-                  - type: divider
-                  - input_boolean.sun_garage_right_3
-                  - input_boolean.sun_inc_garage_right_3
-                  - input_datetime.sun_start_date_garage_right_3
-                  - input_datetime.sun_end_date_garage_right_3
-                  - type: divider
-                  - input_boolean.mon_garage_right_3
-                  - input_boolean.mon_inc_garage_right_3
-                  - input_datetime.mon_start_date_garage_right_3
-                  - input_datetime.mon_end_date_garage_right_3
-                  - type: divider
-                  - input_boolean.tue_garage_right_3
-                  - input_boolean.tue_inc_garage_right_3
-                  - input_datetime.tue_start_date_garage_right_3
-                  - input_datetime.tue_end_date_garage_right_3
-                  - type: divider
-                  - input_boolean.wed_garage_right_3
-                  - input_boolean.wed_inc_garage_right_3
-                  - input_datetime.wed_start_date_garage_right_3
-                  - input_datetime.wed_end_date_garage_right_3
-                  - type: divider
-                  - input_boolean.thu_garage_right_3
-                  - input_boolean.thu_inc_garage_right_3
-                  - input_datetime.thu_start_date_garage_right_3
-                  - input_datetime.thu_end_date_garage_right_3
-                  - type: divider
-                  - input_boolean.fri_garage_right_3
-                  - input_boolean.fri_inc_garage_right_3
-                  - input_datetime.fri_start_date_garage_right_3
-                  - input_datetime.fri_end_date_garage_right_3
-                  - type: divider
-                  - input_boolean.sat_garage_right_3
-                  - input_boolean.sat_inc_garage_right_3
-                  - input_datetime.sat_start_date_garage_right_3
-                  - input_datetime.sat_end_date_garage_right_3
+                  - type: 'custom:fold-entity-row'
+                    head:
+                      type: section
+                      label: Custom Weekdays
+                    entities:
+                      - input_boolean.sun_garage_right_3
+                      - input_boolean.sun_inc_garage_right_3
+                      - input_datetime.sun_start_date_garage_right_3
+                      - input_datetime.sun_end_date_garage_right_3
+                      - type: divider
+                      - input_boolean.mon_garage_right_3
+                      - input_boolean.mon_inc_garage_right_3
+                      - input_datetime.mon_start_date_garage_right_3
+                      - input_datetime.mon_end_date_garage_right_3
+                      - type: divider
+                      - input_boolean.tue_garage_right_3
+                      - input_boolean.tue_inc_garage_right_3
+                      - input_datetime.tue_start_date_garage_right_3
+                      - input_datetime.tue_end_date_garage_right_3
+                      - type: divider
+                      - input_boolean.wed_garage_right_3
+                      - input_boolean.wed_inc_garage_right_3
+                      - input_datetime.wed_start_date_garage_right_3
+                      - input_datetime.wed_end_date_garage_right_3
+                      - type: divider
+                      - input_boolean.thu_garage_right_3
+                      - input_boolean.thu_inc_garage_right_3
+                      - input_datetime.thu_start_date_garage_right_3
+                      - input_datetime.thu_end_date_garage_right_3
+                      - type: divider
+                      - input_boolean.fri_garage_right_3
+                      - input_boolean.fri_inc_garage_right_3
+                      - input_datetime.fri_start_date_garage_right_3
+                      - input_datetime.fri_end_date_garage_right_3
+                      - type: divider
+                      - input_boolean.sat_garage_right_3
+                      - input_boolean.sat_inc_garage_right_3
+                      - input_datetime.sat_start_date_garage_right_3
+                      - input_datetime.sat_end_date_garage_right_3
       - type: vertical-stack
         cards:
           - content: |
@@ -234,11 +252,11 @@
               - entity: input_boolean.enabled_garage_right_4
               - entity: input_boolean.notify_garage_right_4
               - type: divider
+              - entity: input_boolean.override_parent_garage_right_4
+              - type: divider
               - entity: sensor.connected_garage_right_4
                 state_color: true
               - entity: binary_sensor.active_garage_right_4
-                state_color: true
-              - entity: binary_sensor.pin_synched_garage_right_4
                 state_color: true
               - type: 'custom:fold-entity-row'
                 head:
@@ -256,41 +274,45 @@
                   - entity: input_boolean.daterange_garage_right_4
                   - entity: input_datetime.start_date_garage_right_4
                   - entity: input_datetime.end_date_garage_right_4
-                  - type: divider
-                  - input_boolean.sun_garage_right_4
-                  - input_boolean.sun_inc_garage_right_4
-                  - input_datetime.sun_start_date_garage_right_4
-                  - input_datetime.sun_end_date_garage_right_4
-                  - type: divider
-                  - input_boolean.mon_garage_right_4
-                  - input_boolean.mon_inc_garage_right_4
-                  - input_datetime.mon_start_date_garage_right_4
-                  - input_datetime.mon_end_date_garage_right_4
-                  - type: divider
-                  - input_boolean.tue_garage_right_4
-                  - input_boolean.tue_inc_garage_right_4
-                  - input_datetime.tue_start_date_garage_right_4
-                  - input_datetime.tue_end_date_garage_right_4
-                  - type: divider
-                  - input_boolean.wed_garage_right_4
-                  - input_boolean.wed_inc_garage_right_4
-                  - input_datetime.wed_start_date_garage_right_4
-                  - input_datetime.wed_end_date_garage_right_4
-                  - type: divider
-                  - input_boolean.thu_garage_right_4
-                  - input_boolean.thu_inc_garage_right_4
-                  - input_datetime.thu_start_date_garage_right_4
-                  - input_datetime.thu_end_date_garage_right_4
-                  - type: divider
-                  - input_boolean.fri_garage_right_4
-                  - input_boolean.fri_inc_garage_right_4
-                  - input_datetime.fri_start_date_garage_right_4
-                  - input_datetime.fri_end_date_garage_right_4
-                  - type: divider
-                  - input_boolean.sat_garage_right_4
-                  - input_boolean.sat_inc_garage_right_4
-                  - input_datetime.sat_start_date_garage_right_4
-                  - input_datetime.sat_end_date_garage_right_4
+                  - type: 'custom:fold-entity-row'
+                    head:
+                      type: section
+                      label: Custom Weekdays
+                    entities:
+                      - input_boolean.sun_garage_right_4
+                      - input_boolean.sun_inc_garage_right_4
+                      - input_datetime.sun_start_date_garage_right_4
+                      - input_datetime.sun_end_date_garage_right_4
+                      - type: divider
+                      - input_boolean.mon_garage_right_4
+                      - input_boolean.mon_inc_garage_right_4
+                      - input_datetime.mon_start_date_garage_right_4
+                      - input_datetime.mon_end_date_garage_right_4
+                      - type: divider
+                      - input_boolean.tue_garage_right_4
+                      - input_boolean.tue_inc_garage_right_4
+                      - input_datetime.tue_start_date_garage_right_4
+                      - input_datetime.tue_end_date_garage_right_4
+                      - type: divider
+                      - input_boolean.wed_garage_right_4
+                      - input_boolean.wed_inc_garage_right_4
+                      - input_datetime.wed_start_date_garage_right_4
+                      - input_datetime.wed_end_date_garage_right_4
+                      - type: divider
+                      - input_boolean.thu_garage_right_4
+                      - input_boolean.thu_inc_garage_right_4
+                      - input_datetime.thu_start_date_garage_right_4
+                      - input_datetime.thu_end_date_garage_right_4
+                      - type: divider
+                      - input_boolean.fri_garage_right_4
+                      - input_boolean.fri_inc_garage_right_4
+                      - input_datetime.fri_start_date_garage_right_4
+                      - input_datetime.fri_end_date_garage_right_4
+                      - type: divider
+                      - input_boolean.sat_garage_right_4
+                      - input_boolean.sat_inc_garage_right_4
+                      - input_datetime.sat_start_date_garage_right_4
+                      - input_datetime.sat_end_date_garage_right_4
       - type: vertical-stack
         cards:
           - content: |
@@ -304,11 +326,11 @@
               - entity: input_boolean.enabled_garage_right_5
               - entity: input_boolean.notify_garage_right_5
               - type: divider
+              - entity: input_boolean.override_parent_garage_right_5
+              - type: divider
               - entity: sensor.connected_garage_right_5
                 state_color: true
               - entity: binary_sensor.active_garage_right_5
-                state_color: true
-              - entity: binary_sensor.pin_synched_garage_right_5
                 state_color: true
               - type: 'custom:fold-entity-row'
                 head:
@@ -326,41 +348,45 @@
                   - entity: input_boolean.daterange_garage_right_5
                   - entity: input_datetime.start_date_garage_right_5
                   - entity: input_datetime.end_date_garage_right_5
-                  - type: divider
-                  - input_boolean.sun_garage_right_5
-                  - input_boolean.sun_inc_garage_right_5
-                  - input_datetime.sun_start_date_garage_right_5
-                  - input_datetime.sun_end_date_garage_right_5
-                  - type: divider
-                  - input_boolean.mon_garage_right_5
-                  - input_boolean.mon_inc_garage_right_5
-                  - input_datetime.mon_start_date_garage_right_5
-                  - input_datetime.mon_end_date_garage_right_5
-                  - type: divider
-                  - input_boolean.tue_garage_right_5
-                  - input_boolean.tue_inc_garage_right_5
-                  - input_datetime.tue_start_date_garage_right_5
-                  - input_datetime.tue_end_date_garage_right_5
-                  - type: divider
-                  - input_boolean.wed_garage_right_5
-                  - input_boolean.wed_inc_garage_right_5
-                  - input_datetime.wed_start_date_garage_right_5
-                  - input_datetime.wed_end_date_garage_right_5
-                  - type: divider
-                  - input_boolean.thu_garage_right_5
-                  - input_boolean.thu_inc_garage_right_5
-                  - input_datetime.thu_start_date_garage_right_5
-                  - input_datetime.thu_end_date_garage_right_5
-                  - type: divider
-                  - input_boolean.fri_garage_right_5
-                  - input_boolean.fri_inc_garage_right_5
-                  - input_datetime.fri_start_date_garage_right_5
-                  - input_datetime.fri_end_date_garage_right_5
-                  - type: divider
-                  - input_boolean.sat_garage_right_5
-                  - input_boolean.sat_inc_garage_right_5
-                  - input_datetime.sat_start_date_garage_right_5
-                  - input_datetime.sat_end_date_garage_right_5
+                  - type: 'custom:fold-entity-row'
+                    head:
+                      type: section
+                      label: Custom Weekdays
+                    entities:
+                      - input_boolean.sun_garage_right_5
+                      - input_boolean.sun_inc_garage_right_5
+                      - input_datetime.sun_start_date_garage_right_5
+                      - input_datetime.sun_end_date_garage_right_5
+                      - type: divider
+                      - input_boolean.mon_garage_right_5
+                      - input_boolean.mon_inc_garage_right_5
+                      - input_datetime.mon_start_date_garage_right_5
+                      - input_datetime.mon_end_date_garage_right_5
+                      - type: divider
+                      - input_boolean.tue_garage_right_5
+                      - input_boolean.tue_inc_garage_right_5
+                      - input_datetime.tue_start_date_garage_right_5
+                      - input_datetime.tue_end_date_garage_right_5
+                      - type: divider
+                      - input_boolean.wed_garage_right_5
+                      - input_boolean.wed_inc_garage_right_5
+                      - input_datetime.wed_start_date_garage_right_5
+                      - input_datetime.wed_end_date_garage_right_5
+                      - type: divider
+                      - input_boolean.thu_garage_right_5
+                      - input_boolean.thu_inc_garage_right_5
+                      - input_datetime.thu_start_date_garage_right_5
+                      - input_datetime.thu_end_date_garage_right_5
+                      - type: divider
+                      - input_boolean.fri_garage_right_5
+                      - input_boolean.fri_inc_garage_right_5
+                      - input_datetime.fri_start_date_garage_right_5
+                      - input_datetime.fri_end_date_garage_right_5
+                      - type: divider
+                      - input_boolean.sat_garage_right_5
+                      - input_boolean.sat_inc_garage_right_5
+                      - input_datetime.sat_start_date_garage_right_5
+                      - input_datetime.sat_end_date_garage_right_5
       - type: vertical-stack
         cards:
           - content: |
@@ -374,11 +400,11 @@
               - entity: input_boolean.enabled_garage_right_6
               - entity: input_boolean.notify_garage_right_6
               - type: divider
+              - entity: input_boolean.override_parent_garage_right_6
+              - type: divider
               - entity: sensor.connected_garage_right_6
                 state_color: true
               - entity: binary_sensor.active_garage_right_6
-                state_color: true
-              - entity: binary_sensor.pin_synched_garage_right_6
                 state_color: true
               - type: 'custom:fold-entity-row'
                 head:
@@ -396,41 +422,45 @@
                   - entity: input_boolean.daterange_garage_right_6
                   - entity: input_datetime.start_date_garage_right_6
                   - entity: input_datetime.end_date_garage_right_6
-                  - type: divider
-                  - input_boolean.sun_garage_right_6
-                  - input_boolean.sun_inc_garage_right_6
-                  - input_datetime.sun_start_date_garage_right_6
-                  - input_datetime.sun_end_date_garage_right_6
-                  - type: divider
-                  - input_boolean.mon_garage_right_6
-                  - input_boolean.mon_inc_garage_right_6
-                  - input_datetime.mon_start_date_garage_right_6
-                  - input_datetime.mon_end_date_garage_right_6
-                  - type: divider
-                  - input_boolean.tue_garage_right_6
-                  - input_boolean.tue_inc_garage_right_6
-                  - input_datetime.tue_start_date_garage_right_6
-                  - input_datetime.tue_end_date_garage_right_6
-                  - type: divider
-                  - input_boolean.wed_garage_right_6
-                  - input_boolean.wed_inc_garage_right_6
-                  - input_datetime.wed_start_date_garage_right_6
-                  - input_datetime.wed_end_date_garage_right_6
-                  - type: divider
-                  - input_boolean.thu_garage_right_6
-                  - input_boolean.thu_inc_garage_right_6
-                  - input_datetime.thu_start_date_garage_right_6
-                  - input_datetime.thu_end_date_garage_right_6
-                  - type: divider
-                  - input_boolean.fri_garage_right_6
-                  - input_boolean.fri_inc_garage_right_6
-                  - input_datetime.fri_start_date_garage_right_6
-                  - input_datetime.fri_end_date_garage_right_6
-                  - type: divider
-                  - input_boolean.sat_garage_right_6
-                  - input_boolean.sat_inc_garage_right_6
-                  - input_datetime.sat_start_date_garage_right_6
-                  - input_datetime.sat_end_date_garage_right_6
+                  - type: 'custom:fold-entity-row'
+                    head:
+                      type: section
+                      label: Custom Weekdays
+                    entities:
+                      - input_boolean.sun_garage_right_6
+                      - input_boolean.sun_inc_garage_right_6
+                      - input_datetime.sun_start_date_garage_right_6
+                      - input_datetime.sun_end_date_garage_right_6
+                      - type: divider
+                      - input_boolean.mon_garage_right_6
+                      - input_boolean.mon_inc_garage_right_6
+                      - input_datetime.mon_start_date_garage_right_6
+                      - input_datetime.mon_end_date_garage_right_6
+                      - type: divider
+                      - input_boolean.tue_garage_right_6
+                      - input_boolean.tue_inc_garage_right_6
+                      - input_datetime.tue_start_date_garage_right_6
+                      - input_datetime.tue_end_date_garage_right_6
+                      - type: divider
+                      - input_boolean.wed_garage_right_6
+                      - input_boolean.wed_inc_garage_right_6
+                      - input_datetime.wed_start_date_garage_right_6
+                      - input_datetime.wed_end_date_garage_right_6
+                      - type: divider
+                      - input_boolean.thu_garage_right_6
+                      - input_boolean.thu_inc_garage_right_6
+                      - input_datetime.thu_start_date_garage_right_6
+                      - input_datetime.thu_end_date_garage_right_6
+                      - type: divider
+                      - input_boolean.fri_garage_right_6
+                      - input_boolean.fri_inc_garage_right_6
+                      - input_datetime.fri_start_date_garage_right_6
+                      - input_datetime.fri_end_date_garage_right_6
+                      - type: divider
+                      - input_boolean.sat_garage_right_6
+                      - input_boolean.sat_inc_garage_right_6
+                      - input_datetime.sat_start_date_garage_right_6
+                      - input_datetime.sat_end_date_garage_right_6
       - type: vertical-stack
         cards:
           - content: |
@@ -444,11 +474,11 @@
               - entity: input_boolean.enabled_garage_right_7
               - entity: input_boolean.notify_garage_right_7
               - type: divider
+              - entity: input_boolean.override_parent_garage_right_7
+              - type: divider
               - entity: sensor.connected_garage_right_7
                 state_color: true
               - entity: binary_sensor.active_garage_right_7
-                state_color: true
-              - entity: binary_sensor.pin_synched_garage_right_7
                 state_color: true
               - type: 'custom:fold-entity-row'
                 head:
@@ -466,41 +496,45 @@
                   - entity: input_boolean.daterange_garage_right_7
                   - entity: input_datetime.start_date_garage_right_7
                   - entity: input_datetime.end_date_garage_right_7
-                  - type: divider
-                  - input_boolean.sun_garage_right_7
-                  - input_boolean.sun_inc_garage_right_7
-                  - input_datetime.sun_start_date_garage_right_7
-                  - input_datetime.sun_end_date_garage_right_7
-                  - type: divider
-                  - input_boolean.mon_garage_right_7
-                  - input_boolean.mon_inc_garage_right_7
-                  - input_datetime.mon_start_date_garage_right_7
-                  - input_datetime.mon_end_date_garage_right_7
-                  - type: divider
-                  - input_boolean.tue_garage_right_7
-                  - input_boolean.tue_inc_garage_right_7
-                  - input_datetime.tue_start_date_garage_right_7
-                  - input_datetime.tue_end_date_garage_right_7
-                  - type: divider
-                  - input_boolean.wed_garage_right_7
-                  - input_boolean.wed_inc_garage_right_7
-                  - input_datetime.wed_start_date_garage_right_7
-                  - input_datetime.wed_end_date_garage_right_7
-                  - type: divider
-                  - input_boolean.thu_garage_right_7
-                  - input_boolean.thu_inc_garage_right_7
-                  - input_datetime.thu_start_date_garage_right_7
-                  - input_datetime.thu_end_date_garage_right_7
-                  - type: divider
-                  - input_boolean.fri_garage_right_7
-                  - input_boolean.fri_inc_garage_right_7
-                  - input_datetime.fri_start_date_garage_right_7
-                  - input_datetime.fri_end_date_garage_right_7
-                  - type: divider
-                  - input_boolean.sat_garage_right_7
-                  - input_boolean.sat_inc_garage_right_7
-                  - input_datetime.sat_start_date_garage_right_7
-                  - input_datetime.sat_end_date_garage_right_7
+                  - type: 'custom:fold-entity-row'
+                    head:
+                      type: section
+                      label: Custom Weekdays
+                    entities:
+                      - input_boolean.sun_garage_right_7
+                      - input_boolean.sun_inc_garage_right_7
+                      - input_datetime.sun_start_date_garage_right_7
+                      - input_datetime.sun_end_date_garage_right_7
+                      - type: divider
+                      - input_boolean.mon_garage_right_7
+                      - input_boolean.mon_inc_garage_right_7
+                      - input_datetime.mon_start_date_garage_right_7
+                      - input_datetime.mon_end_date_garage_right_7
+                      - type: divider
+                      - input_boolean.tue_garage_right_7
+                      - input_boolean.tue_inc_garage_right_7
+                      - input_datetime.tue_start_date_garage_right_7
+                      - input_datetime.tue_end_date_garage_right_7
+                      - type: divider
+                      - input_boolean.wed_garage_right_7
+                      - input_boolean.wed_inc_garage_right_7
+                      - input_datetime.wed_start_date_garage_right_7
+                      - input_datetime.wed_end_date_garage_right_7
+                      - type: divider
+                      - input_boolean.thu_garage_right_7
+                      - input_boolean.thu_inc_garage_right_7
+                      - input_datetime.thu_start_date_garage_right_7
+                      - input_datetime.thu_end_date_garage_right_7
+                      - type: divider
+                      - input_boolean.fri_garage_right_7
+                      - input_boolean.fri_inc_garage_right_7
+                      - input_datetime.fri_start_date_garage_right_7
+                      - input_datetime.fri_end_date_garage_right_7
+                      - type: divider
+                      - input_boolean.sat_garage_right_7
+                      - input_boolean.sat_inc_garage_right_7
+                      - input_datetime.sat_start_date_garage_right_7
+                      - input_datetime.sat_end_date_garage_right_7
       - type: vertical-stack
         cards:
           - content: |
@@ -514,11 +548,11 @@
               - entity: input_boolean.enabled_garage_right_8
               - entity: input_boolean.notify_garage_right_8
               - type: divider
+              - entity: input_boolean.override_parent_garage_right_8
+              - type: divider
               - entity: sensor.connected_garage_right_8
                 state_color: true
               - entity: binary_sensor.active_garage_right_8
-                state_color: true
-              - entity: binary_sensor.pin_synched_garage_right_8
                 state_color: true
               - type: 'custom:fold-entity-row'
                 head:
@@ -536,41 +570,45 @@
                   - entity: input_boolean.daterange_garage_right_8
                   - entity: input_datetime.start_date_garage_right_8
                   - entity: input_datetime.end_date_garage_right_8
-                  - type: divider
-                  - input_boolean.sun_garage_right_8
-                  - input_boolean.sun_inc_garage_right_8
-                  - input_datetime.sun_start_date_garage_right_8
-                  - input_datetime.sun_end_date_garage_right_8
-                  - type: divider
-                  - input_boolean.mon_garage_right_8
-                  - input_boolean.mon_inc_garage_right_8
-                  - input_datetime.mon_start_date_garage_right_8
-                  - input_datetime.mon_end_date_garage_right_8
-                  - type: divider
-                  - input_boolean.tue_garage_right_8
-                  - input_boolean.tue_inc_garage_right_8
-                  - input_datetime.tue_start_date_garage_right_8
-                  - input_datetime.tue_end_date_garage_right_8
-                  - type: divider
-                  - input_boolean.wed_garage_right_8
-                  - input_boolean.wed_inc_garage_right_8
-                  - input_datetime.wed_start_date_garage_right_8
-                  - input_datetime.wed_end_date_garage_right_8
-                  - type: divider
-                  - input_boolean.thu_garage_right_8
-                  - input_boolean.thu_inc_garage_right_8
-                  - input_datetime.thu_start_date_garage_right_8
-                  - input_datetime.thu_end_date_garage_right_8
-                  - type: divider
-                  - input_boolean.fri_garage_right_8
-                  - input_boolean.fri_inc_garage_right_8
-                  - input_datetime.fri_start_date_garage_right_8
-                  - input_datetime.fri_end_date_garage_right_8
-                  - type: divider
-                  - input_boolean.sat_garage_right_8
-                  - input_boolean.sat_inc_garage_right_8
-                  - input_datetime.sat_start_date_garage_right_8
-                  - input_datetime.sat_end_date_garage_right_8
+                  - type: 'custom:fold-entity-row'
+                    head:
+                      type: section
+                      label: Custom Weekdays
+                    entities:
+                      - input_boolean.sun_garage_right_8
+                      - input_boolean.sun_inc_garage_right_8
+                      - input_datetime.sun_start_date_garage_right_8
+                      - input_datetime.sun_end_date_garage_right_8
+                      - type: divider
+                      - input_boolean.mon_garage_right_8
+                      - input_boolean.mon_inc_garage_right_8
+                      - input_datetime.mon_start_date_garage_right_8
+                      - input_datetime.mon_end_date_garage_right_8
+                      - type: divider
+                      - input_boolean.tue_garage_right_8
+                      - input_boolean.tue_inc_garage_right_8
+                      - input_datetime.tue_start_date_garage_right_8
+                      - input_datetime.tue_end_date_garage_right_8
+                      - type: divider
+                      - input_boolean.wed_garage_right_8
+                      - input_boolean.wed_inc_garage_right_8
+                      - input_datetime.wed_start_date_garage_right_8
+                      - input_datetime.wed_end_date_garage_right_8
+                      - type: divider
+                      - input_boolean.thu_garage_right_8
+                      - input_boolean.thu_inc_garage_right_8
+                      - input_datetime.thu_start_date_garage_right_8
+                      - input_datetime.thu_end_date_garage_right_8
+                      - type: divider
+                      - input_boolean.fri_garage_right_8
+                      - input_boolean.fri_inc_garage_right_8
+                      - input_datetime.fri_start_date_garage_right_8
+                      - input_datetime.fri_end_date_garage_right_8
+                      - type: divider
+                      - input_boolean.sat_garage_right_8
+                      - input_boolean.sat_inc_garage_right_8
+                      - input_datetime.sat_start_date_garage_right_8
+                      - input_datetime.sat_end_date_garage_right_8
       - type: vertical-stack
         cards:
           - content: |
@@ -584,11 +622,11 @@
               - entity: input_boolean.enabled_garage_right_9
               - entity: input_boolean.notify_garage_right_9
               - type: divider
+              - entity: input_boolean.override_parent_garage_right_9
+              - type: divider
               - entity: sensor.connected_garage_right_9
                 state_color: true
               - entity: binary_sensor.active_garage_right_9
-                state_color: true
-              - entity: binary_sensor.pin_synched_garage_right_9
                 state_color: true
               - type: 'custom:fold-entity-row'
                 head:
@@ -606,41 +644,45 @@
                   - entity: input_boolean.daterange_garage_right_9
                   - entity: input_datetime.start_date_garage_right_9
                   - entity: input_datetime.end_date_garage_right_9
-                  - type: divider
-                  - input_boolean.sun_garage_right_9
-                  - input_boolean.sun_inc_garage_right_9
-                  - input_datetime.sun_start_date_garage_right_9
-                  - input_datetime.sun_end_date_garage_right_9
-                  - type: divider
-                  - input_boolean.mon_garage_right_9
-                  - input_boolean.mon_inc_garage_right_9
-                  - input_datetime.mon_start_date_garage_right_9
-                  - input_datetime.mon_end_date_garage_right_9
-                  - type: divider
-                  - input_boolean.tue_garage_right_9
-                  - input_boolean.tue_inc_garage_right_9
-                  - input_datetime.tue_start_date_garage_right_9
-                  - input_datetime.tue_end_date_garage_right_9
-                  - type: divider
-                  - input_boolean.wed_garage_right_9
-                  - input_boolean.wed_inc_garage_right_9
-                  - input_datetime.wed_start_date_garage_right_9
-                  - input_datetime.wed_end_date_garage_right_9
-                  - type: divider
-                  - input_boolean.thu_garage_right_9
-                  - input_boolean.thu_inc_garage_right_9
-                  - input_datetime.thu_start_date_garage_right_9
-                  - input_datetime.thu_end_date_garage_right_9
-                  - type: divider
-                  - input_boolean.fri_garage_right_9
-                  - input_boolean.fri_inc_garage_right_9
-                  - input_datetime.fri_start_date_garage_right_9
-                  - input_datetime.fri_end_date_garage_right_9
-                  - type: divider
-                  - input_boolean.sat_garage_right_9
-                  - input_boolean.sat_inc_garage_right_9
-                  - input_datetime.sat_start_date_garage_right_9
-                  - input_datetime.sat_end_date_garage_right_9
+                  - type: 'custom:fold-entity-row'
+                    head:
+                      type: section
+                      label: Custom Weekdays
+                    entities:
+                      - input_boolean.sun_garage_right_9
+                      - input_boolean.sun_inc_garage_right_9
+                      - input_datetime.sun_start_date_garage_right_9
+                      - input_datetime.sun_end_date_garage_right_9
+                      - type: divider
+                      - input_boolean.mon_garage_right_9
+                      - input_boolean.mon_inc_garage_right_9
+                      - input_datetime.mon_start_date_garage_right_9
+                      - input_datetime.mon_end_date_garage_right_9
+                      - type: divider
+                      - input_boolean.tue_garage_right_9
+                      - input_boolean.tue_inc_garage_right_9
+                      - input_datetime.tue_start_date_garage_right_9
+                      - input_datetime.tue_end_date_garage_right_9
+                      - type: divider
+                      - input_boolean.wed_garage_right_9
+                      - input_boolean.wed_inc_garage_right_9
+                      - input_datetime.wed_start_date_garage_right_9
+                      - input_datetime.wed_end_date_garage_right_9
+                      - type: divider
+                      - input_boolean.thu_garage_right_9
+                      - input_boolean.thu_inc_garage_right_9
+                      - input_datetime.thu_start_date_garage_right_9
+                      - input_datetime.thu_end_date_garage_right_9
+                      - type: divider
+                      - input_boolean.fri_garage_right_9
+                      - input_boolean.fri_inc_garage_right_9
+                      - input_datetime.fri_start_date_garage_right_9
+                      - input_datetime.fri_end_date_garage_right_9
+                      - type: divider
+                      - input_boolean.sat_garage_right_9
+                      - input_boolean.sat_inc_garage_right_9
+                      - input_datetime.sat_start_date_garage_right_9
+                      - input_datetime.sat_end_date_garage_right_9
       - type: vertical-stack
         cards:
           - content: |
@@ -654,11 +696,11 @@
               - entity: input_boolean.enabled_garage_right_10
               - entity: input_boolean.notify_garage_right_10
               - type: divider
+              - entity: input_boolean.override_parent_garage_right_10
+              - type: divider
               - entity: sensor.connected_garage_right_10
                 state_color: true
               - entity: binary_sensor.active_garage_right_10
-                state_color: true
-              - entity: binary_sensor.pin_synched_garage_right_10
                 state_color: true
               - type: 'custom:fold-entity-row'
                 head:
@@ -676,38 +718,42 @@
                   - entity: input_boolean.daterange_garage_right_10
                   - entity: input_datetime.start_date_garage_right_10
                   - entity: input_datetime.end_date_garage_right_10
-                  - type: divider
-                  - input_boolean.sun_garage_right_10
-                  - input_boolean.sun_inc_garage_right_10
-                  - input_datetime.sun_start_date_garage_right_10
-                  - input_datetime.sun_end_date_garage_right_10
-                  - type: divider
-                  - input_boolean.mon_garage_right_10
-                  - input_boolean.mon_inc_garage_right_10
-                  - input_datetime.mon_start_date_garage_right_10
-                  - input_datetime.mon_end_date_garage_right_10
-                  - type: divider
-                  - input_boolean.tue_garage_right_10
-                  - input_boolean.tue_inc_garage_right_10
-                  - input_datetime.tue_start_date_garage_right_10
-                  - input_datetime.tue_end_date_garage_right_10
-                  - type: divider
-                  - input_boolean.wed_garage_right_10
-                  - input_boolean.wed_inc_garage_right_10
-                  - input_datetime.wed_start_date_garage_right_10
-                  - input_datetime.wed_end_date_garage_right_10
-                  - type: divider
-                  - input_boolean.thu_garage_right_10
-                  - input_boolean.thu_inc_garage_right_10
-                  - input_datetime.thu_start_date_garage_right_10
-                  - input_datetime.thu_end_date_garage_right_10
-                  - type: divider
-                  - input_boolean.fri_garage_right_10
-                  - input_boolean.fri_inc_garage_right_10
-                  - input_datetime.fri_start_date_garage_right_10
-                  - input_datetime.fri_end_date_garage_right_10
-                  - type: divider
-                  - input_boolean.sat_garage_right_10
-                  - input_boolean.sat_inc_garage_right_10
-                  - input_datetime.sat_start_date_garage_right_10
-                  - input_datetime.sat_end_date_garage_right_10
+                  - type: 'custom:fold-entity-row'
+                    head:
+                      type: section
+                      label: Custom Weekdays
+                    entities:
+                      - input_boolean.sun_garage_right_10
+                      - input_boolean.sun_inc_garage_right_10
+                      - input_datetime.sun_start_date_garage_right_10
+                      - input_datetime.sun_end_date_garage_right_10
+                      - type: divider
+                      - input_boolean.mon_garage_right_10
+                      - input_boolean.mon_inc_garage_right_10
+                      - input_datetime.mon_start_date_garage_right_10
+                      - input_datetime.mon_end_date_garage_right_10
+                      - type: divider
+                      - input_boolean.tue_garage_right_10
+                      - input_boolean.tue_inc_garage_right_10
+                      - input_datetime.tue_start_date_garage_right_10
+                      - input_datetime.tue_end_date_garage_right_10
+                      - type: divider
+                      - input_boolean.wed_garage_right_10
+                      - input_boolean.wed_inc_garage_right_10
+                      - input_datetime.wed_start_date_garage_right_10
+                      - input_datetime.wed_end_date_garage_right_10
+                      - type: divider
+                      - input_boolean.thu_garage_right_10
+                      - input_boolean.thu_inc_garage_right_10
+                      - input_datetime.thu_start_date_garage_right_10
+                      - input_datetime.thu_end_date_garage_right_10
+                      - type: divider
+                      - input_boolean.fri_garage_right_10
+                      - input_boolean.fri_inc_garage_right_10
+                      - input_datetime.fri_start_date_garage_right_10
+                      - input_datetime.fri_end_date_garage_right_10
+                      - type: divider
+                      - input_boolean.sat_garage_right_10
+                      - input_boolean.sat_inc_garage_right_10
+                      - input_datetime.sat_start_date_garage_right_10
+                      - input_datetime.sat_end_date_garage_right_10

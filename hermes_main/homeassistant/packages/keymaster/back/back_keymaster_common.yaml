@@ -16,17 +16,20 @@ input_boolean:
     name: back Garage Notifications
   back_reset_lock:
     name: back reset lock
+  keymaster_back_autolock:
+    name: 'Auto Lock Enabled'
+    icon: mdi:key-remove
 
 ###################  script:  ####################
 script:
-  back_reset_lock:
+  keymaster_back_reset_lock:
     sequence:
-      - service: script.back_manual_notify
+      - service: script.keymaster_back_manual_notify
         data_template:
           title: "reset"
           message: "back"
 
-  back_reset_codeslot:
+  keymaster_back_reset_codeslot:
     mode: parallel
     fields:
       code_slot:
@@ -57,13 +60,13 @@ script:
       - service: input_datetime.set_datetime
         data_template:
           entity_id: "input_datetime.start_date_back_{{ code_slot | string }}"
-          date: >-
-            {{ now().strftime('%Y-%m-%d') }}
+          datetime: >-
+            {{ now().strftime('%Y-%m-%d 00:00') }}
       - service: input_datetime.set_datetime
         data_template:
           entity_id: "input_datetime.end_date_back_{{ code_slot | string }}"
-          date: >-
-            {{ now().strftime('%Y-%m-%d') }} 
+          datetime: >-
+            {{ now().strftime('%Y-%m-%d 00:00') }}
       - service: input_boolean.turn_off
         data_template:
           entity_id: "input_boolean.daterange_back_{{ code_slot | string }}"
@@ -92,7 +95,7 @@ script:
               data_template:
                 entity_id: "input_boolean.{{ days[repeat.index - 1] }}_inc_back_{{ code_slot | string }}"
 
-  back_refreshnodeinfo:
+  keymaster_back_refreshnodeinfo:
     description:  'Send MQTT RefreshNodeInfo command'
     sequence:
       - service: system_log.write
@@ -106,17 +109,34 @@ script:
             {% set node_id = state_attr('lock.back','node_id') %}
             { "node": {{ node_id }} }
           retain: true
+
+  keymaster_back_start_timer:
+    sequence:
+      - condition: state
+        entity_id: lock.back
+        state: 'unlocked'
+      - service: timer.cancel
+        entity_id:  timer.keymaster_back_autolock
+      - service: timer.start
+        data_template:    # if next_dusk happens sooner than next_dawn, then it's daylight
+          entity_id: timer.keymaster_back_autolock
+          duration: >
+            {% if (((as_timestamp(states.sun.sun.attributes.next_dusk)) > (as_timestamp(states.sun.sun.attributes.next_dawn)))) %}
+              {{ states('input_text.keymaster_back_autolock_door_time_night')}}
+            {% else %}
+              {{ states('input_text.keymaster_back_autolock_door_time_day')}}
+            {% endif %}
           
 ###################  automation:  ####################
 automation:
 
-  - alias: reset_codeslot_back
+  - alias: back Reset Code Slot
     trigger:
       entity_id: input_boolean.reset_codeslot_back_1,input_boolean.reset_codeslot_back_2,input_boolean.reset_codeslot_back_3,input_boolean.reset_codeslot_back_4,input_boolean.reset_codeslot_back_5,input_boolean.reset_codeslot_back_6,input_boolean.reset_codeslot_back_7,input_boolean.reset_codeslot_back_8,input_boolean.reset_codeslot_back_9,input_boolean.reset_codeslot_back_10
       platform: state
       to: 'on'
     action:
-      - service: script.back_reset_codeslot
+      - service: script.keymaster_back_reset_codeslot
         data_template:
           code_slot: "{{ trigger.entity_id.split('_')[-1] }}"
 
@@ -131,10 +151,10 @@ automation:
         entity_id: input_boolean.back_lock_notifications
         state: "on"
     action:
-      - service: script.back_manual_notify
+      - service: script.keymaster_back_manual_notify
         data_template:
           title: back
-          message: "{{ trigger.event.data.action_text }}"
+          message: "{{ trigger.event.data.action_text }} {% if trigger.event.data.code_slot > 0 %}({{ trigger.event.data.code_slot_name }}){% endif %}"
 
   - alias: back User Notifications
     trigger:
@@ -147,13 +167,16 @@ automation:
         value_template: "{{ trigger.event.data.code_slot > 0 }}"
       - condition: template
         value_template: "{{ is_state('input_boolean.notify_back_' + trigger.event.data.code_slot | string, 'on') }}"
+      - condition: state
+        entity_id: input_boolean.back_lock_notifications
+        state: "off"
     action:
-      - service: script.back_manual_notify
+      - service: script.keymaster_back_manual_notify
         data_template:
           title: back
           message: "{{ trigger.event.data.action_text }} ({{ trigger.event.data.code_slot_name }})"
 
-  - alias: "back Door Open and Close"
+  - alias: back Door Open and Close
     trigger:
       entity_id: binary_sensor.door_back_homekit
       platform: state
@@ -164,7 +187,7 @@ automation:
       - condition: template
         value_template: "{{ trigger.from_state.state in ('on', 'off') and trigger.to_state.state in ('on', 'off') }}"
     action:
-      - service: script.back_manual_notify
+      - service: script.keymaster_back_manual_notify
         data_template:
           title: back
           message: "{% if trigger.to_state.state == 'on' %}Door Opened{% else %}Door Closed{% endif %}"
@@ -177,7 +200,7 @@ automation:
       - condition: template
         value_template: >-
           {{
-            is_state('input_boolean.back_enabled_' + trigger.entity_id.split('_')[-1], 'on')
+            is_state('input_boolean.enabled_back_' + trigger.entity_id.split('_')[-1], 'on')
             and
             (trigger.from_state.state != trigger.to_state.state)
           }}
@@ -199,7 +222,7 @@ automation:
       from: "off"
       to: "on"
     action:
-      - service: script.back_reset_lock
+      - service: script.keymaster_back_reset_lock
       - service: input_boolean.turn_off
         entity_id: input_boolean.back_reset_lock
 
@@ -225,3 +248,81 @@ automation:
       - service: input_number.decrement
         data_template:
           entity_id: "{{ 'input_number.accesscount_back_' + trigger.event.data.code_slot | string }}"
+
+  - alias: keymaster_back_locked
+    trigger:
+      entity_id: lock.back
+      platform: state
+      to: locked
+    action:
+      - service: timer.cancel
+        entity_id: timer.keymaster_back_autolock
+        
+  - alias: keymaster_back_unlocked
+    trigger:
+      entity_id: lock.back
+      platform: state
+      to: unlocked
+    condition:
+      - condition: state
+        entity_id: input_boolean.keymaster_back_autolock
+        state: "on"
+    action:
+      - service: script.turn_on
+        entity_id: script.keymaster_back_start_timer
+      
+  - alias: keymaster_back_timer_finished
+    trigger:
+      platform: event
+      event_type: timer.finished
+      event_data:
+        entity_id: timer.keymaster_back_autolock
+    action:
+    - service: lock.lock
+      entity_id: lock.back
+        
+  - alias: keymaster_back_disable_auto_lock
+    trigger:
+      entity_id: input_boolean.keymaster_back_autolock
+      platform: state
+      to: 'off'
+    action:
+      - service: timer.cancel
+        entity_id:
+          - timer.keymaster_back_autolock
+      - service: lock.unlock
+        entity_id: lock.back
+       
+  - alias: keymaster_back_enable_auto_lock
+    trigger:
+      entity_id: input_boolean.keymaster_back_autolock
+      platform: state
+      to: 'on'
+    action:
+      - service: timer.cancel
+        entity_id:
+          - timer.keymaster_back_autolock
+      - service: lock.lock
+        entity_id: lock.back
+
+###############  input_text:  #################
+input_text:
+  back_lockname:
+    initial: back
+    name: 'Lock Name'
+  back_front_parent:
+    initial: front
+    name: 'Parent lock'
+
+  keymaster_back_autolock_door_time_day:
+    name: 'Day Auto Lock HH:MM:SS'
+    initial: '00:15:00'
+  keymaster_back_autolock_door_time_night:
+    name: 'Night Auto Lock HH:MM:SS'
+    initial: '00:05:00'
+
+###################  timer:  ####################
+timer:
+  keymaster_back_autolock:
+    name: 'Auto Lock Timer'
+    

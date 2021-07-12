@@ -3,6 +3,7 @@
     icon: 'mdi:lock-smart'
     panel: false
     badges:
+      - input_text.front_lockname
       - input_boolean.front_lock_notifications
       - input_boolean.front_dooraccess_notifications
       - input_boolean.front_garageacess_notifications
@@ -10,6 +11,10 @@
           lock.front
       - entity: >-
           binary_sensor.door_front_homekit
+      - entity: input_text.keymaster_front_autolock_door_time_day
+      - entity: input_text.keymaster_front_autolock_door_time_night
+      - entity: input_boolean.keymaster_front_autolock
+      - entity: timer.keymaster_front_autolock
     cards:
       - type: vertical-stack
         cards:
@@ -28,8 +33,6 @@
                 state_color: true
               - entity: binary_sensor.active_front_1
                 state_color: true
-              - entity: binary_sensor.pin_synched_front_1
-                state_color: true
               - type: 'custom:fold-entity-row'
                 head:
                   type: section
@@ -46,41 +49,45 @@
                   - entity: input_boolean.daterange_front_1
                   - entity: input_datetime.start_date_front_1
                   - entity: input_datetime.end_date_front_1
-                  - type: divider
-                  - input_boolean.sun_front_1
-                  - input_boolean.sun_inc_front_1
-                  - input_datetime.sun_start_date_front_1
-                  - input_datetime.sun_end_date_front_1
-                  - type: divider
-                  - input_boolean.mon_front_1
-                  - input_boolean.mon_inc_front_1
-                  - input_datetime.mon_start_date_front_1
-                  - input_datetime.mon_end_date_front_1
-                  - type: divider
-                  - input_boolean.tue_front_1
-                  - input_boolean.tue_inc_front_1
-                  - input_datetime.tue_start_date_front_1
-                  - input_datetime.tue_end_date_front_1
-                  - type: divider
-                  - input_boolean.wed_front_1
-                  - input_boolean.wed_inc_front_1
-                  - input_datetime.wed_start_date_front_1
-                  - input_datetime.wed_end_date_front_1
-                  - type: divider
-                  - input_boolean.thu_front_1
-                  - input_boolean.thu_inc_front_1
-                  - input_datetime.thu_start_date_front_1
-                  - input_datetime.thu_end_date_front_1
-                  - type: divider
-                  - input_boolean.fri_front_1
-                  - input_boolean.fri_inc_front_1
-                  - input_datetime.fri_start_date_front_1
-                  - input_datetime.fri_end_date_front_1
-                  - type: divider
-                  - input_boolean.sat_front_1
-                  - input_boolean.sat_inc_front_1
-                  - input_datetime.sat_start_date_front_1
-                  - input_datetime.sat_end_date_front_1
+                  - type: 'custom:fold-entity-row'
+                    head:
+                      type: section
+                      label: Custom Weekdays
+                    entities:
+                      - input_boolean.sun_front_1
+                      - input_boolean.sun_inc_front_1
+                      - input_datetime.sun_start_date_front_1
+                      - input_datetime.sun_end_date_front_1
+                      - type: divider
+                      - input_boolean.mon_front_1
+                      - input_boolean.mon_inc_front_1
+                      - input_datetime.mon_start_date_front_1
+                      - input_datetime.mon_end_date_front_1
+                      - type: divider
+                      - input_boolean.tue_front_1
+                      - input_boolean.tue_inc_front_1
+                      - input_datetime.tue_start_date_front_1
+                      - input_datetime.tue_end_date_front_1
+                      - type: divider
+                      - input_boolean.wed_front_1
+                      - input_boolean.wed_inc_front_1
+                      - input_datetime.wed_start_date_front_1
+                      - input_datetime.wed_end_date_front_1
+                      - type: divider
+                      - input_boolean.thu_front_1
+                      - input_boolean.thu_inc_front_1
+                      - input_datetime.thu_start_date_front_1
+                      - input_datetime.thu_end_date_front_1
+                      - type: divider
+                      - input_boolean.fri_front_1
+                      - input_boolean.fri_inc_front_1
+                      - input_datetime.fri_start_date_front_1
+                      - input_datetime.fri_end_date_front_1
+                      - type: divider
+                      - input_boolean.sat_front_1
+                      - input_boolean.sat_inc_front_1
+                      - input_datetime.sat_start_date_front_1
+                      - input_datetime.sat_end_date_front_1
       - type: vertical-stack
         cards:
           - content: |
@@ -98,8 +105,6 @@
                 state_color: true
               - entity: binary_sensor.active_front_2
                 state_color: true
-              - entity: binary_sensor.pin_synched_front_2
-                state_color: true
               - type: 'custom:fold-entity-row'
                 head:
                   type: section
@@ -116,41 +121,45 @@
                   - entity: input_boolean.daterange_front_2
                   - entity: input_datetime.start_date_front_2
                   - entity: input_datetime.end_date_front_2
-                  - type: divider
-                  - input_boolean.sun_front_2
-                  - input_boolean.sun_inc_front_2
-                  - input_datetime.sun_start_date_front_2
-                  - input_datetime.sun_end_date_front_2
-                  - type: divider
-                  - input_boolean.mon_front_2
-                  - input_boolean.mon_inc_front_2
-                  - input_datetime.mon_start_date_front_2
-                  - input_datetime.mon_end_date_front_2
-                  - type: divider
-                  - input_boolean.tue_front_2
-                  - input_boolean.tue_inc_front_2
-                  - input_datetime.tue_start_date_front_2
-                  - input_datetime.tue_end_date_front_2
-                  - type: divider
-                  - input_boolean.wed_front_2
-                  - input_boolean.wed_inc_front_2
-                  - input_datetime.wed_start_date_front_2
-                  - input_datetime.wed_end_date_front_2
-                  - type: divider
-                  - input_boolean.thu_front_2
-                  - input_boolean.thu_inc_front_2
-                  - input_datetime.thu_start_date_front_2
-                  - input_datetime.thu_end_date_front_2
-                  - type: divider
-                  - input_boolean.fri_front_2
-                  - input_boolean.fri_inc_front_2
-                  - input_datetime.fri_start_date_front_2
-                  - input_datetime.fri_end_date_front_2
-                  - type: divider
-                  - input_boolean.sat_front_2
-                  - input_boolean.sat_inc_front_2
-                  - input_datetime.sat_start_date_front_2
-                  - input_datetime.sat_end_date_front_2
+                  - type: 'custom:fold-entity-row'
+                    head:
+                      type: section
+                      label: Custom Weekdays
+                    entities:
+                      - input_boolean.sun_front_2
+                      - input_boolean.sun_inc_front_2
+                      - input_datetime.sun_start_date_front_2
+                      - input_datetime.sun_end_date_front_2
+                      - type: divider
+                      - input_boolean.mon_front_2
+                      - input_boolean.mon_inc_front_2
+                      - input_datetime.mon_start_date_front_2
+                      - input_datetime.mon_end_date_front_2
+                      - type: divider
+                      - input_boolean.tue_front_2
+                      - input_boolean.tue_inc_front_2
+                      - input_datetime.tue_start_date_front_2
+                      - input_datetime.tue_end_date_front_2
+                      - type: divider
+                      - input_boolean.wed_front_2
+                      - input_boolean.wed_inc_front_2
+                      - input_datetime.wed_start_date_front_2
+                      - input_datetime.wed_end_date_front_2
+                      - type: divider
+                      - input_boolean.thu_front_2
+                      - input_boolean.thu_inc_front_2
+                      - input_datetime.thu_start_date_front_2
+                      - input_datetime.thu_end_date_front_2
+                      - type: divider
+                      - input_boolean.fri_front_2
+                      - input_boolean.fri_inc_front_2
+                      - input_datetime.fri_start_date_front_2
+                      - input_datetime.fri_end_date_front_2
+                      - type: divider
+                      - input_boolean.sat_front_2
+                      - input_boolean.sat_inc_front_2
+                      - input_datetime.sat_start_date_front_2
+                      - input_datetime.sat_end_date_front_2
       - type: vertical-stack
         cards:
           - content: |
@@ -168,8 +177,6 @@
                 state_color: true
               - entity: binary_sensor.active_front_3
                 state_color: true
-              - entity: binary_sensor.pin_synched_front_3
-                state_color: true
               - type: 'custom:fold-entity-row'
                 head:
                   type: section
@@ -186,41 +193,45 @@
                   - entity: input_boolean.daterange_front_3
                   - entity: input_datetime.start_date_front_3
                   - entity: input_datetime.end_date_front_3
-                  - type: divider
-                  - input_boolean.sun_front_3
-                  - input_boolean.sun_inc_front_3
-                  - input_datetime.sun_start_date_front_3
-                  - input_datetime.sun_end_date_front_3
-                  - type: divider
-                  - input_boolean.mon_front_3
-                  - input_boolean.mon_inc_front_3
-                  - input_datetime.mon_start_date_front_3
-                  - input_datetime.mon_end_date_front_3
-                  - type: divider
-                  - input_boolean.tue_front_3
-                  - input_boolean.tue_inc_front_3
-                  - input_datetime.tue_start_date_front_3
-                  - input_datetime.tue_end_date_front_3
-                  - type: divider
-                  - input_boolean.wed_front_3
-                  - input_boolean.wed_inc_front_3
-                  - input_datetime.wed_start_date_front_3
-                  - input_datetime.wed_end_date_front_3
-                  - type: divider
-                  - input_boolean.thu_front_3
-                  - input_boolean.thu_inc_front_3
-                  - input_datetime.thu_start_date_front_3
-                  - input_datetime.thu_end_date_front_3
-                  - type: divider
-                  - input_boolean.fri_front_3
-                  - input_boolean.fri_inc_front_3
-                  - input_datetime.fri_start_date_front_3
-                  - input_datetime.fri_end_date_front_3
-                  - type: divider
-                  - input_boolean.sat_front_3
-                  - input_boolean.sat_inc_front_3
-                  - input_datetime.sat_start_date_front_3
-                  - input_datetime.sat_end_date_front_3
+                  - type: 'custom:fold-entity-row'
+                    head:
+                      type: section
+                      label: Custom Weekdays
+                    entities:
+                      - input_boolean.sun_front_3
+                      - input_boolean.sun_inc_front_3
+                      - input_datetime.sun_start_date_front_3
+                      - input_datetime.sun_end_date_front_3
+                      - type: divider
+                      - input_boolean.mon_front_3
+                      - input_boolean.mon_inc_front_3
+                      - input_datetime.mon_start_date_front_3
+                      - input_datetime.mon_end_date_front_3
+                      - type: divider
+                      - input_boolean.tue_front_3
+                      - input_boolean.tue_inc_front_3
+                      - input_datetime.tue_start_date_front_3
+                      - input_datetime.tue_end_date_front_3
+                      - type: divider
+                      - input_boolean.wed_front_3
+                      - input_boolean.wed_inc_front_3
+                      - input_datetime.wed_start_date_front_3
+                      - input_datetime.wed_end_date_front_3
+                      - type: divider
+                      - input_boolean.thu_front_3
+                      - input_boolean.thu_inc_front_3
+                      - input_datetime.thu_start_date_front_3
+                      - input_datetime.thu_end_date_front_3
+                      - type: divider
+                      - input_boolean.fri_front_3
+                      - input_boolean.fri_inc_front_3
+                      - input_datetime.fri_start_date_front_3
+                      - input_datetime.fri_end_date_front_3
+                      - type: divider
+                      - input_boolean.sat_front_3
+                      - input_boolean.sat_inc_front_3
+                      - input_datetime.sat_start_date_front_3
+                      - input_datetime.sat_end_date_front_3
       - type: vertical-stack
         cards:
           - content: |
@@ -238,8 +249,6 @@
                 state_color: true
               - entity: binary_sensor.active_front_4
                 state_color: true
-              - entity: binary_sensor.pin_synched_front_4
-                state_color: true
               - type: 'custom:fold-entity-row'
                 head:
                   type: section
@@ -256,41 +265,45 @@
                   - entity: input_boolean.daterange_front_4
                   - entity: input_datetime.start_date_front_4
                   - entity: input_datetime.end_date_front_4
-                  - type: divider
-                  - input_boolean.sun_front_4
-                  - input_boolean.sun_inc_front_4
-                  - input_datetime.sun_start_date_front_4
-                  - input_datetime.sun_end_date_front_4
-                  - type: divider
-                  - input_boolean.mon_front_4
-                  - input_boolean.mon_inc_front_4
-                  - input_datetime.mon_start_date_front_4
-                  - input_datetime.mon_end_date_front_4
-                  - type: divider
-                  - input_boolean.tue_front_4
-                  - input_boolean.tue_inc_front_4
-                  - input_datetime.tue_start_date_front_4
-                  - input_datetime.tue_end_date_front_4
-                  - type: divider
-                  - input_boolean.wed_front_4
-                  - input_boolean.wed_inc_front_4
-                  - input_datetime.wed_start_date_front_4
-                  - input_datetime.wed_end_date_front_4
-                  - type: divider
-                  - input_boolean.thu_front_4
-                  - input_boolean.thu_inc_front_4
-                  - input_datetime.thu_start_date_front_4
-                  - input_datetime.thu_end_date_front_4
-                  - type: divider
-                  - input_boolean.fri_front_4
-                  - input_boolean.fri_inc_front_4
-                  - input_datetime.fri_start_date_front_4
-                  - input_datetime.fri_end_date_front_4
-                  - type: divider
-                  - input_boolean.sat_front_4
-                  - input_boolean.sat_inc_front_4
-                  - input_datetime.sat_start_date_front_4
-                  - input_datetime.sat_end_date_front_4
+                  - type: 'custom:fold-entity-row'
+                    head:
+                      type: section
+                      label: Custom Weekdays
+                    entities:
+                      - input_boolean.sun_front_4
+                      - input_boolean.sun_inc_front_4
+                      - input_datetime.sun_start_date_front_4
+                      - input_datetime.sun_end_date_front_4
+                      - type: divider
+                      - input_boolean.mon_front_4
+                      - input_boolean.mon_inc_front_4
+                      - input_datetime.mon_start_date_front_4
+                      - input_datetime.mon_end_date_front_4
+                      - type: divider
+                      - input_boolean.tue_front_4
+                      - input_boolean.tue_inc_front_4
+                      - input_datetime.tue_start_date_front_4
+                      - input_datetime.tue_end_date_front_4
+                      - type: divider
+                      - input_boolean.wed_front_4
+                      - input_boolean.wed_inc_front_4
+                      - input_datetime.wed_start_date_front_4
+                      - input_datetime.wed_end_date_front_4
+                      - type: divider
+                      - input_boolean.thu_front_4
+                      - input_boolean.thu_inc_front_4
+                      - input_datetime.thu_start_date_front_4
+                      - input_datetime.thu_end_date_front_4
+                      - type: divider
+                      - input_boolean.fri_front_4
+                      - input_boolean.fri_inc_front_4
+                      - input_datetime.fri_start_date_front_4
+                      - input_datetime.fri_end_date_front_4
+                      - type: divider
+                      - input_boolean.sat_front_4
+                      - input_boolean.sat_inc_front_4
+                      - input_datetime.sat_start_date_front_4
+                      - input_datetime.sat_end_date_front_4
       - type: vertical-stack
         cards:
           - content: |
@@ -308,8 +321,6 @@
                 state_color: true
               - entity: binary_sensor.active_front_5
                 state_color: true
-              - entity: binary_sensor.pin_synched_front_5
-                state_color: true
               - type: 'custom:fold-entity-row'
                 head:
                   type: section
@@ -326,41 +337,45 @@
                   - entity: input_boolean.daterange_front_5
                   - entity: input_datetime.start_date_front_5
                   - entity: input_datetime.end_date_front_5
-                  - type: divider
-                  - input_boolean.sun_front_5
-                  - input_boolean.sun_inc_front_5
-                  - input_datetime.sun_start_date_front_5
-                  - input_datetime.sun_end_date_front_5
-                  - type: divider
-                  - input_boolean.mon_front_5
-                  - input_boolean.mon_inc_front_5
-                  - input_datetime.mon_start_date_front_5
-                  - input_datetime.mon_end_date_front_5
-                  - type: divider
-                  - input_boolean.tue_front_5
-                  - input_boolean.tue_inc_front_5
-                  - input_datetime.tue_start_date_front_5
-                  - input_datetime.tue_end_date_front_5
-                  - type: divider
-                  - input_boolean.wed_front_5
-                  - input_boolean.wed_inc_front_5
-                  - input_datetime.wed_start_date_front_5
-                  - input_datetime.wed_end_date_front_5
-                  - type: divider
-                  - input_boolean.thu_front_5
-                  - input_boolean.thu_inc_front_5
-                  - input_datetime.thu_start_date_front_5
-                  - input_datetime.thu_end_date_front_5
-                  - type: divider
-                  - input_boolean.fri_front_5
-                  - input_boolean.fri_inc_front_5
-                  - input_datetime.fri_start_date_front_5
-                  - input_datetime.fri_end_date_front_5
-                  - type: divider
-                  - input_boolean.sat_front_5
-                  - input_boolean.sat_inc_front_5
-                  - input_datetime.sat_start_date_front_5
-                  - input_datetime.sat_end_date_front_5
+                  - type: 'custom:fold-entity-row'
+                    head:
+                      type: section
+                      label: Custom Weekdays
+                    entities:
+                      - input_boolean.sun_front_5
+                      - input_boolean.sun_inc_front_5
+                      - input_datetime.sun_start_date_front_5
+                      - input_datetime.sun_end_date_front_5
+                      - type: divider
+                      - input_boolean.mon_front_5
+                      - input_boolean.mon_inc_front_5
+                      - input_datetime.mon_start_date_front_5
+                      - input_datetime.mon_end_date_front_5
+                      - type: divider
+                      - input_boolean.tue_front_5
+                      - input_boolean.tue_inc_front_5
+                      - input_datetime.tue_start_date_front_5
+                      - input_datetime.tue_end_date_front_5
+                      - type: divider
+                      - input_boolean.wed_front_5
+                      - input_boolean.wed_inc_front_5
+                      - input_datetime.wed_start_date_front_5
+                      - input_datetime.wed_end_date_front_5
+                      - type: divider
+                      - input_boolean.thu_front_5
+                      - input_boolean.thu_inc_front_5
+                      - input_datetime.thu_start_date_front_5
+                      - input_datetime.thu_end_date_front_5
+                      - type: divider
+                      - input_boolean.fri_front_5
+                      - input_boolean.fri_inc_front_5
+                      - input_datetime.fri_start_date_front_5
+                      - input_datetime.fri_end_date_front_5
+                      - type: divider
+                      - input_boolean.sat_front_5
+                      - input_boolean.sat_inc_front_5
+                      - input_datetime.sat_start_date_front_5
+                      - input_datetime.sat_end_date_front_5
       - type: vertical-stack
         cards:
           - content: |
@@ -378,8 +393,6 @@
                 state_color: true
               - entity: binary_sensor.active_front_6
                 state_color: true
-              - entity: binary_sensor.pin_synched_front_6
-                state_color: true
               - type: 'custom:fold-entity-row'
                 head:
                   type: section
@@ -396,41 +409,45 @@
                   - entity: input_boolean.daterange_front_6
                   - entity: input_datetime.start_date_front_6
                   - entity: input_datetime.end_date_front_6
-                  - type: divider
-                  - input_boolean.sun_front_6
-                  - input_boolean.sun_inc_front_6
-                  - input_datetime.sun_start_date_front_6
-                  - input_datetime.sun_end_date_front_6
-                  - type: divider
-                  - input_boolean.mon_front_6
-                  - input_boolean.mon_inc_front_6
-                  - input_datetime.mon_start_date_front_6
-                  - input_datetime.mon_end_date_front_6
-                  - type: divider
-                  - input_boolean.tue_front_6
-                  - input_boolean.tue_inc_front_6
-                  - input_datetime.tue_start_date_front_6
-                  - input_datetime.tue_end_date_front_6
-                  - type: divider
-                  - input_boolean.wed_front_6
-                  - input_boolean.wed_inc_front_6
-                  - input_datetime.wed_start_date_front_6
-                  - input_datetime.wed_end_date_front_6
-                  - type: divider
-                  - input_boolean.thu_front_6
-                  - input_boolean.thu_inc_front_6
-                  - input_datetime.thu_start_date_front_6
-                  - input_datetime.thu_end_date_front_6
-                  - type: divider
-                  - input_boolean.fri_front_6
-                  - input_boolean.fri_inc_front_6
-                  - input_datetime.fri_start_date_front_6
-                  - input_datetime.fri_end_date_front_6
-                  - type: divider
-                  - input_boolean.sat_front_6
-                  - input_boolean.sat_inc_front_6
-                  - input_datetime.sat_start_date_front_6
-                  - input_datetime.sat_end_date_front_6
+                  - type: 'custom:fold-entity-row'
+                    head:
+                      type: section
+                      label: Custom Weekdays
+                    entities:
+                      - input_boolean.sun_front_6
+                      - input_boolean.sun_inc_front_6
+                      - input_datetime.sun_start_date_front_6
+                      - input_datetime.sun_end_date_front_6
+                      - type: divider
+                      - input_boolean.mon_front_6
+                      - input_boolean.mon_inc_front_6
+                      - input_datetime.mon_start_date_front_6
+                      - input_datetime.mon_end_date_front_6
+                      - type: divider
+                      - input_boolean.tue_front_6
+                      - input_boolean.tue_inc_front_6
+                      - input_datetime.tue_start_date_front_6
+                      - input_datetime.tue_end_date_front_6
+                      - type: divider
+                      - input_boolean.wed_front_6
+                      - input_boolean.wed_inc_front_6
+                      - input_datetime.wed_start_date_front_6
+                      - input_datetime.wed_end_date_front_6
+                      - type: divider
+                      - input_boolean.thu_front_6
+                      - input_boolean.thu_inc_front_6
+                      - input_datetime.thu_start_date_front_6
+                      - input_datetime.thu_end_date_front_6
+                      - type: divider
+                      - input_boolean.fri_front_6
+                      - input_boolean.fri_inc_front_6
+                      - input_datetime.fri_start_date_front_6
+                      - input_datetime.fri_end_date_front_6
+                      - type: divider
+                      - input_boolean.sat_front_6
+                      - input_boolean.sat_inc_front_6
+                      - input_datetime.sat_start_date_front_6
+                      - input_datetime.sat_end_date_front_6
       - type: vertical-stack
         cards:
           - content: |
@@ -448,8 +465,6 @@
                 state_color: true
               - entity: binary_sensor.active_front_7
                 state_color: true
-              - entity: binary_sensor.pin_synched_front_7
-                state_color: true
               - type: 'custom:fold-entity-row'
                 head:
                   type: section
@@ -466,41 +481,45 @@
                   - entity: input_boolean.daterange_front_7
                   - entity: input_datetime.start_date_front_7
                   - entity: input_datetime.end_date_front_7
-                  - type: divider
-                  - input_boolean.sun_front_7
-                  - input_boolean.sun_inc_front_7
-                  - input_datetime.sun_start_date_front_7
-                  - input_datetime.sun_end_date_front_7
-                  - type: divider
-                  - input_boolean.mon_front_7
-                  - input_boolean.mon_inc_front_7
-                  - input_datetime.mon_start_date_front_7
-                  - input_datetime.mon_end_date_front_7
-                  - type: divider
-                  - input_boolean.tue_front_7
-                  - input_boolean.tue_inc_front_7
-                  - input_datetime.tue_start_date_front_7
-                  - input_datetime.tue_end_date_front_7
-                  - type: divider
-                  - input_boolean.wed_front_7
-                  - input_boolean.wed_inc_front_7
-                  - input_datetime.wed_start_date_front_7
-                  - input_datetime.wed_end_date_front_7
-                  - type: divider
-                  - input_boolean.thu_front_7
-                  - input_boolean.thu_inc_front_7
-                  - input_datetime.thu_start_date_front_7
-                  - input_datetime.thu_end_date_front_7
-                  - type: divider
-                  - input_boolean.fri_front_7
-                  - input_boolean.fri_inc_front_7
-                  - input_datetime.fri_start_date_front_7
-                  - input_datetime.fri_end_date_front_7
-                  - type: divider
-                  - input_boolean.sat_front_7
-                  - input_boolean.sat_inc_front_7
-                  - input_datetime.sat_start_date_front_7
-                  - input_datetime.sat_end_date_front_7
+                  - type: 'custom:fold-entity-row'
+                    head:
+                      type: section
+                      label: Custom Weekdays
+                    entities:
+                      - input_boolean.sun_front_7
+                      - input_boolean.sun_inc_front_7
+                      - input_datetime.sun_start_date_front_7
+                      - input_datetime.sun_end_date_front_7
+                      - type: divider
+                      - input_boolean.mon_front_7
+                      - input_boolean.mon_inc_front_7
+                      - input_datetime.mon_start_date_front_7
+                      - input_datetime.mon_end_date_front_7
+                      - type: divider
+                      - input_boolean.tue_front_7
+                      - input_boolean.tue_inc_front_7
+                      - input_datetime.tue_start_date_front_7
+                      - input_datetime.tue_end_date_front_7
+                      - type: divider
+                      - input_boolean.wed_front_7
+                      - input_boolean.wed_inc_front_7
+                      - input_datetime.wed_start_date_front_7
+                      - input_datetime.wed_end_date_front_7
+                      - type: divider
+                      - input_boolean.thu_front_7
+                      - input_boolean.thu_inc_front_7
+                      - input_datetime.thu_start_date_front_7
+                      - input_datetime.thu_end_date_front_7
+                      - type: divider
+                      - input_boolean.fri_front_7
+                      - input_boolean.fri_inc_front_7
+                      - input_datetime.fri_start_date_front_7
+                      - input_datetime.fri_end_date_front_7
+                      - type: divider
+                      - input_boolean.sat_front_7
+                      - input_boolean.sat_inc_front_7
+                      - input_datetime.sat_start_date_front_7
+                      - input_datetime.sat_end_date_front_7
       - type: vertical-stack
         cards:
           - content: |
@@ -518,8 +537,6 @@
                 state_color: true
               - entity: binary_sensor.active_front_8
                 state_color: true
-              - entity: binary_sensor.pin_synched_front_8
-                state_color: true
               - type: 'custom:fold-entity-row'
                 head:
                   type: section
@@ -536,41 +553,45 @@
                   - entity: input_boolean.daterange_front_8
                   - entity: input_datetime.start_date_front_8
                   - entity: input_datetime.end_date_front_8
-                  - type: divider
-                  - input_boolean.sun_front_8
-                  - input_boolean.sun_inc_front_8
-                  - input_datetime.sun_start_date_front_8
-                  - input_datetime.sun_end_date_front_8
-                  - type: divider
-                  - input_boolean.mon_front_8
-                  - input_boolean.mon_inc_front_8
-                  - input_datetime.mon_start_date_front_8
-                  - input_datetime.mon_end_date_front_8
-                  - type: divider
-                  - input_boolean.tue_front_8
-                  - input_boolean.tue_inc_front_8
-                  - input_datetime.tue_start_date_front_8
-                  - input_datetime.tue_end_date_front_8
-                  - type: divider
-                  - input_boolean.wed_front_8
-                  - input_boolean.wed_inc_front_8
-                  - input_datetime.wed_start_date_front_8
-                  - input_datetime.wed_end_date_front_8
-                  - type: divider
-                  - input_boolean.thu_front_8
-                  - input_boolean.thu_inc_front_8
-                  - input_datetime.thu_start_date_front_8
-                  - input_datetime.thu_end_date_front_8
-                  - type: divider
-                  - input_boolean.fri_front_8
-                  - input_boolean.fri_inc_front_8
-                  - input_datetime.fri_start_date_front_8
-                  - input_datetime.fri_end_date_front_8
-                  - type: divider
-                  - input_boolean.sat_front_8
-                  - input_boolean.sat_inc_front_8
-                  - input_datetime.sat_start_date_front_8
-                  - input_datetime.sat_end_date_front_8
+                  - type: 'custom:fold-entity-row'
+                    head:
+                      type: section
+                      label: Custom Weekdays
+                    entities:
+                      - input_boolean.sun_front_8
+                      - input_boolean.sun_inc_front_8
+                      - input_datetime.sun_start_date_front_8
+                      - input_datetime.sun_end_date_front_8
+                      - type: divider
+                      - input_boolean.mon_front_8
+                      - input_boolean.mon_inc_front_8
+                      - input_datetime.mon_start_date_front_8
+                      - input_datetime.mon_end_date_front_8
+                      - type: divider
+                      - input_boolean.tue_front_8
+                      - input_boolean.tue_inc_front_8
+                      - input_datetime.tue_start_date_front_8
+                      - input_datetime.tue_end_date_front_8
+                      - type: divider
+                      - input_boolean.wed_front_8
+                      - input_boolean.wed_inc_front_8
+                      - input_datetime.wed_start_date_front_8
+                      - input_datetime.wed_end_date_front_8
+                      - type: divider
+                      - input_boolean.thu_front_8
+                      - input_boolean.thu_inc_front_8
+                      - input_datetime.thu_start_date_front_8
+                      - input_datetime.thu_end_date_front_8
+                      - type: divider
+                      - input_boolean.fri_front_8
+                      - input_boolean.fri_inc_front_8
+                      - input_datetime.fri_start_date_front_8
+                      - input_datetime.fri_end_date_front_8
+                      - type: divider
+                      - input_boolean.sat_front_8
+                      - input_boolean.sat_inc_front_8
+                      - input_datetime.sat_start_date_front_8
+                      - input_datetime.sat_end_date_front_8
       - type: vertical-stack
         cards:
           - content: |
@@ -588,8 +609,6 @@
                 state_color: true
               - entity: binary_sensor.active_front_9
                 state_color: true
-              - entity: binary_sensor.pin_synched_front_9
-                state_color: true
               - type: 'custom:fold-entity-row'
                 head:
                   type: section
@@ -606,41 +625,45 @@
                   - entity: input_boolean.daterange_front_9
                   - entity: input_datetime.start_date_front_9
                   - entity: input_datetime.end_date_front_9
-                  - type: divider
-                  - input_boolean.sun_front_9
-                  - input_boolean.sun_inc_front_9
-                  - input_datetime.sun_start_date_front_9
-                  - input_datetime.sun_end_date_front_9
-                  - type: divider
-                  - input_boolean.mon_front_9
-                  - input_boolean.mon_inc_front_9
-                  - input_datetime.mon_start_date_front_9
-                  - input_datetime.mon_end_date_front_9
-                  - type: divider
-                  - input_boolean.tue_front_9
-                  - input_boolean.tue_inc_front_9
-                  - input_datetime.tue_start_date_front_9
-                  - input_datetime.tue_end_date_front_9
-                  - type: divider
-                  - input_boolean.wed_front_9
-                  - input_boolean.wed_inc_front_9
-                  - input_datetime.wed_start_date_front_9
-                  - input_datetime.wed_end_date_front_9
-                  - type: divider
-                  - input_boolean.thu_front_9
-                  - input_boolean.thu_inc_front_9
-                  - input_datetime.thu_start_date_front_9
-                  - input_datetime.thu_end_date_front_9
-                  - type: divider
-                  - input_boolean.fri_front_9
-                  - input_boolean.fri_inc_front_9
-                  - input_datetime.fri_start_date_front_9
-                  - input_datetime.fri_end_date_front_9
-                  - type: divider
-                  - input_boolean.sat_front_9
-                  - input_boolean.sat_inc_front_9
-                  - input_datetime.sat_start_date_front_9
-                  - input_datetime.sat_end_date_front_9
+                  - type: 'custom:fold-entity-row'
+                    head:
+                      type: section
+                      label: Custom Weekdays
+                    entities:
+                      - input_boolean.sun_front_9
+                      - input_boolean.sun_inc_front_9
+                      - input_datetime.sun_start_date_front_9
+                      - input_datetime.sun_end_date_front_9
+                      - type: divider
+                      - input_boolean.mon_front_9
+                      - input_boolean.mon_inc_front_9
+                      - input_datetime.mon_start_date_front_9
+                      - input_datetime.mon_end_date_front_9
+                      - type: divider
+                      - input_boolean.tue_front_9
+                      - input_boolean.tue_inc_front_9
+                      - input_datetime.tue_start_date_front_9
+                      - input_datetime.tue_end_date_front_9
+                      - type: divider
+                      - input_boolean.wed_front_9
+                      - input_boolean.wed_inc_front_9
+                      - input_datetime.wed_start_date_front_9
+                      - input_datetime.wed_end_date_front_9
+                      - type: divider
+                      - input_boolean.thu_front_9
+                      - input_boolean.thu_inc_front_9
+                      - input_datetime.thu_start_date_front_9
+                      - input_datetime.thu_end_date_front_9
+                      - type: divider
+                      - input_boolean.fri_front_9
+                      - input_boolean.fri_inc_front_9
+                      - input_datetime.fri_start_date_front_9
+                      - input_datetime.fri_end_date_front_9
+                      - type: divider
+                      - input_boolean.sat_front_9
+                      - input_boolean.sat_inc_front_9
+                      - input_datetime.sat_start_date_front_9
+                      - input_datetime.sat_end_date_front_9
       - type: vertical-stack
         cards:
           - content: |
@@ -658,8 +681,6 @@
                 state_color: true
               - entity: binary_sensor.active_front_10
                 state_color: true
-              - entity: binary_sensor.pin_synched_front_10
-                state_color: true
               - type: 'custom:fold-entity-row'
                 head:
                   type: section
@@ -676,38 +697,42 @@
                   - entity: input_boolean.daterange_front_10
                   - entity: input_datetime.start_date_front_10
                   - entity: input_datetime.end_date_front_10
-                  - type: divider
-                  - input_boolean.sun_front_10
-                  - input_boolean.sun_inc_front_10
-                  - input_datetime.sun_start_date_front_10
-                  - input_datetime.sun_end_date_front_10
-                  - type: divider
-                  - input_boolean.mon_front_10
-                  - input_boolean.mon_inc_front_10
-                  - input_datetime.mon_start_date_front_10
-                  - input_datetime.mon_end_date_front_10
-                  - type: divider
-                  - input_boolean.tue_front_10
-                  - input_boolean.tue_inc_front_10
-                  - input_datetime.tue_start_date_front_10
-                  - input_datetime.tue_end_date_front_10
-                  - type: divider
-                  - input_boolean.wed_front_10
-                  - input_boolean.wed_inc_front_10
-                  - input_datetime.wed_start_date_front_10
-                  - input_datetime.wed_end_date_front_10
-                  - type: divider
-                  - input_boolean.thu_front_10
-                  - input_boolean.thu_inc_front_10
-                  - input_datetime.thu_start_date_front_10
-                  - input_datetime.thu_end_date_front_10
-                  - type: divider
-                  - input_boolean.fri_front_10
-                  - input_boolean.fri_inc_front_10
-                  - input_datetime.fri_start_date_front_10
-                  - input_datetime.fri_end_date_front_10
-                  - type: divider
-                  - input_boolean.sat_front_10
-                  - input_boolean.sat_inc_front_10
-                  - input_datetime.sat_start_date_front_10
-                  - input_datetime.sat_end_date_front_10
+                  - type: 'custom:fold-entity-row'
+                    head:
+                      type: section
+                      label: Custom Weekdays
+                    entities:
+                      - input_boolean.sun_front_10
+                      - input_boolean.sun_inc_front_10
+                      - input_datetime.sun_start_date_front_10
+                      - input_datetime.sun_end_date_front_10
+                      - type: divider
+                      - input_boolean.mon_front_10
+                      - input_boolean.mon_inc_front_10
+                      - input_datetime.mon_start_date_front_10
+                      - input_datetime.mon_end_date_front_10
+                      - type: divider
+                      - input_boolean.tue_front_10
+                      - input_boolean.tue_inc_front_10
+                      - input_datetime.tue_start_date_front_10
+                      - input_datetime.tue_end_date_front_10
+                      - type: divider
+                      - input_boolean.wed_front_10
+                      - input_boolean.wed_inc_front_10
+                      - input_datetime.wed_start_date_front_10
+                      - input_datetime.wed_end_date_front_10
+                      - type: divider
+                      - input_boolean.thu_front_10
+                      - input_boolean.thu_inc_front_10
+                      - input_datetime.thu_start_date_front_10
+                      - input_datetime.thu_end_date_front_10
+                      - type: divider
+                      - input_boolean.fri_front_10
+                      - input_boolean.fri_inc_front_10
+                      - input_datetime.fri_start_date_front_10
+                      - input_datetime.fri_end_date_front_10
+                      - type: divider
+                      - input_boolean.sat_front_10
+                      - input_boolean.sat_inc_front_10
+                      - input_datetime.sat_start_date_front_10
+                      - input_datetime.sat_end_date_front_10

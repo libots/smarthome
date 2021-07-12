@@ -103,7 +103,10 @@ input_boolean:
     name: 'Enforce PIN limit'
   reset_codeslot_garage_right_6:
     name: 'Reset Code Slot'
-
+  override_parent_garage_right_6:
+    name: 'Override garage_left 6'
+    initial: false
+    
   sun_garage_right_6:
     name: 'Sunday'
 
@@ -149,7 +152,20 @@ input_boolean:
 ################  automation: #################  
 automation:
 
-- alias: synchronize_codeslot_garage_right_6
+- alias: keymaster_turn_on_access_limit_garage_right_6
+  trigger:
+      platform: state
+      entity_id: input_number.accesscount_garage_right_6
+  condition:
+    - condition: template
+      value_template: >-
+        {{ (states('input_number.accesscount_garage_right_6') | int > 0) }}
+  action:
+    service: input_boolean.turn_on
+    target:
+      entity_id: input_boolean.accesslimit_garage_right_6
+
+- alias: keymaster_synchronize_codeslot_garage_right_6
   initial_state: true
   mode: single
   max_exceeded: silent
@@ -188,6 +204,670 @@ automation:
                 entity_id: lock.garage_right
                 code_slot: >-
                   {{ 6 }}
+                  
+
+- alias: keymaster_override_parent_garage_right_6_state_change
+  trigger:
+    entity_id: input_boolean.override_parent_garage_right_6
+    platform: state
+    to: 'off'
+  action:
+    - service: script.keymaster_garage_right_copy_from_parent_6
+  
+- alias: keymaster_copy_garage_left_name_garage_right_6
+  trigger:
+    entity_id: input_text.garage_left_name_6
+    platform: state
+  condition:
+    - condition: state
+      entity_id: input_boolean.override_parent_garage_right_6
+      state: 'off'
+  action:
+    - service: input_text.set_value
+      target:
+        entity_id: input_text.garage_right_name_6
+      data:
+        value: "{{ states('input_text.garage_left_name_6') }}"
+
+- alias: keymaster_copy_garage_left_pin_garage_right_6
+  trigger:
+    entity_id: input_text.garage_left_pin_6
+    platform: state
+  condition:
+    - condition: state
+      entity_id: input_boolean.override_parent_garage_right_6
+      state: 'off'
+  action:
+    - service: input_text.set_value
+      target:
+        entity_id: input_text.garage_right_pin_6
+      data:
+        value: "{{ states('input_text.garage_left_pin_6') }}"
+
+- alias: keymaster_copy_garage_left_enabled_garage_right_6
+  trigger:
+    entity_id: input_boolean.enabled_garage_left_6
+    platform: state
+  condition:
+    - condition: state
+      entity_id: input_boolean.override_parent_garage_right_6
+      state: 'off'
+  action:
+    - service_template: >
+          {% if (states.input_boolean.enabled_garage_left_6.state == 'on') %}
+            input_boolean.turn_on
+          {% else %}
+            input_boolean.turn_off
+          {% endif %}
+      entity_id: input_boolean.enabled_garage_right_6        
+
+- alias: keymaster_copy_garage_left_notify_garage_right_6
+  trigger:
+    entity_id: input_boolean.notify_garage_left_6
+    platform: state
+  condition:
+    - condition: state
+      entity_id: input_boolean.override_parent_garage_right_6
+      state: 'off'
+  action:
+    - service_template: >
+          {% if (states.input_boolean.notify_garage_left_6.state == 'on') %}
+            input_boolean.turn_on
+          {% else %}
+            input_boolean.turn_off
+          {% endif %}
+      entity_id: input_boolean.notify_garage_right_6        
+    
+- alias: keymaster_copy_garage_left_reset_garage_right_6
+  trigger:
+    entity_id: input_boolean.reset_codeslot_garage_left_6
+    platform: state
+  condition:
+    - condition: state
+      entity_id: input_boolean.override_parent_garage_right_6
+      state: 'off'
+  action:
+    - service_template: >
+          {% if (states.input_boolean.reset_codeslot_garage_left_6.state == 'on') %}
+            input_boolean.turn_on
+          {% else %}
+            input_boolean.turn_off
+          {% endif %}
+      entity_id: input_boolean.reset_codeslot_garage_left_6        
+
+- alias: keymaster_copy_garage_left_accesslimit_garage_right_6
+  trigger:
+    entity_id: input_boolean.accesslimit_garage_left_6
+    platform: state
+  condition:
+    - condition: state
+      entity_id: input_boolean.override_parent_garage_right_6
+      state: 'off'
+  action:
+    - service_template: >
+          {% if (states.input_boolean.accesslimit_garage_left_6.state == 'on') %}
+            input_boolean.turn_on
+          {% else %}
+            input_boolean.turn_off
+          {% endif %}
+      entity_id: input_boolean.accesslimit_garage_right_6        
+
+- alias: keymaster_copy_garage_left_accesscount_garage_right_6
+  trigger:
+    entity_id: input_number.accesscount_garage_left_6
+    platform: state
+  condition:
+    - condition: state
+      entity_id: input_boolean.override_parent_garage_right_6
+      state: 'off'
+  action:
+     - service: input_number.set_value
+       entity_id: input_number.accesscount_garage_right_6
+       data_template:
+         value: '{{ states.input_number.accesscount_garage_left_6.state | int }}'
+
+- alias: keymaster_copy_garage_left_daterange_garage_right_6
+  trigger:
+    entity_id: input_boolean.daterange_garage_left_6
+    platform: state
+  condition:
+    - condition: state
+      entity_id: input_boolean.override_parent_garage_right_6
+      state: 'off'
+  action:
+    - service_template: >
+          {% if (states.input_boolean.daterange_garage_left_6.state == 'on') %}
+            input_boolean.turn_on
+          {% else %}
+            input_boolean.turn_off
+          {% endif %}
+      entity_id: input_boolean.daterange_garage_right_6
+
+- alias: keymaster_copy_garage_left_start_date_garage_right_6
+  trigger:
+    entity_id: input_datetime.start_date_garage_left_6
+    platform: state
+  condition:
+    - condition: state
+      entity_id: input_boolean.override_parent_garage_right_6
+      state: 'off'
+  action:
+    - service: input_datetime.set_datetime
+      target:
+        entity_id: input_datetime.start_date_garage_right_6
+      data:
+        datetime: "{{ states.input_datetime.start_date_garage_left_6.state }}"
+        
+- alias: keymaster_copy_garage_left_end_date_garage_right_6
+  trigger:
+    entity_id: input_datetime.end_date_garage_left_6
+    platform: state
+  condition:
+    - condition: state
+      entity_id: input_boolean.override_parent_garage_right_6
+      state: 'off'
+  action:
+    - service: input_datetime.set_datetime
+      target:
+        entity_id: input_datetime.end_date_garage_right_6
+      data:
+        datetime: "{{ states.input_datetime.end_date_garage_left_6.state }}"
+  
+- alias: keymaster_copy_garage_left_sun_garage_right_6
+  trigger:
+    entity_id: input_boolean.sun_garage_left_6
+    platform: state
+  condition:
+    - condition: state
+      entity_id: input_boolean.override_parent_garage_right_6
+      state: 'off'
+  action:
+    - service_template: >
+          {% if (states.input_boolean.sun_garage_left_6.state == 'on') %}
+            input_boolean.turn_on
+          {% else %}
+            input_boolean.turn_off
+          {% endif %}
+      entity_id: input_boolean.sun_garage_right_6
+
+- alias: keymaster_copy_garage_left_sun_inc_garage_right_6
+  trigger:
+    entity_id: input_boolean.sun_inc_garage_left_6
+    platform: state
+  condition:
+    - condition: state
+      entity_id: input_boolean.override_parent_garage_right_6
+      state: 'off'
+  action:
+    - service_template: >
+          {% if (states.input_boolean.sun_inc_garage_left_6.state == 'on') %}
+            input_boolean.turn_on
+          {% else %}
+            input_boolean.turn_off
+          {% endif %}
+      entity_id: input_boolean.sun_inc_garage_right_6
+
+- alias: keymaster_copy_garage_left_sun_start_date_garage_right_6
+  trigger:
+    entity_id: input_datetime.sun_start_date_garage_left_6
+    platform: state
+  condition:
+    - condition: state
+      entity_id: input_boolean.override_parent_garage_right_6
+      state: 'off'
+  action:
+    - service: input_datetime.set_datetime
+      target:
+        entity_id: input_datetime.sun_start_date_garage_right_6
+      data:
+        time: "{{ states.input_datetime.sun_start_date_garage_left_6.state }}"
+  
+- alias: keymaster_copy_garage_left_sun_end_date_garage_right_6
+  trigger:
+    entity_id: input_datetime.sun_end_date_garage_left_6
+    platform: state
+  condition:
+    - condition: state
+      entity_id: input_boolean.override_parent_garage_right_6
+      state: 'off'
+  action:
+    - service: input_datetime.set_datetime
+      target:
+        entity_id: input_datetime.sun_end_date_garage_right_6
+      data:
+        time: "{{ states.input_datetime.sun_end_date_garage_left_6.state }}"
+
+- alias: keymaster_copy_garage_left_mon_garage_right_6
+  trigger:
+    entity_id: input_boolean.mon_garage_left_6
+    platform: state
+  condition:
+    - condition: state
+      entity_id: input_boolean.override_parent_garage_right_6
+      state: 'off'
+  action:
+    - service_template: >
+          {% if (states.input_boolean.mon_garage_left_6.state == 'on') %}
+            input_boolean.turn_on
+          {% else %}
+            input_boolean.turn_off
+          {% endif %}
+      entity_id: input_boolean.mon_garage_right_6
+
+- alias: keymaster_copy_garage_left_mon_inc_garage_right_6
+  trigger:
+    entity_id: input_boolean.mon_inc_garage_left_6
+    platform: state
+  condition:
+    - condition: state
+      entity_id: input_boolean.override_parent_garage_right_6
+      state: 'off'
+  action:
+    - service_template: >
+          {% if (states.input_boolean.mon_inc_garage_left_6.state == 'on') %}
+            input_boolean.turn_on
+          {% else %}
+            input_boolean.turn_off
+          {% endif %}
+      entity_id: input_boolean.mon_inc_garage_right_6
+
+- alias: keymaster_copy_garage_left_mon_start_date_garage_right_6
+  trigger:
+    entity_id: input_datetime.mon_start_date_garage_left_6
+    platform: state
+  condition:
+    - condition: state
+      entity_id: input_boolean.override_parent_garage_right_6
+      state: 'off'
+  action:
+    - service: input_datetime.set_datetime
+      target:
+        entity_id: input_datetime.mon_start_date_garage_right_6
+      data:
+        time: "{{ states.input_datetime.mon_start_date_garage_left_6.state }}"
+  
+- alias: keymaster_copy_garage_left_mon_end_date_garage_right_6
+  trigger:
+    entity_id: input_datetime.mon_end_date_garage_left_6
+    platform: state
+  condition:
+    - condition: state
+      entity_id: input_boolean.override_parent_garage_right_6
+      state: 'off'
+  action:
+    - service: input_datetime.set_datetime
+      target:
+        entity_id: input_datetime.mon_end_date_garage_right_6
+      data:
+        time: "{{ states.input_datetime.mon_end_date_garage_left_6.state }}"
+        
+- alias: keymaster_copy_garage_left_tue_garage_right_6
+  trigger:
+    entity_id: input_boolean.tue_garage_left_6
+    platform: state
+  condition:
+    - condition: state
+      entity_id: input_boolean.override_parent_garage_right_6
+      state: 'off'
+  action:
+    - service_template: >
+          {% if (states.input_boolean.tue_garage_left_6.state == 'on') %}
+            input_boolean.turn_on
+          {% else %}
+            input_boolean.turn_off
+          {% endif %}
+      entity_id: input_boolean.tue_garage_right_6
+
+- alias: keymaster_copy_garage_left_tue_inc_garage_right_6
+  trigger:
+    entity_id: input_boolean.tue_inc_garage_left_6
+    platform: state
+  condition:
+    - condition: state
+      entity_id: input_boolean.override_parent_garage_right_6
+      state: 'off'
+  action:
+    - service_template: >
+          {% if (states.input_boolean.tue_inc_garage_left_6.state == 'on') %}
+            input_boolean.turn_on
+          {% else %}
+            input_boolean.turn_off
+          {% endif %}
+      entity_id: input_boolean.tue_inc_garage_right_6
+
+- alias: keymaster_copy_garage_left_tue_start_date_garage_right_6
+  trigger:
+    entity_id: input_datetime.tue_start_date_garage_left_6
+    platform: state
+  condition:
+    - condition: state
+      entity_id: input_boolean.override_parent_garage_right_6
+      state: 'off'
+  action:
+    - service: input_datetime.set_datetime
+      target:
+        entity_id: input_datetime.tue_start_date_garage_right_6
+      data:
+        time: "{{ states.input_datetime.tue_start_date_garage_left_6.state }}"
+  
+- alias: keymaster_copy_garage_left_tue_end_date_garage_right_6
+  trigger:
+    entity_id: input_datetime.tue_end_date_garage_left_6
+    platform: state
+  condition:
+    - condition: state
+      entity_id: input_boolean.override_parent_garage_right_6
+      state: 'off'
+  action:
+    - service: input_datetime.set_datetime
+      target:
+        entity_id: input_datetime.tue_end_date_garage_right_6
+      data:
+        time: "{{ states.input_datetime.tue_end_date_garage_left_6.state }}"
+
+- alias: keymaster_copy_garage_left_wed_garage_right_6
+  trigger:
+    entity_id: input_boolean.wed_garage_left_6
+    platform: state
+  condition:
+    - condition: state
+      entity_id: input_boolean.override_parent_garage_right_6
+      state: 'off'
+  action:
+    - service_template: >
+          {% if (states.input_boolean.wed_garage_left_6.state == 'on') %}
+            input_boolean.turn_on
+          {% else %}
+            input_boolean.turn_off
+          {% endif %}
+      entity_id: input_boolean.wed_garage_right_6
+
+- alias: keymaster_copy_garage_left_wed_inc_garage_right_6
+  trigger:
+    entity_id: input_boolean.wed_inc_garage_left_6
+    platform: state
+  condition:
+    - condition: state
+      entity_id: input_boolean.override_parent_garage_right_6
+      state: 'off'
+  action:
+    - service_template: >
+          {% if (states.input_boolean.wed_inc_garage_left_6.state == 'on') %}
+            input_boolean.turn_on
+          {% else %}
+            input_boolean.turn_off
+          {% endif %}
+      entity_id: input_boolean.wed_inc_garage_right_6
+
+- alias: keymaster_copy_garage_left_wed_start_date_garage_right_6
+  trigger:
+    entity_id: input_datetime.wed_start_date_garage_left_6
+    platform: state
+  condition:
+    - condition: state
+      entity_id: input_boolean.override_parent_garage_right_6
+      state: 'off'
+  action:
+    - service: input_datetime.set_datetime
+      target:
+        entity_id: input_datetime.wed_start_date_garage_right_6
+      data:
+        time: "{{ states.input_datetime.wed_start_date_garage_left_6.state }}"
+  
+- alias: keymaster_copy_garage_left_wed_end_date_garage_right_6
+  trigger:
+    entity_id: input_datetime.wed_end_date_garage_left_6
+    platform: state
+  condition:
+    - condition: state
+      entity_id: input_boolean.override_parent_garage_right_6
+      state: 'off'
+  action:
+    - service: input_datetime.set_datetime
+      target:
+        entity_id: input_datetime.wed_end_date_garage_right_6
+      data:
+        time: "{{ states.input_datetime.wed_end_date_garage_left_6.state }}"
+
+- alias: keymaster_copy_garage_left_thu_garage_right_6
+  trigger:
+    entity_id: input_boolean.thu_garage_left_6
+    platform: state
+  condition:
+    - condition: state
+      entity_id: input_boolean.override_parent_garage_right_6
+      state: 'off'
+  action:
+    - service_template: >
+          {% if (states.input_boolean.thu_garage_left_6.state == 'on') %}
+            input_boolean.turn_on
+          {% else %}
+            input_boolean.turn_off
+          {% endif %}
+      entity_id: input_boolean.thu_garage_right_6
+
+- alias: keymaster_copy_garage_left_thu_inc_garage_right_6
+  trigger:
+    entity_id: input_boolean.thu_inc_garage_left_6
+    platform: state
+  condition:
+    - condition: state
+      entity_id: input_boolean.override_parent_garage_right_6
+      state: 'off'
+  action:
+    - service_template: >
+          {% if (states.input_boolean.thu_inc_garage_left_6.state == 'on') %}
+            input_boolean.turn_on
+          {% else %}
+            input_boolean.turn_off
+          {% endif %}
+      entity_id: input_boolean.thu_inc_garage_right_6
+
+- alias: keymaster_copy_garage_left_thu_start_date_garage_right_6
+  trigger:
+    entity_id: input_datetime.thu_start_date_garage_left_6
+    platform: state
+  condition:
+    - condition: state
+      entity_id: input_boolean.override_parent_garage_right_6
+      state: 'off'
+  action:
+    - service: input_datetime.set_datetime
+      target:
+        entity_id: input_datetime.thu_start_date_garage_right_6
+      data:
+        time: "{{ states.input_datetime.thu_start_date_garage_left_6.state }}"
+  
+- alias: keymaster_copy_garage_left_thu_end_date_garage_right_6
+  trigger:
+    entity_id: input_datetime.thu_end_date_garage_left_6
+    platform: state
+  condition:
+    - condition: state
+      entity_id: input_boolean.override_parent_garage_right_6
+      state: 'off'
+  action:
+    - service: input_datetime.set_datetime
+      target:
+        entity_id: input_datetime.thu_end_date_garage_right_6
+      data:
+        time: "{{ states.input_datetime.thu_end_date_garage_left_6.state }}"
+
+- alias: keymaster_copy_garage_left_fri_garage_right_6
+  trigger:
+    entity_id: input_boolean.fri_garage_left_6
+    platform: state
+  condition:
+    - condition: state
+      entity_id: input_boolean.override_parent_garage_right_6
+      state: 'off'
+  action:
+    - service_template: >
+          {% if (states.input_boolean.fri_garage_left_6.state == 'on') %}
+            input_boolean.turn_on
+          {% else %}
+            input_boolean.turn_off
+          {% endif %}
+      entity_id: input_boolean.fri_garage_right_6
+
+- alias: keymaster_copy_garage_left_fri_inc_garage_right_6
+  trigger:
+    entity_id: input_boolean.fri_inc_garage_left_6
+    platform: state
+  condition:
+    - condition: state
+      entity_id: input_boolean.override_parent_garage_right_6
+      state: 'off'
+  action:
+    - service_template: >
+          {% if (states.input_boolean.fri_inc_garage_left_6.state == 'on') %}
+            input_boolean.turn_on
+          {% else %}
+            input_boolean.turn_off
+          {% endif %}
+      entity_id: input_boolean.fri_inc_garage_right_6
+
+- alias: keymaster_copy_garage_left_fri_start_date_garage_right_6
+  trigger:
+    entity_id: input_datetime.fri_start_date_garage_left_6
+    platform: state
+  condition:
+    - condition: state
+      entity_id: input_boolean.override_parent_garage_right_6
+      state: 'off'
+  action:
+    - service: input_datetime.set_datetime
+      target:
+        entity_id: input_datetime.fri_start_date_garage_right_6
+      data:
+        time: "{{ states.input_datetime.fri_start_date_garage_left_6.state }}"
+  
+- alias: keymaster_copy_garage_left_fri_end_date_garage_right_6
+  trigger:
+    entity_id: input_datetime.fri_end_date_garage_left_6
+    platform: state
+  condition:
+    - condition: state
+      entity_id: input_boolean.override_parent_garage_right_6
+      state: 'off'
+  action:
+    - service: input_datetime.set_datetime
+      target:
+        entity_id: input_datetime.fri_end_date_garage_right_6
+      data:
+        time: "{{ states.input_datetime.fri_end_date_garage_left_6.state }}"
+
+- alias: keymaster_copy_garage_left_sat_garage_right_6
+  trigger:
+    entity_id: input_boolean.sat_garage_left_6
+    platform: state
+  condition:
+    - condition: state
+      entity_id: input_boolean.override_parent_garage_right_6
+      state: 'off'
+  action:
+    - service_template: >
+          {% if (states.input_boolean.sat_garage_left_6.state == 'on') %}
+            input_boolean.turn_on
+          {% else %}
+            input_boolean.turn_off
+          {% endif %}
+      entity_id: input_boolean.sat_garage_right_6
+
+- alias: keymaster_copy_garage_left_sat_inc_garage_right_6
+  trigger:
+    entity_id: input_boolean.sat_inc_garage_left_6
+    platform: state
+  condition:
+    - condition: state
+      entity_id: input_boolean.override_parent_garage_right_6
+      state: 'off'
+  action:
+    - service_template: >
+          {% if (states.input_boolean.sat_inc_garage_left_6.state == 'on') %}
+            input_boolean.turn_on
+          {% else %}
+            input_boolean.turn_off
+          {% endif %}
+      entity_id: input_boolean.sat_inc_garage_right_6
+
+- alias: keymaster_copy_garage_left_sat_start_date_garage_right_6
+  trigger:
+    entity_id: input_datetime.sat_start_date_garage_left_6
+    platform: state
+  condition:
+    - condition: state
+      entity_id: input_boolean.override_parent_garage_right_6
+      state: 'off'
+  action:
+    - service: input_datetime.set_datetime
+      target:
+        entity_id: input_datetime.sat_start_date_garage_right_6
+      data:
+        time: "{{ states.input_datetime.sat_start_date_garage_left_6.state }}"
+  
+- alias: keymaster_copy_garage_left_sat_end_date_garage_right_6
+  trigger:
+    entity_id: input_datetime.sat_end_date_garage_left_6
+    platform: state
+  condition:
+    - condition: state
+      entity_id: input_boolean.override_parent_garage_right_6
+      state: 'off'
+  action:
+    - service: input_datetime.set_datetime
+      target:
+        entity_id: input_datetime.sat_end_date_garage_right_6
+      data:
+        time: "{{ states.input_datetime.sat_end_date_garage_left_6.state }}"
+
+
+###################  script:  ####################
+script:
+  keymaster_garage_right_copy_from_parent_6:
+    sequence:
+      - service: automation.trigger
+        data: {}
+        target:
+          entity_id:
+            - automation.copy_garage_left_name_garage_right_6
+            - automation.copy_garage_left_pin_garage_right_6
+            - automation.copy_garage_left_enabled_garage_right_6
+            - automation.copy_garage_left_notify_garage_right_6
+            - automation.copy_garage_left_reset_garage_right_6
+            - automation.copy_garage_left_accesslimit_garage_right_6
+            - automation.copy_garage_left_accesscount_garage_right_6
+            - automation.copy_garage_left_daterange_garage_right_6
+            - automation.copy_garage_left_start_date_garage_right_6
+            - automation.copy_garage_left_end_date_garage_right_6
+            - automation.copy_garage_left_sun_garage_right_6
+            - automation.copy_garage_left_sun_inc_garage_right_6
+            - automation.copy_garage_left_sun_start_date_garage_right_6
+            - automation.copy_garage_left_sun_end_date_garage_right_6
+            - automation.copy_garage_left_mon_garage_right_6
+            - automation.copy_garage_left_mon_inc_garage_right_6
+            - automation.copy_garage_left_mon_start_date_garage_right_6
+            - automation.copy_garage_left_mon_end_date_garage_right_6
+            - automation.copy_garage_left_tue_garage_right_6
+            - automation.copy_garage_left_tue_inc_garage_right_6
+            - automation.copy_garage_left_tue_start_date_garage_right_6
+            - automation.copy_garage_left_tue_end_date_garage_right_6
+            - automation.copy_garage_left_wed_garage_right_6
+            - automation.copy_garage_left_wed_inc_garage_right_6
+            - automation.copy_garage_left_wed_start_date_garage_right_6
+            - automation.copy_garage_left_wed_end_date_garage_right_6
+            - automation.copy_garage_left_thu_garage_right_6
+            - automation.copy_garage_left_thu_inc_garage_right_6
+            - automation.copy_garage_left_thu_start_date_garage_right_6
+            - automation.copy_garage_left_thu_end_date_garage_right_6
+            - automation.copy_garage_left_fri_garage_right_6
+            - automation.copy_garage_left_fri_inc_garage_right_6
+            - automation.copy_garage_left_fri_start_date_garage_right_6
+            - automation.copy_garage_left_fri_end_date_garage_right_6
+            - automation.copy_garage_left_sat_garage_right_6
+            - automation.copy_garage_left_sat_inc_garage_right_6
+            - automation.copy_garage_left_sat_start_date_garage_right_6
+            - automation.copy_garage_left_sat_end_date_garage_right_6
 
 ################  binary_sensor: #################  
 binary_sensor:
@@ -281,13 +961,13 @@ sensor:
           {% if synched %}
             Connected
           {% else %}
-            Connecting
+            Adding
           {% endif %}
         {% else %}
           {% if synched %}
             Disconnected
           {% else %}
-            Disconnecting
+            Deleting
           {% endif %}
         {% endif %}
       icon_template: >
