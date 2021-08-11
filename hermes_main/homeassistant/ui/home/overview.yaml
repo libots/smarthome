@@ -526,7 +526,8 @@ cards:
             show_last_changed: true
             tap_action:
               action: more-info
-      - type: custom:hui-history-graph-card
+      - type: custom:hui-element
+        card_type: history-graph
         hours_to_show: 1
         entities:
           - entity: sensor.laundry_dryer_power
