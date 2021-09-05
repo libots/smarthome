@@ -476,11 +476,9 @@ services:
       - /media/poseidon/main:/mnt/repo/poseidon_main:z
     environment:
       - TZ=${TZ}
-      - PUID=${PUID}
-      - PGID=${PGID}
       - NMBD=true # advertise shares
-      - USERID=${PUID}
-      - GROUPID=${PGID}
+      - USERID=0 # docker: ${PUID}
+      - GROUPID=0 # docker: ${PGID}
       - WORKGROUP=WORKGROUP
     # -u "UserName;Password"
     # -s "ShareName;/path/in/container;browsable;read_only;guest;users;admins;writelist;comment"
