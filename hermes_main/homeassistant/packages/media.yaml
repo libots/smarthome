@@ -10,7 +10,7 @@ media_player:
 
 sonos:
   media_player:
-    interface_addr: 10.20.32.9
+    # interface_addr: 10.20.32.9
     advertise_addr: 10.20.32.9
     hosts:
       - 10.20.34.80
@@ -24,6 +24,7 @@ sonos:
       - 10.20.34.88
       - 10.20.34.89
       - 10.20.34.90
+      - 20.20.34.91
 
 # plex:
   # host: !secret plex_ip
