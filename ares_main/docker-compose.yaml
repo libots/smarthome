@@ -1,6 +1,25 @@
 version: '3.6'
 
 services:
+  nginx_personal:
+    image: ghcr.io/linuxserver/nginx
+    container_name: nginx_personal
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+    volumes:
+      - ${MAINDIR}/nginx_personal:/config
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.nginx_personal.rule=Host(`${DOMAINNAME_PERSONAL}`,`www.${DOMAINNAME_PERSONAL}`)"
+      - "traefik.http.routers.nginx_personal.tls=true"
+      # - "traefik.http.routers.traccar.middlewares=traefikauth"
+      - "traefik.http.services.nginx_personal.loadbalancer.server.port=80"
+    # ports:
+    #   - 800:80
+    #   - 4430:443
+    restart: unless-stopped
   # portainer:
   #   image: portainer/portainer-ce
   #   container_name: portainer
