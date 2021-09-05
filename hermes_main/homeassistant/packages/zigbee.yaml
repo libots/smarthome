@@ -62,6 +62,14 @@ light:
     command_topic: "zigbee2mqtt/Light MBath Closet/set"
     state_topic: "zigbee2mqtt/Light MBath Closet"
     brightness: true
+  - name: MBed Fan
+    platform: mqtt
+    schema: json
+    command_topic: "zigbee2mqtt/Light MBed Fan/set"
+    state_topic: "zigbee2mqtt/Light MBed Fan"
+    brightness: true
+    color_temp: true
+    rgb: true
   - name: Porch
     platform: mqtt
     schema: json
