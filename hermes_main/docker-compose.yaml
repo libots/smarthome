@@ -201,8 +201,8 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock
       - /etc/hosts:/etc/hosts:ro
-    devices:
-      - /dev/serial/by-id/usb-Silicon_Labs_HubZ_Smart_Home_Controller_C0F0035D-if01-port0 # /dev/ttyUSB2
+    # devices:
+    #   - /dev/serial/by-id/usb-Silicon_Labs_HubZ_Smart_Home_Controller_C0F0035D-if01-port0 # /dev/ttyUSB2
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
