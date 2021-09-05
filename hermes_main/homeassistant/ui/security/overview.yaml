@@ -171,14 +171,14 @@ cards:
             name: Front Lock
             template: security_lock
             variables:
-              battery: '[[[ return states["sensor.battery_lock_front"].state ]]]'
+              battery: '[[[ return parseInt(states["sensor.battery_lock_front"].state) ]]]'
               # battery: '[[[ return states["lock.front_august"].attributes.battery_level ]]]'
           - entity: lock.back
             type: custom:button-card
             name: Back Lock
             template: security_lock
             variables:
-              battery: '[[[ return states["sensor.battery_lock_back"].state ]]]'
+              battery: '[[[ return parseInt(states["sensor.battery_lock_back"].state) ]]]'
           - type: custom:button-card
             color_type: blank-card
   # End house panel
@@ -238,8 +238,8 @@ cards:
             name: Dungeon Door
             template: security_door
             variables:
-              battery: '[[[ return states["sensor.battery_door_basement_dungeon"].state ]]]'
-              temperature: '[[[ return states["sensor.temp_door_basement_dungeon"].state ]]]'
+              battery: '[[[ return parseInt(states["sensor.battery_door_basement_dungeon"].state) ]]]'
+              temperature: '[[[ return parseInt(states["sensor.temp_door_basement_dungeon"].state) ]]]'
       - type: custom:button-card
         color_type: blank-card
       - type: custom:button-card
@@ -357,7 +357,8 @@ cards:
             name: Motion
             template: security_motion
             variables:
-              temperature: '[[[ return states["sensor.temp_motion_office"].state ]]]'
+              battery: '[[[ return states["sensor.motion_office_battery"].state ]]]'
+              temperature: '[[[ return states["sensor.motion_office_temperature"].state ]]]'
   # End office panel
   
   # Begin dining room panel
