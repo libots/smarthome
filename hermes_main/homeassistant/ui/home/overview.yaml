@@ -117,33 +117,33 @@ cards:
               - fuel
             variables:
               fuel: '[[[ return entity.attributes.battery_level; ]]]'
-      - type: horizontal-stack
-        cards:
-          - entity: device_tracker.subaru
-            type: custom:button-card
-            template:
-              - car
-              - fuel
-            variables:
-              fuel: '[[[ return states["sensor.fuel_subaru"].state; ]]]'
-            styles:
-              icon:
-                - height: 45px
-                - width: 83px
-              custom_fields:
-                fuel:
-                  - margin-left: 35px
-          - entity: device_tracker.frontier
-            type: custom:button-card
-            template:
-              - car
-              - fuel
-            variables:
-              fuel: '[[[ return states["sensor.fuel_frontier"].state; ]]]'
-            styles:
-              icon:
-                - height: 45px
-                - width: 96px
+      # - type: horizontal-stack
+      #   cards:
+      #     - entity: device_tracker.subaru
+      #       type: custom:button-card
+      #       template:
+      #         - car
+      #         - fuel
+      #       variables:
+      #         fuel: '[[[ return states["sensor.fuel_subaru"].state; ]]]'
+      #       styles:
+      #         icon:
+      #           - height: 45px
+      #           - width: 83px
+      #         custom_fields:
+      #           fuel:
+      #             - margin-left: 35px
+      #     - entity: device_tracker.frontier
+      #       type: custom:button-card
+      #       template:
+      #         - car
+      #         - fuel
+      #       variables:
+      #         fuel: '[[[ return states["sensor.fuel_frontier"].state; ]]]'
+      #       styles:
+      #         icon:
+      #           - height: 45px
+      #           - width: 96px
   # End main card
   
   # Begin reminders card
