@@ -9,13 +9,13 @@ light:
       - light.mbath_ceiling
       - light.mbath_closet
       - light.mbath_shower
-  - platform: group
-    name: MBed Fan
-    entities:
-      - light.mbed_1
-      - light.mbed_2
-      - light.mbed_3
-      - light.mbed_4
+  # - platform: group
+  #   name: MBed Fan
+  #   entities:
+  #     - light.mbed_1
+  #     - light.mbed_2
+  #     - light.mbed_3
+  #     - light.mbed_4
   - platform: group
     name: Dog Cans
     entities:
