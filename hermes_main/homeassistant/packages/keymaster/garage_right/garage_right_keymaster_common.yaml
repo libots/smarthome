@@ -110,6 +110,18 @@ script:
             { "node": {{ node_id }} }
           retain: true
 
+  keymaster_garage_right_start_timer_retry:
+    sequence:
+      - condition: state
+        entity_id: lock.garage_right
+        state: 'unlocked'
+      - service: timer.cancel
+        entity_id:  timer.keymaster_garage_right_autolock
+      - service: timer.start
+        data_template:
+          entity_id: timer.keymaster_garage_right_autolock
+          duration: 00:00:30
+
   keymaster_garage_right_start_timer:
     sequence:
       - condition: state
@@ -278,8 +290,18 @@ automation:
       event_data:
         entity_id: timer.keymaster_garage_right_autolock
     action:
-    - service: lock.lock
-      entity_id: lock.garage_right
+    - choose:
+        - conditions:
+            - condition: template
+              value_template: "{{ (states('binary_sensor.door_garage_right_homekit') != 'on') }}"
+          sequence:
+            - service: lock.lock
+              entity_id: lock.garage_right
+        - conditions:
+            - condition: template
+              value_template: "{{ (states('binary_sensor.door_garage_right_homekit') == 'on') }}"
+          sequence:
+            - service: script.keymaster_garage_right_start_timer_retry
         
   - alias: keymaster_garage_right_disable_auto_lock
     trigger:
