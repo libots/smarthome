@@ -11,7 +11,7 @@ cards:
     cards:
       - type: horizontal-stack
         cards:
-          - entity: alarm_control_panel.abode
+          - entity: alarm_control_panel.ha
             type: custom:button-card
             size: 30px
             icon: mdi:shield

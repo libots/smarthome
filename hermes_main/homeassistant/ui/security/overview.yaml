@@ -12,7 +12,7 @@ cards:
       - type: custom:hui-element
         card_type: horizontal-stack
         cards:
-          - entity: alarm_control_panel.abode
+          - entity: alarm_control_panel.ha
             type: custom:button-card
             size: 30px
             icon: mdi:shield-off
@@ -42,8 +42,8 @@ cards:
               action: call-service
               service: alarm_control_panel.alarm_disarm
               service_data:
-                entity_id: alarm_control_panel.abode
-          - entity: alarm_control_panel.abode
+                entity_id: alarm_control_panel.ha
+          - entity: alarm_control_panel.ha
             type: custom:button-card
             size: 30px
             icon: mdi:shield-home
@@ -73,8 +73,8 @@ cards:
               action: call-service
               service: alarm_control_panel.alarm_arm_home
               service_data:
-                entity_id: alarm_control_panel.abode
-          - entity: alarm_control_panel.abode
+                entity_id: alarm_control_panel.ha
+          - entity: alarm_control_panel.ha
             type: custom:button-card
             size: 30px
             icon: mdi:shield-lock
@@ -104,11 +104,13 @@ cards:
               action: call-service
               service: alarm_control_panel.alarm_arm_away
               service_data:
-                entity_id: alarm_control_panel.abode
+                entity_id: alarm_control_panel.ha
       - entity: alarm_control_panel.ha
         name: Home Assistant Alarm
         type: custom:multiple-entity-row
         secondary_info: last-changed
+        style: |
+          div.state { text-transform: capitalize; }
       - entity: alarm_control_panel.abode
         type: custom:multiple-entity-row
         secondary_info: last-changed
@@ -121,7 +123,10 @@ cards:
         style: |
           div.state { text-transform: capitalize; }
           div.secondary { font-size: 12px; }
-      - entity: input_select.alarm_arm_mode
+      - entity: input_select.abode_arm_mode
+        name: Abode Alarm Mode
+      - entity: input_boolean.guest
+        name: Guest Mode (Disables Auto Arm)
   # End alarm panel
   
   # Begin markdown panel

@@ -12,13 +12,18 @@ homeassistant:
       device_class: door
 
 input_select:
-  alarm_arm_mode:
+  abode_arm_mode:
     name: Alarm Auto Arm Mode
     options:
-      - Away
-      - Home
+      - Perimeter & Motion
+      - Perimeter (Doors/Windows)
       - "Off"
     icon: mdi:shield-refresh-outline
+
+input_boolean:
+  guest:
+    name: Guest Mode
+    icon: mdi:account
 
 alarm_control_panel:
   - platform: manual
