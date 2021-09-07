@@ -202,12 +202,24 @@ cards:
             template: security_door_important
             variables:
               battery: '[[[ if (entity.attributes.battery_low==true) { return "Low"}; ]]]'
+          - entity: lock.garage_left
+            type: custom:button-card
+            name: Left Lock
+            template: security_lock
+            variables:
+              battery: '[[[ return parseInt(states["sensor.battery_lock_garage_left"].state) ]]]'
           - entity: binary_sensor.door_garage_right
             type: custom:button-card
             name: Right Door
             template: security_door_important
             variables:
               battery: '[[[ if (entity.attributes.battery_low==true) { return "Low"}; ]]]'
+          - entity: lock.garage_right
+            type: custom:button-card
+            name: Right Lock
+            template: security_lock
+            variables:
+              battery: '[[[ return parseInt(states["sensor.battery_lock_garage_right"].state) ]]]'
   # End garage panel
   
   # Begin basement panel
@@ -224,20 +236,20 @@ cards:
             template: security_door_important
             variables:
               battery: '[[[ if (entity.attributes.battery_low==true) { return "Low"}; ]]]'
-          - entity: binary_sensor.door_basement_coal
-            type: custom:button-card
-            name: Coal Chute
-            template: security_door_important
-            variables:
-              battery: '[[[ return states["sensor.battery_door_basement_coal"].state ]]]'
-              temperature: '[[[ return states["sensor.temp_door_basement_coal"].state ]]]'
-          - entity: binary_sensor.door_basement_inside
-            type: custom:button-card
-            name: Inside Door
-            template: security_door
-            variables:
-              battery: '[[[ return states["sensor.battery_door_basement_inside"].state ]]]'
-              temperature: '[[[ return states["sensor.temp_door_basement_inside"].state ]]]'
+          # - entity: binary_sensor.door_basement_coal
+          #   type: custom:button-card
+          #   name: Coal Chute
+          #   template: security_door_important
+          #   variables:
+          #     battery: '[[[ return states["sensor.battery_door_basement_coal"].state ]]]'
+          #     temperature: '[[[ return states["sensor.temp_door_basement_coal"].state ]]]'
+          # - entity: binary_sensor.door_basement_inside
+          #   type: custom:button-card
+          #   name: Inside Door
+          #   template: security_door
+          #   variables:
+          #     battery: '[[[ return states["sensor.battery_door_basement_inside"].state ]]]'
+          #     temperature: '[[[ return states["sensor.temp_door_basement_inside"].state ]]]'
           - entity: binary_sensor.door_basement_dungeon
             type: custom:button-card
             name: Dungeon Door
@@ -259,12 +271,12 @@ cards:
             variables:
               battery: '[[[ return states["sensor.battery_motion_basement_stairs"].state ]]]'
               temperature: '[[[ return states["sensor.temp_motion_basement_stairs"].state ]]]'
-          - entity: binary_sensor.motion_basement_1
-            type: custom:button-card
-            name: Motion 1
-            template: security_motion
-            variables:
-              temperature: '[[[ return states["sensor.temp_motion_basement_1"].state ]]]'
+          # - entity: binary_sensor.motion_basement_1
+          #   type: custom:button-card
+          #   name: Motion 1
+          #   template: security_motion
+          #   variables:
+          #     temperature: '[[[ return states["sensor.temp_motion_basement_1"].state ]]]'
           - entity: binary_sensor.motion_basement_dungeon
             type: custom:button-card
             name: Dungeon Motion
@@ -319,21 +331,37 @@ cards:
             variables:
               # battery: '[[[ if (entity.attributes.battery_low==true) { return "Low"}; ]]]'
               battery: '[[[ if (states["binary_sensor.motion_kitchen_abode"].attributes.battery_low==true) return "Low"; ]]]'
-          - entity: binary_sensor.motion_kitchen_cabinet
-            type: custom:button-card
-            name: Cabinet Motion
-            template: security_motion
-            variables:
-              battery: '[[[ return states["sensor.battery_motion_kitchen_cabinet"].state ]]]'
-              temperature: '[[[ return states["sensor.temp_motion_kitchen_cabinet"].state ]]]'
-          - entity: binary_sensor.motion_kitchen_door
-            type: custom:button-card
-            name: Door Motion
-            template: security_motion
-            variables:
-              battery: '[[[ return states["sensor.battery_motion_kitchen_door"].state ]]]'
-              temperature: '[[[ return states["sensor.temp_motion_kitchen_door"].state ]]]'
+          # - entity: binary_sensor.motion_kitchen_cabinet
+          #   type: custom:button-card
+          #   name: Cabinet Motion
+          #   template: security_motion
+          #   variables:
+          #     battery: '[[[ return states["sensor.battery_motion_kitchen_cabinet"].state ]]]'
+          #     temperature: '[[[ return states["sensor.temp_motion_kitchen_cabinet"].state ]]]'
+          # - entity: binary_sensor.motion_kitchen_door
+          #   type: custom:button-card
+          #   name: Door Motion
+          #   template: security_motion
+          #   variables:
+          #     battery: '[[[ return states["sensor.battery_motion_kitchen_door"].state ]]]'
+          #     temperature: '[[[ return states["sensor.temp_motion_kitchen_door"].state ]]]'
   # End kitchen panel
+  
+  # Begin living room panel
+  - type: entities
+    title: Living Room
+    show_header_toggle: false
+    entities:
+      - type: custom:hui-element
+        card_type: horizontal-stack
+        cards:
+          - entity: binary_sensor.motion_lvrm_tv
+            type: custom:button-card
+            name: TV Motion
+            template: security_motion
+            variables:
+              battery: '[[[ return states["sensor.battery_motion_lvrm_tv"].state ]]]'
+  # End living room panel
   
   # Begin office panel
   - type: entities
@@ -343,13 +371,13 @@ cards:
       - type: custom:hui-element
         card_type: horizontal-stack
         cards:
-          - entity: binary_sensor.door_office_1x
-            type: custom:button-card
-            name: Single Door
-            template: security_door
-            variables:
-              battery: '[[[ return states["sensor.battery_door_office_1x"].state ]]]'
-              temperature: '[[[ return states["sensor.temp_door_office_1x"].state ]]]'
+          # - entity: binary_sensor.door_office_1x
+          #   type: custom:button-card
+          #   name: Single Door
+          #   template: security_door
+          #   variables:
+          #     battery: '[[[ return states["sensor.battery_door_office_1x"].state ]]]'
+          #     temperature: '[[[ return states["sensor.temp_door_office_1x"].state ]]]'
           - entity: binary_sensor.door_office_2x
             type: custom:button-card
             name: Double Door
@@ -416,20 +444,20 @@ cards:
       - type: custom:hui-element
         card_type: horizontal-stack
         cards:
-          - entity: binary_sensor.motion_mbath_entry
-            type: custom:button-card
-            name: Entry Motion
-            template: security_motion
-            variables:
-              battery: '[[[ return states["sensor.battery_motion_mbath_entry"].state ]]]'
-              temperature: '[[[ return states["sensor.temp_motion_mbath_entry"].state ]]]'
-          - entity: binary_sensor.motion_mbath_main
-            type: custom:button-card
-            name: Main Motion
-            template: security_motion
-            variables:
-              battery: '[[[ return states["sensor.battery_motion_mbath_main"].state ]]]'
-              temperature: '[[[ return states["sensor.temp_motion_mbath_main"].state ]]]'
+          # - entity: binary_sensor.motion_mbath_entry
+          #   type: custom:button-card
+          #   name: Entry Motion
+          #   template: security_motion
+          #   variables:
+          #     battery: '[[[ return states["sensor.battery_motion_mbath_entry"].state ]]]'
+          #     temperature: '[[[ return states["sensor.temp_motion_mbath_entry"].state ]]]'
+          # - entity: binary_sensor.motion_mbath_main
+          #   type: custom:button-card
+          #   name: Main Motion
+          #   template: security_motion
+          #   variables:
+          #     battery: '[[[ return states["sensor.battery_motion_mbath_main"].state ]]]'
+          #     temperature: '[[[ return states["sensor.temp_motion_mbath_main"].state ]]]'
           - entity: binary_sensor.motion_mbath_closet
             type: custom:button-card
             name: Closet Motion
