@@ -530,14 +530,14 @@ cards:
         card_type: history-graph
         hours_to_show: 1
         entities:
-          - entity: sensor.laundry_dryer_power
-            name: Dryer
-          - entity: sensor.laundry_washer_power
-            name: Washer
+          # - entity: sensor.laundry_dryer_power
+          #   name: Dryer
+          # - entity: sensor.laundry_washer_power
+          #   name: Washer
           - entity: sensor.laundry_dryer_power_log
-            name: Log Dryer
+            name: Dryer
           - entity: sensor.laundry_washer_power_log
-            name: Log Washer
+            name: Washer
         style: |
           ha-card { box-shadow: none; }
           div.content { padding: 0 0 16px; }
