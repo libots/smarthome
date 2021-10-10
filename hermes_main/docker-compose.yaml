@@ -461,11 +461,12 @@ services:
     read_only: false
     tmpfs:
       - /tmp
-    ports:
-      - "137:137/udp" # required to advertise shares (NMBD)
-      - "138:138/udp" # required to advertise shares (NMBD)
-      - "139:139/tcp" # default smb port
-      - "445:445/tcp" # default  smb port
+    network_mode: host
+    # ports:
+    #   - "137:137/udp" # required to advertise shares (NMBD)
+    #   - "138:138/udp" # required to advertise shares (NMBD)
+    #   - "139:139/tcp" # default smb port
+    #   - "445:445/tcp" # default  smb port
     volumes:
       - ${USERDIR}:/mnt/docker:z
       - /home/repo:/mnt/repo:z
