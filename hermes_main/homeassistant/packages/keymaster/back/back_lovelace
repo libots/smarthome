@@ -11,7 +11,7 @@
       - entity: >-
           lock.back
       - entity: >-
-          binary_sensor.door_back_homekit
+          binary_sensor.door_back
       - entity: input_text.keymaster_back_autolock_door_time_day
       - entity: input_text.keymaster_back_autolock_door_time_night
       - entity: input_boolean.keymaster_back_autolock

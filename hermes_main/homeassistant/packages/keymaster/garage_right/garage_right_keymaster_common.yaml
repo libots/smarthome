@@ -190,7 +190,7 @@ automation:
 
   - alias: garage_right Door Open and Close
     trigger:
-      entity_id: binary_sensor.door_garage_right_homekit
+      entity_id: binary_sensor.door_garage_right
       platform: state
     condition:
       - condition: state
@@ -293,13 +293,13 @@ automation:
     - choose:
         - conditions:
             - condition: template
-              value_template: "{{ (states('binary_sensor.door_garage_right_homekit') != 'on') }}"
+              value_template: "{{ (states('binary_sensor.door_garage_right') != 'on') }}"
           sequence:
             - service: lock.lock
               entity_id: lock.garage_right
         - conditions:
             - condition: template
-              value_template: "{{ (states('binary_sensor.door_garage_right_homekit') == 'on') }}"
+              value_template: "{{ (states('binary_sensor.door_garage_right') == 'on') }}"
           sequence:
             - service: script.keymaster_garage_right_start_timer_retry
         
