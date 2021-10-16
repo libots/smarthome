@@ -1,0 +1,158 @@
+sensor:
+
+  # Traffic (from https://www.reddit.com/r/homeassistant/comments/gl16ql/monitoring_pfsense_bandwidth_snmp_counter_to/fqv6sd4/)
+
+  # WAN
+  # -- Define the raw SNMP counters
+  - platform: snmp
+    name: pfSense NIC WAN In Raw
+    host: !secret pfsense_ip
+    community: !secret pfsense_snmp
+    baseoid: 1.3.6.1.2.1.2.2.1.10.1
+  - platform: snmp
+    name: pfSense NIC WAN Out Raw
+    host: !secret pfsense_ip
+    community: !secret pfsense_snmp
+    baseoid: 1.3.6.1.2.1.2.2.1.16.1
+  # -- Define the statistics enabled counters
+  - platform: statistics
+    name: pfSense NIC WAN In Counter
+    entity_id: sensor.pfsense_nic_wan_in_raw
+    sampling_size: 2
+    max_age:
+      minutes: 5
+  - platform: statistics
+    name: pfSense NIC WAN Out Counter
+    entity_id: sensor.pfsense_nic_wan_out_raw
+    sampling_size: 2
+    max_age:
+      minutes: 5
+  # -- Define the actual sensor templates you'll use
+  - platform: template
+    sensors:
+      pfsense_nic_wan_in:
+        icon_template: mdi:cloud-download-outline
+        friendly_name: 'pfsense WAN Traffic In'
+        unit_of_measurement: 'Mbps'
+        # entity_id: sensor.pfsense_nic_wan_in_counter
+        value_template: >
+          {% if states.sensor.pfsense_nic_wan_in_counter.state|int > 0 %}
+            {% if state_attr('sensor.pfsense_nic_wan_in_counter','change_rate') > 0 %}
+              {{ (((state_attr('sensor.pfsense_nic_wan_in_counter','change_rate')|float)*8)/1000000)|round(2) }}
+            {% else  %}
+              0
+            {% endif %}
+          {% else  %}
+            0
+          {% endif %}
+      pfsense_nic_wan_out:
+        icon_template: mdi:cloud-upload-outline
+        friendly_name: 'pfsense WAN Traffic Out'
+        unit_of_measurement: 'Mbps'
+        # entity_id: sensor.pfsense_nic_wan_out_counter
+        value_template: >
+          {% if states.sensor.pfsense_nic_wan_out_counter.state|int > 0 %}
+            {% if state_attr('sensor.pfsense_nic_wan_out_counter','change_rate') > 0 %}
+              {{ (((state_attr('sensor.pfsense_nic_wan_out_counter','change_rate')|float)*8)/1000000)|round(2) }}
+            {% else  %}
+              0
+            {% endif %}
+          {% else  %}
+            0
+          {% endif %}
+  # TMobile
+  # -- Define the raw SNMP counters
+  - platform: snmp
+    name: pfSense NIC TMobile In Raw
+    host: !secret pfsense_ip
+    community: !secret pfsense_snmp
+    baseoid: 1.3.6.1.2.1.2.2.1.10.17
+  - platform: snmp
+    name: pfSense NIC TMobile Out Raw
+    host: !secret pfsense_ip
+    community: !secret pfsense_snmp
+    baseoid: 1.3.6.1.2.1.2.2.1.16.17
+  # -- Define the statistics enabled counters
+  - platform: statistics
+    name: pfSense NIC TMobile In Counter
+    entity_id: sensor.pfsense_nic_tmobile_in_raw
+    sampling_size: 2
+    max_age:
+      minutes: 5
+  - platform: statistics
+    name: pfSense NIC TMobile Out Counter
+    entity_id: sensor.pfsense_nic_tmobile_out_raw
+    sampling_size: 2
+    max_age:
+      minutes: 5
+  # -- Define the actual sensor templates you'll use
+  - platform: template
+    sensors:
+      pfsense_nic_tmobile_in:
+        icon_template: mdi:cloud-download-outline
+        friendly_name: 'pfsense TMobile Traffic In'
+        unit_of_measurement: 'Mbps'
+        # entity_id: sensor.pfsense_nic_tmobile_in_counter
+        value_template: >
+          {% if states.sensor.pfsense_nic_tmobile_in_counter.state|int > 0 %}
+            {% if state_attr('sensor.pfsense_nic_tmobile_in_counter','change_rate') > 0 %}
+              {{ (((state_attr('sensor.pfsense_nic_tmobile_in_counter','change_rate')|float)*8)/1000000)|round(2) }}
+            {% else  %}
+              0
+            {% endif %}
+          {% else  %}
+            0
+          {% endif %}
+      pfsense_nic_tmobile_out:
+        icon_template: mdi:cloud-upload-outline
+        friendly_name: 'pfsense TMobile Traffic Out'
+        unit_of_measurement: 'Mbps'
+        # entity_id: sensor.pfsense_nic_tmobile_out_counter
+        value_template: >
+          {% if states.sensor.pfsense_nic_tmobile_out_counter.state|int > 0 %}
+            {% if state_attr('sensor.pfsense_nic_tmobile_out_counter','change_rate') > 0 %}
+              {{ (((state_attr('sensor.pfsense_nic_tmobile_out_counter','change_rate')|float)*8)/1000000)|round(2) }}
+            {% else  %}
+              0
+            {% endif %}
+          {% else  %}
+            0
+          {% endif %}
+
+  # pfSense Gateways (https://github.com/alexpmorris/pfsense-status-gateways-json)
+  - platform: rest
+    name: pfsense_gateways
+    resource: !secret pfsense_gateways
+    verify_ssl: false
+    json_attributes:
+      - wan
+      - opt7
+      - opt10
+    scan_interval: 5
+    value_template: "OK"
+template:
+  - sensor:
+    - name: pfSense Gateway WAN In
+      state: '{{ states.sensor.pfsense_gateways.attributes["wan"]["inKbps"]/1000 }}'
+      unit_of_measurement: "Mbps"
+      icon: mdi:cloud-download-outline
+    - name: pfSense Gateway WAN Out
+      state: '{{ states.sensor.pfsense_gateways.attributes["wan"]["outKbps"]/1000 }}'
+      unit_of_measurement: "Mbps"
+      icon: mdi:cloud-download-outline
+    - name: pfSense Gateway TMobile In
+      state: '{{ states.sensor.pfsense_gateways.attributes["opt10"]["inKbps"]/1000 }}'
+      unit_of_measurement: "Mbps"
+      icon: mdi:cloud-download-outline
+    - name: pfSense Gateway TMobile Out
+      state: '{{ states.sensor.pfsense_gateways.attributes["opt10"]["outKbps"]/1000 }}'
+      unit_of_measurement: "Mbps"
+      icon: mdi:cloud-download-outline
+    - name: pfSense Gateway PIA In
+      state: '{{ states.sensor.pfsense_gateways.attributes["opt7"]["inKbps"]/1000 }}'
+      unit_of_measurement: "Mbps"
+      icon: mdi:cloud-download-outline
+    - name: pfSense Gateway PIA Out
+      state: '{{ states.sensor.pfsense_gateways.attributes["opt7"]["outKbps"]/1000 }}'
+      unit_of_measurement: "Mbps"
+      icon: mdi:cloud-download-outline
