@@ -5,7 +5,7 @@ path: network
 icon: mdi:lan
 cards:
   # Begin WAN card
-  - title: WAN
+  - title: WAN (Cable)
     type: entities
     show_header_toggle: false
     entities:
@@ -13,7 +13,8 @@ cards:
         name: Traffic In
       - entity: sensor.pfsense_nic_wan_out_mbps
         name: Traffic Out
-      - type: custom:hui-history-graph-card
+      - type: custom:hui-element
+        card_type: history-graph
         hours_to_show: 1
         entities:
           - entity: sensor.pfsense_nic_wan_in_mbps
@@ -45,6 +46,261 @@ cards:
           - entity: sensor.cox_sensor_data_used
             name: Used
   # End WAN card
+
+  # Begin TMobile card
+  - title: TMobile
+    type: entities
+    show_header_toggle: fastmile_radio_status_web_app
+    entities:
+      - type: custom:hui-element
+        card_type: grid
+        columns: 3
+        square: false
+        cards:
+          - type: markdown
+            content: " "
+            card_mod:
+              style: |
+                ha-card {
+                  box-shadow: none;
+                  text-align: center;
+                  vertical-align: middle;
+                }
+                ha-card ha-markdown {
+                  padding: 0 !important;
+                }
+          - type: custom:hui-element
+            card_type: gauge
+            entity: sensor.tmobile_lte_rssi
+            name: " "
+            needle: true
+            min: -90
+            max: -30
+            severity:
+              red: -90
+              yellow: -80
+              green: -67
+            card_mod:
+              style: |
+                ha-card {
+                  box-shadow: none;
+                  text-align: center;
+                  padding: 0 !important;
+                }
+      - type: custom:hui-element
+        card_type: grid
+        columns: 4
+        square: false
+        cards:
+          - type: markdown
+            content: "**Band**"
+            card_mod:
+              style: |
+                ha-card {
+                  box-shadow: none;
+                  text-align: center;
+                }
+                ha-card ha-markdown {
+                  padding: 0 !important;
+                }
+          - type: markdown
+            content: "**RSRP**"
+            card_mod:
+              style: |
+                ha-card {
+                  box-shadow: none;
+                  text-align: center;
+                }
+                ha-card ha-markdown {
+                  padding: 0 !important;
+                }
+          - type: markdown
+            content: "**SNR**"
+            card_mod:
+              style: |
+                ha-card {
+                  box-shadow: none;
+                  text-align: center;
+                }
+                ha-card ha-markdown {
+                  padding: 0 !important;
+                }
+          - type: markdown
+            content: "**RSRQ**"
+            card_mod:
+              style: |
+                ha-card {
+                  box-shadow: none;
+                  text-align: center;
+                }
+                ha-card ha-markdown {
+                  padding: 0 !important;
+                }
+          - type: custom:hui-element
+            card_type: grid
+            columns: 2
+            square: false
+            cards:
+              - type: custom:badge-card
+                badges:
+                  - entity: sensor.tmobile_lte_band
+                    name: false
+              - type: custom:bar-card
+                entity: sensor.tmobile_lte_bars
+                min: 0
+                max: 5
+                direction: up
+                unit_of_measurement: " "
+                positions:
+                  icon: off
+                  name: off
+                  indicator: off
+                  minmax: off
+                card_mod:
+                  style: |
+                    ha-card {
+                      box-shadow: none;
+                    }
+                    ha-card #states {
+                      padding: 0 !important;
+                    }
+          - type: gauge
+            entity: sensor.tmobile_lte_rsrp
+            name: ""
+            needle: true
+            min: -140
+            max: -44
+            unit: " "
+            severity:
+              red: -140
+              yellow: -125
+              green: -90
+            card_mod:
+              style: |
+                ha-card {
+                  box-shadow: none;
+                  text-align: center;
+                  padding: 0 !important;
+                }
+          - type: gauge
+            entity: sensor.tmobile_lte_snr
+            name: ""
+            needle: true
+            min: 0
+            max: 20
+            unit: " "
+            severity:
+              red: 0
+              yellow: 5
+              green: 13
+            card_mod:
+              style: |
+                ha-card {
+                  box-shadow: none;
+                  text-align: center;
+                  padding: 0 !important;
+                }
+          - type: gauge
+            entity: sensor.tmobile_lte_rsrq
+            name: ""
+            needle: true
+            min: -20
+            max: 10
+            unit: " "
+            severity:
+              red: -20
+              yellow: -15
+              green: -10
+            card_mod:
+              style: |
+                ha-card {
+                  box-shadow: none;
+                  text-align: center;
+                  padding: 0 !important;
+                }
+          - type: custom:hui-element
+            card_type: grid
+            columns: 2
+            square: false
+            cards:
+              - type: custom:badge-card
+                badges:
+                  - entity: sensor.tmobile_fiveg_band
+                    name: false
+              - type: custom:bar-card
+                entity: sensor.tmobile_fiveg_bars
+                min: 0
+                max: 5
+                direction: up
+                unit_of_measurement: " "
+                positions:
+                  icon: off
+                  name: off
+                  indicator: off
+                  minmax: off
+                card_mod:
+                  style: |
+                    ha-card {
+                      box-shadow: none;
+                    }
+                    ha-card #states {
+                      padding: 0 !important;
+                    }
+          - type: gauge
+            entity: sensor.tmobile_fiveg_rsrp
+            name: ""
+            needle: true
+            min: -140
+            max: -44
+            unit: " "
+            severity:
+              red: -140
+              yellow: -125
+              green: -90
+            card_mod:
+              style: |
+                ha-card {
+                  box-shadow: none;
+                  text-align: center;
+                  padding: 0 !important;
+                }
+          - type: gauge
+            entity: sensor.tmobile_fiveg_snr
+            name: ""
+            needle: true
+            min: 0
+            max: 20
+            unit: " "
+            severity:
+              red: 0
+              yellow: 5
+              green: 13
+            card_mod:
+              style: |
+                ha-card {
+                  box-shadow: none;
+                  text-align: center;
+                  padding: 0 !important;
+                }
+          - type: gauge
+            entity: sensor.tmobile_fiveg_rsrq
+            name: ""
+            needle: true
+            min: -20
+            max: 10
+            unit: " "
+            severity:
+              red: -20
+              yellow: -15
+              green: -10
+            card_mod:
+              style: |
+                ha-card {
+                  box-shadow: none;
+                  text-align: center;
+                  padding: 0 !important;
+                }
+  # End TMobile card
 
   # Begin HA card
   - title: Home Assistant

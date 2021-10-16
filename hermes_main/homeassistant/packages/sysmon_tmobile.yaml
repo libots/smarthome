@@ -1,0 +1,63 @@
+sensor:
+  - platform: rest
+    name: tmobile
+    resource: 'http://192.168.12.1/fastmile_radio_status_web_app.cgi'
+    json_attributes:
+      - cell_5G_stats_cfg
+      - cell_LTE_stats_cfg
+    scan_interval: 30
+    value_template: "OK"
+  - platform: template
+    sensors:
+      tmobile_fiveg_rsrp:
+        value_template: '{{ states.sensor.tmobile.attributes["cell_5G_stats_cfg"][0]["stat"]["RSRPCurrent"] if states.sensor.tmobile.attributes["cell_5G_stats_cfg"][0]["stat"]["RSRPCurrent"] != -32768 else -100 }}'
+        device_class: signal_strength
+        unit_of_measurement: "dBm"
+        friendly_name: "5G RSRP"
+      tmobile_fiveg_snr:
+        value_template: '{{ states.sensor.tmobile.attributes["cell_5G_stats_cfg"][0]["stat"]["SNRCurrent"] if states.sensor.tmobile.attributes["cell_5G_stats_cfg"][0]["stat"]["SNRCurrent"] != -32768 else 0 }}'
+        device_class: signal_strength
+        unit_of_measurement: "dB"
+        friendly_name: "5G SNR"
+      tmobile_fiveg_rsrq:
+        value_template: '{{ states.sensor.tmobile.attributes["cell_5G_stats_cfg"][0]["stat"]["RSRQCurrent"] if states.sensor.tmobile.attributes["cell_5G_stats_cfg"][0]["stat"]["RSRQCurrent"] != -32768 else -30 }}'
+        device_class: signal_strength
+        unit_of_measurement: "dB"
+        friendly_name: "5G RSRQ"
+      tmobile_fiveg_band:
+        value_template: '{{ states.sensor.tmobile.attributes["cell_5G_stats_cfg"][0]["stat"]["Band"] if states.sensor.tmobile.attributes["cell_5G_stats_cfg"][0]["stat"]["Band"] != "" else "Not Connected" }}'
+        friendly_name: "5G Band"
+      tmobile_fiveg_bars:
+        value_template: '{{ states.sensor.tmobile.attributes["cell_5G_stats_cfg"][0]["stat"]["RSRPStrengthIndexCurrent"] if states.sensor.tmobile.attributes["cell_5G_stats_cfg"][0]["stat"]["RSRPStrengthIndexCurrent"] != "" else "Not Connected" }}'
+        friendly_name: "5G Bars"
+        device_class: signal_strength
+        unit_of_measurement: "bars"
+ 
+      tmobile_lte_rssi:
+        value_template: '{{ states.sensor.tmobile.attributes["cell_LTE_stats_cfg"][0]["stat"]["RSSICurrent"] if states.sensor.tmobile.attributes["cell_LTE_stats_cfg"][0]["stat"]["RSSICurrent"] != -32768 else -100}}'
+        device_class: signal_strength
+        unit_of_measurement: "dBm"
+        friendly_name: "LTE RSSI"
+      tmobile_lte_rsrp:
+        value_template: '{{ states.sensor.tmobile.attributes["cell_LTE_stats_cfg"][0]["stat"]["RSRPCurrent"] if states.sensor.tmobile.attributes["cell_LTE_stats_cfg"][0]["stat"]["RSRPCurrent"] != -32768 else -100}}'
+        device_class: signal_strength
+        unit_of_measurement: "dBm"
+        friendly_name: "LTE RSRP"
+      tmobile_lte_snr:
+        value_template: '{{ states.sensor.tmobile.attributes["cell_LTE_stats_cfg"][0]["stat"]["SNRCurrent"] if states.sensor.tmobile.attributes["cell_LTE_stats_cfg"][0]["stat"]["SNRCurrent"] != -32768 else 0 }}'
+        device_class: signal_strength
+        unit_of_measurement: "dB"
+        friendly_name: "LTE SNR"
+      tmobile_lte_rsrq:
+        value_template: '{{ states.sensor.tmobile.attributes["cell_LTE_stats_cfg"][0]["stat"]["RSRQCurrent"] if states.sensor.tmobile.attributes["cell_LTE_stats_cfg"][0]["stat"]["RSRQCurrent"] != -32768 else -30 }}'
+        device_class: signal_strength
+        unit_of_measurement: "dB"
+        friendly_name: "LTE RSRQ"
+      tmobile_lte_band:
+        value_template: '{{ states.sensor.tmobile.attributes["cell_LTE_stats_cfg"][0]["stat"]["Band"] if states.sensor.tmobile.attributes["cell_LTE_stats_cfg"][0]["stat"]["Band"] != "" else "Not Connected" }}'
+        friendly_name: "LTE Band"
+      tmobile_lte_bars:
+        value_template: '{{ states.sensor.tmobile.attributes["cell_LTE_stats_cfg"][0]["stat"]["RSRPStrengthIndexCurrent"] if states.sensor.tmobile.attributes["cell_LTE_stats_cfg"][0]["stat"]["RSRPStrengthIndexCurrent"] != "" else "Not Connected" }}'
+        friendly_name: "LTE Bars"
+        device_class: signal_strength
+        unit_of_measurement: "bars"
