@@ -17,6 +17,13 @@ light:
   #     - light.mbed_3
   #     - light.mbed_4
   - platform: group
+    name: GBed Fan
+    entities:
+      - light.gbed_1
+      - light.gbed_2
+      - light.gbed_3
+      - light.gbed_4
+  - platform: group
     name: Dog Cans
     entities:
       - light.dog_back
@@ -27,4 +34,6 @@ homeassistant:
     light.mbed_fan:
       icon: mdi:lightbulb
     light.dog_cans:
+      icon: mdi:lightbulb
+    light.gbed_fan:
       icon: mdi:lightbulb

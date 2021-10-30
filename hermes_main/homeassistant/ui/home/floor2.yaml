@@ -127,6 +127,35 @@ cards:
         type: custom:slider-entity-row
         toggle: true
   # End dog room card
+
+  # Begin guest bedroom card
+  - title: Guest Bedroom
+    type: entities
+    show_header_toggle: false
+    entities:
+      - type: custom:fold-entity-row
+        head:
+          entity: light.gbed_fan
+          name: Fan Lights
+          type: custom:slider-entity-row
+          toggle: true
+        group_config:
+          type: custom:slider-entity-row
+          toggle: true
+        entities:
+          - entity: light.gbed_1
+            name: Light 1
+          - entity: light.gbed_2
+            name: Light 2
+          - entity: light.gbed_3
+            name: Light 3
+          - entity: light.gbed_4
+            name: Light 4
+      - entity: fan.gbed
+        name: Ceiling Fan
+        type: custom:slider-entity-row
+        toggle: true
+  # End guest bedroom card
   
   # Begin guest bathroom card
   - title: Guest Bathroom
