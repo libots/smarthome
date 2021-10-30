@@ -17,8 +17,10 @@ input_boolean:
   front_reset_lock:
     name: front reset lock
   keymaster_front_autolock:
-    name: 'Auto Lock Enabled'
+    name: "Auto Lock Enabled"
     icon: mdi:key-remove
+  keymaster_front_retry:
+    name: "Auto Lock Enabled"
 
 ###################  script:  ####################
 script:
@@ -37,7 +39,7 @@ script:
         example: 1
     variables:
       # Constant used later to loop through day specific entities
-      days: ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
+      days: ["sun", "mon", "tue", "wed", "thu", "fri", "sat"]
     sequence:
       - service: input_boolean.turn_off
         data_template:
@@ -95,42 +97,18 @@ script:
               data_template:
                 entity_id: "input_boolean.{{ days[repeat.index - 1] }}_inc_front_{{ code_slot | string }}"
 
-  keymaster_front_refreshnodeinfo:
-    description:  'Send MQTT RefreshNodeInfo command'
-    sequence:
-      - service: system_log.write
-        data_template:
-          message: "front_TEMPLATENUM started noderefreshinfo: {{ now() }}"
-          level: debug  
-      - service: mqtt.publish
-        data:
-          topic: 'OpenZWave/1/command/refreshnodeinfo/'
-          payload: >-
-            {% set node_id = state_attr('lock.front','node_id') %}
-            { "node": {{ node_id }} }
-          retain: true
-
-  keymaster_front_start_timer_retry:
-    sequence:
-      - condition: state
-        entity_id: lock.front
-        state: 'unlocked'
-      - service: timer.cancel
-        entity_id:  timer.keymaster_front_autolock
-      - service: timer.start
-        data_template:
-          entity_id: timer.keymaster_front_autolock
-          duration: 00:00:30
-
   keymaster_front_start_timer:
     sequence:
       - condition: state
+        entity_id: input_boolean.keymaster_front_autolock
+        state: "on"
+      - condition: state
         entity_id: lock.front
-        state: 'unlocked'
+        state: "unlocked"
       - service: timer.cancel
-        entity_id:  timer.keymaster_front_autolock
+        entity_id: timer.keymaster_front_autolock
       - service: timer.start
-        data_template:    # if next_dusk happens sooner than next_dawn, then it's daylight
+        data_template: # if next_dusk happens sooner than next_dawn, then it's daylight
           entity_id: timer.keymaster_front_autolock
           duration: >
             {% if (((as_timestamp(states.sun.sun.attributes.next_dusk)) > (as_timestamp(states.sun.sun.attributes.next_dawn)))) %}
@@ -138,21 +116,39 @@ script:
             {% else %}
               {{ states('input_text.keymaster_front_autolock_door_time_day')}}
             {% endif %}
-          
+
+  boltchecked_lock_front:
+    sequence:
+      - service: lock.lock
+        data:
+          entity_id: lock.front
+
+  boltchecked_retry_front:
+    sequence:
+      - service: input_boolean.turn_on
+        target:
+          entity_id: input_boolean.keymaster_front_retry
+      - service: persistent_notification.create
+        data_template:
+          title: "Unable to lock front"
+          message: >-
+            {{ 'Unable to lock front as the sensor indicates the door is currently opened.  The operation will be automatically retried when the door is closed.'}}
+
 ###################  automation:  ####################
 automation:
-
   - alias: keymaster_front Reset Code Slot
+    id: keymaster_front Reset Code Slot
     trigger:
       entity_id: input_boolean.reset_codeslot_front_1,input_boolean.reset_codeslot_front_2,input_boolean.reset_codeslot_front_3,input_boolean.reset_codeslot_front_4,input_boolean.reset_codeslot_front_5,input_boolean.reset_codeslot_front_6,input_boolean.reset_codeslot_front_7,input_boolean.reset_codeslot_front_8,input_boolean.reset_codeslot_front_9,input_boolean.reset_codeslot_front_10
       platform: state
-      to: 'on'
+      to: "on"
     action:
       - service: script.keymaster_front_reset_codeslot
         data_template:
           code_slot: "{{ trigger.entity_id.split('_')[-1] }}"
 
   - alias: keymaster_front Lock Notifications
+    id: keymaster_front Lock Notifications
     trigger:
       platform: event
       event_type: keymaster_lock_state_changed
@@ -169,6 +165,7 @@ automation:
           message: "{{ trigger.event.data.action_text }} {% if trigger.event.data.code_slot > 0 %}({{ trigger.event.data.code_slot_name }}){% endif %}"
 
   - alias: keymaster_front User Notifications
+    id: keymaster_front User Notifications
     trigger:
       platform: event
       event_type: keymaster_lock_state_changed
@@ -189,6 +186,7 @@ automation:
           message: "{{ trigger.event.data.action_text }} ({{ trigger.event.data.code_slot_name }})"
 
   - alias: keymaster_front Door Open and Close
+    id: keymaster_front Door Open and Close
     trigger:
       entity_id: binary_sensor.door_front
       platform: state
@@ -205,6 +203,7 @@ automation:
           message: "{% if trigger.to_state.state == 'on' %}Door Opened{% else %}Door Closed{% endif %}"
 
   - alias: keymaster_front Changed Code
+    id: keymaster_front Changed Code
     trigger:
       entity_id: input_text.front_pin_1,input_text.front_pin_2,input_text.front_pin_3,input_text.front_pin_4,input_text.front_pin_5,input_text.front_pin_6,input_text.front_pin_7,input_text.front_pin_8,input_text.front_pin_9,input_text.front_pin_10
       platform: state
@@ -228,6 +227,7 @@ automation:
             {{ 'input_boolean.enabled_front_' + trigger.entity_id.split('_')[-1] }}
 
   - alias: keymaster_front Reset
+    id: keymaster_front Reset
     trigger:
       entity_id: input_boolean.front_reset_lock
       platform: state
@@ -239,6 +239,7 @@ automation:
         entity_id: input_boolean.front_reset_lock
 
   - alias: keymaster_front Decrement Access Count
+    id: keymaster_front Decrement Access Count
     trigger:
       platform: event
       event_type: keymaster_lock_state_changed
@@ -246,7 +247,7 @@ automation:
         lockname: front
     condition:
       - condition: template
-        # make sure decrementing access entries is enabled 
+        # make sure decrementing access entries is enabled
         value_template: "{{ is_state('input_boolean.accesslimit_front_' + trigger.event.data.code_slot | string, 'on') }}"
       - condition: template
         # Check for Keypad Unlock code
@@ -262,6 +263,7 @@ automation:
           entity_id: "{{ 'input_number.accesscount_front_' + trigger.event.data.code_slot | string }}"
 
   - alias: keymaster_front_locked
+    id: keymaster_front_locked
     trigger:
       entity_id: lock.front
       platform: state
@@ -269,8 +271,59 @@ automation:
     action:
       - service: timer.cancel
         entity_id: timer.keymaster_front_autolock
-        
-  - alias: keymaster_front_unlocked
+
+  - alias: keymaster_turn_off_retry_front
+    id: keymaster_turn_off_retry_front
+    trigger:
+      entity_id: lock.front
+      platform: state
+      to: locked
+    action:
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.keymaster_front_retry
+
+  - alias: keymaster_retry_bolt_closed_front
+    id: keymaster_retry_bolt_closed_front
+    trigger:
+      platform: state
+      entity_id: binary_sensor.door_front
+      to: "off"
+    condition:
+      - condition: state
+        entity_id: input_boolean.keymaster_front_retry
+        state: "on" 
+      - condition: state
+        entity_id: input_boolean.keymaster_front_autolock
+        state: "on"
+    action:
+      - service: persistent_notification.create
+        data_template:
+          title: "front is closed"
+          message: >-
+            {{ 'The front sensor indicates the door has been closed, re-attempting to lock.'}}
+      - service: lock.lock
+        entity_id: lock.boltchecked_front
+
+  - alias: keymaster_front_opened
+    id: keymaster_front_opened
+    trigger:
+      platform: state
+      entity_id: binary_sensor.door_front
+      to: "on"
+    action:
+      - service: timer.start
+        data_template:
+          entity_id: timer.keymaster_front_autolock
+          duration: >
+            {% if (((as_timestamp(states.sun.sun.attributes.next_dusk)) > (as_timestamp(states.sun.sun.attributes.next_dawn)))) %}
+              {{ states('input_text.keymaster_front_autolock_door_time_night')}}
+            {% else %}
+              {{ states('input_text.keymaster_front_autolock_door_time_day')}}
+            {% endif %}
+
+  - alias: keymaster_front_unlocked_start_autolock
+    id: keymaster_front_unlocked_start_autolock
     trigger:
       entity_id: lock.front
       platform: state
@@ -282,65 +335,93 @@ automation:
     action:
       - service: script.turn_on
         entity_id: script.keymaster_front_start_timer
-      
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.keymaster_front_retry
+
   - alias: keymaster_front_timer_finished
+    id: keymaster_front_timer_finished
+    condition:
+      - condition: state
+        entity_id: input_boolean.keymaster_front_autolock
+        state: "on"
     trigger:
       platform: event
       event_type: timer.finished
       event_data:
         entity_id: timer.keymaster_front_autolock
     action:
-    - choose:
-        - conditions:
-            - condition: template
-              value_template: "{{ (states('binary_sensor.door_front') != 'on') }}"
-          sequence:
-            - service: lock.lock
-              entity_id: lock.front
-        - conditions:
-            - condition: template
-              value_template: "{{ (states('binary_sensor.door_front') == 'on') }}"
-          sequence:
-            - service: script.keymaster_front_start_timer_retry
-        
-  - alias: keymaster_front_disable_auto_lock
-    trigger:
-      entity_id: input_boolean.keymaster_front_autolock
-      platform: state
-      to: 'off'
-    action:
-      - service: timer.cancel
-        entity_id:
-          - timer.keymaster_front_autolock
-      - service: lock.unlock
-        entity_id: lock.front
-       
-  - alias: keymaster_front_enable_auto_lock
-    trigger:
-      entity_id: input_boolean.keymaster_front_autolock
-      platform: state
-      to: 'on'
-    action:
-      - service: timer.cancel
-        entity_id:
-          - timer.keymaster_front_autolock
       - service: lock.lock
+        entity_id: lock.boltchecked_front
+
+  - alias: keymaster_front_timer_canceled
+    id: keymaster_front_timer_canceled
+    trigger:
+      platform: event
+      event_type: timer.cancelled
+      event_data:
+        entity_id: timer.keymaster_front_autolock
+    action:
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.keymaster_front_retry
+
+  - alias: keymaster_front_disable_auto_lock
+    id: keymaster_front_disable_auto_lock
+    trigger:
+      entity_id: input_boolean.keymaster_front_autolock
+      platform: state
+      to: "off"
+    action:
+      - service: timer.cancel
+        entity_id:
+          - timer.keymaster_front_autolock
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.keymaster_front_retry
+
+  - alias: keymaster_front_enable_auto_lock
+    id: keymaster_front_enable_auto_lock
+    trigger:
+      entity_id: input_boolean.keymaster_front_autolock
+      platform: state
+      to: "on"
+    action:
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.keymaster_front_retry
+      - service: timer.cancel
+        entity_id:
+          - timer.keymaster_front_autolock
+      - service: script.turn_on
+        entity_id: script.keymaster_front_start_timer
+
+###################  timer:  ####################
+timer:
+  keymaster_front_autolock:
+    name: "Auto Lock Timer"
+
+###################  lock:  ####################
+lock:
+  - platform: template
+    name: boltchecked_front
+    value_template: "{{ is_state('lock.front', 'locked') }}"
+    lock:
+      service: "{{ 'script.boltchecked_retry_front' if (is_state('binary_sensor.door_front', 'on')) else 'script.boltchecked_lock_front' }}"
+    unlock:
+      service: lock.unlock
+      data:
         entity_id: lock.front
 
 ###############  input_text:  #################
 input_text:
   front_lockname:
     initial: front
-    name: 'Lock Name'
+    name: "Lock Name"
 
   keymaster_front_autolock_door_time_day:
-    name: 'Day Auto Lock HH:MM:SS'
-    initial: '00:15:00'
+    name: "Day Auto Lock HH:MM:SS"
+    initial: "00:15:00"
   keymaster_front_autolock_door_time_night:
-    name: 'Night Auto Lock HH:MM:SS'
-    initial: '00:05:00'
-
-###################  timer:  ####################
-timer:
-  keymaster_front_autolock:
-    name: 'Auto Lock Timer'
+    name: "Night Auto Lock HH:MM:SS"
+    initial: "00:05:00"
