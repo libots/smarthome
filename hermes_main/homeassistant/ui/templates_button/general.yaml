@@ -60,6 +60,12 @@ control_motion:
       width: 18px;
     }
 
+light:
+  template: general
+  styles:
+    icon:
+      - color: var(--button-card-light-color)
+
 person:
   template:
     - general

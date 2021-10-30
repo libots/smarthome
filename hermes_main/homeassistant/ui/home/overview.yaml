@@ -317,13 +317,13 @@ cards:
             type: custom:button-card
             name: Foyer Light
             template:
-              - general
+              - light
               - inside
           - entity: light.stairs_hallway
             type: custom:button-card
             name: Stairs/Hallway Lights
             template:
-              - general
+              - light
               - inside
               - control_motion
             variables:
@@ -334,7 +334,7 @@ cards:
             type: custom:button-card
             name: Basement Lights
             template:
-              - general
+              - light
               - inside
   # End common areas card
   
@@ -350,13 +350,13 @@ cards:
             type: custom:button-card
             name: Recessed Lights
             template:
-              - general
+              - light
               - inside
           - entity: light.lvrm_fan
             type: custom:button-card
             name: Fan Light
             template:
-              - general
+              - light
               - inside
           - entity: fan.lvrm
             type: custom:button-card
@@ -378,13 +378,13 @@ cards:
             type: custom:button-card
             name: Recessed Lights
             template:
-              - general
+              - light
               - inside
           - entity: light.office_fan
             type: custom:button-card
             name: Fan Light
             template:
-              - general
+              - light
               - inside
           - entity: fan.office
             type: custom:button-card
@@ -408,7 +408,7 @@ cards:
             type: custom:button-card
             name: Chandelier
             template:
-              - general
+              - light
               - inside
           - type: custom:button-card
             color_type: blank-card
@@ -426,19 +426,19 @@ cards:
             type: custom:button-card
             name: Recessed Lights
             template:
-              - general
+              - light
               - inside
           - entity: light.kitchen_cabinet
             type: custom:button-card
             name: Cabinet Lights
             template:
-              - general
+              - light
               - inside
           - entity: light.pantry
             type: custom:button-card
             name: Pantry Light
             template:
-              - general
+              - light
               - inside
   # End kitchen card
   
@@ -467,7 +467,7 @@ cards:
             type: custom:button-card
             name: Fan Light
             template:
-              - general
+              - light
               - inside
           - entity: fan.mbed
             type: custom:button-card
@@ -479,13 +479,13 @@ cards:
             type: custom:button-card
             name: Matt’s Light
             template:
-              - general
+              - light
               - inside
           - entity: light.mbed_kayla
             type: custom:button-card
             name: Kayla’s Light
             template:
-              - general
+              - light
               - inside
       - type: custom:button-card
         color_type: blank-card
@@ -555,7 +555,7 @@ cards:
             type: custom:button-card
             name: Porch Lights
             template:
-              - general
+              - light
               - inside
             lock:
               enabled: "[[[ return entity.state === 'on'; ]]]"
@@ -564,7 +564,7 @@ cards:
             type: custom:button-card
             name: Backyard Lights
             template:
-              - general
+              - light
               - inside
           - entity: switch.irrigation_program_dogs
             type: custom:button-card
@@ -595,19 +595,19 @@ cards:
             type: custom:button-card
             name: Patio Lights
             template:
-              - general
+              - light
               - inside
           - entity: light.outside_backyard
             type: custom:button-card
             name: Backyard Lights
             template:
-              - general
+              - light
               - inside
           - entity: light.outside_garage
             type: custom:button-card
             name: Garage Lights
             template:
-              - general
+              - light
               - inside
       - type: custom:button-card
         color_type: blank-card
@@ -620,7 +620,7 @@ cards:
             type: custom:button-card
             name: Pergola Lights
             template:
-              - general
+              - light
               - inside
           - entity: fan.pergola
             type: custom:button-card
@@ -642,13 +642,13 @@ cards:
             type: custom:button-card
             name: Recessed Lights
             template:
-              - general
+              - light
               - inside
           - entity: light.dog_fan
             type: custom:button-card
             name: Fan Light
             template:
-              - general
+              - light
               - inside
           - entity: fan.dog
             type: custom:button-card
