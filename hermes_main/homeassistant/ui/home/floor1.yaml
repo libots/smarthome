@@ -44,10 +44,41 @@ cards:
         name: Foyer Light
         type: custom:slider-entity-row
         toggle: true
-      - entity: light.stairs_hallway
-        name: Stairs/Hallway Lights
-        type: custom:slider-entity-row
-        toggle: true
+      - type: custom:fold-entity-row
+        head:
+          entity: light.stairs_hallway
+          name: Stairs/Hallway Lights
+          type: custom:slider-entity-row
+          toggle: true
+        group_config:
+          type: custom:slider-entity-row
+          toggle: true
+        entities:
+          - type: custom:fold-entity-row
+            head:
+              entity: light.stairs
+              name: Stairs
+              type: custom:slider-entity-row
+              toggle: true
+            group_config:
+              type: custom:slider-entity-row
+              toggle: true
+            entities:
+              - entity: light.stairs_1
+              - entity: light.stairs_2
+          - type: custom:fold-entity-row
+            head:
+              entity: light.hall
+              name: Hallway
+              type: custom:slider-entity-row
+              toggle: true
+            group_config:
+              type: custom:slider-entity-row
+              toggle: true
+            entities:
+              - entity: light.hall_1
+              - entity: light.hall_2
+              - entity: light.hall_3
   # End common areas card
   
   # Begin living room card

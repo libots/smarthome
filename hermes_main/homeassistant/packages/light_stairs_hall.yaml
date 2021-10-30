@@ -5,6 +5,11 @@ light:
       - light.hall
       - light.stairs_1
       - light.stairs_2
+  - platform: group
+    name: Stairs
+    entities:
+      - light.stairs_1
+      - light.stairs_2
 
 input_boolean:
   motion_light_hall:
@@ -13,4 +18,6 @@ input_boolean:
 homeassistant:
   customize:
     light.stairs_hallway:
+      icon: mdi:lightbulb
+    light.stairs:
       icon: mdi:lightbulb
