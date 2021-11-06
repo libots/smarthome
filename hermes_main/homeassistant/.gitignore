@@ -43,6 +43,7 @@ secrets.yaml
 known_devices.yaml
 *.pickle
 google_calendars.yaml
+*.pem
 
 www/images/*
 !www/images/buttons
