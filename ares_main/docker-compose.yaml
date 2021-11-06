@@ -139,6 +139,44 @@ services:
       # - "traefik.http.middlewares.traefikauth.forwardauth.address=http://10.20.32.9:4181"
       # - "traefik.http.middlewares.traefikauth.forwardauth.authResponseHeaders=X-Forwarded-User"
       # - "traefik.http.middlewares.traefikauth.forwardauth.trustForwardHeader=true"
+  unifi-controller:
+    image: ghcr.io/linuxserver/unifi-controller:latest
+    container_name: unifi-controller
+    restart: unless-stopped
+    # network_mode: host
+    networks:
+      mgmt:
+        ipv4_address: 10.20.10.7
+    # ports:
+    #   - "${IP_MGMT}:3478:3478/udp"
+    #   - "${IP_MGMT}:8080:8080"
+    #   - "${IP_MGMT}:10001:10001/udp"
+    #   - "8443:8443"
+    volumes:
+      - ${MAINDIR}/unifi-controller/.data:/config
+    environment:
+      # - TZ=${TZ} # doesn't work
+      - PUID=${PUID}
+      - PGID=${PGID}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.unifi.rule=Host(`unifi.${DOMAINNAME}`,`unifi.${DOMAINNAME_EXTERNAL}`)"
+      - "traefik.http.routers.unifi.tls=true"
+      # - "traefik.http.routers.unifi.middlewares=traefikauth"
+      - "traefik.http.services.unifi.loadbalancer.server.port=8443"
+      - "traefik.http.services.unifi.loadbalancer.server.scheme=https"
+      # - "traefik.enable=true"
+      # - "traefik.http.routers.unifi.rule=Host(`unifi.${DOMAINNAME}`)"
+      # - "traefik.http.routers.unifi.tls=true"
+      # # - "traefik.http.routers.unifi.entrypoints=web"
+      # - "traefik.http.services.unifi.loadbalancer.server.port=8443"
+      # - "traefik.http.services.unifi.loadbalancer.server.scheme=https"
+      # # - "traefik.port=8443"
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "10m"
   watchtower:
     image: containrrr/watchtower
     container_name: watchtower
@@ -155,3 +193,14 @@ services:
       options:
         max-file: "5"
         max-size: "10m"
+networks:
+  default:
+  mgmt:
+    driver: macvlan
+    driver_opts:
+      parent: ens18.10
+    ipam:
+      driver: default
+      config:
+        - subnet: ${NET_MGMT_SUBNET}
+          gateway: ${NET_MGMT_GATEWAY}
