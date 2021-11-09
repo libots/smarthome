@@ -27,6 +27,7 @@ logger:
   default: warn
   logs:
     custom_components.cox_sensor: debug
+    homeassistant.components.websocket_api.http.connection: fatal
 
 http:
   trusted_proxies: !secret http_trusted_proxies
