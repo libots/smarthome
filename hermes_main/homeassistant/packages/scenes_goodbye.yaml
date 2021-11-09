@@ -1,7 +1,7 @@
 scene:
   - name: Goodbye
     entities:
-      alarm_control_panel.abode_alarm: armed_away
+      alarm_control_panel.ha: armed_away
       switch.light_basement: off
       light.downstairs: off
       fan.office: off
