@@ -121,3 +121,202 @@
     target:
       entity_id: switch.irrigation_program_dogs
   mode: single
+- id: '1636340179308'
+  alias: Pico Office
+  description: ''
+  use_blueprint:
+    path: personal/pico_5_light.yaml
+    input:
+      pico_remote: 78455aae78bb2141c530818d9817a09c
+      light_target:
+        entity_id: light.office_cans
+- id: '1636340581812'
+  alias: Pico Powder
+  description: ''
+  use_blueprint:
+    path: personal/pico_5_light.yaml
+    input:
+      pico_remote: 404a50b676e9919f231c2e44ca3aeeac
+      light_target:
+        entity_id: light.powder
+- id: '1636340608408'
+  alias: Pico Stairs Bottom
+  description: ''
+  use_blueprint:
+    path: personal/pico_5_light.yaml
+    input:
+      pico_remote: 433eca06819fda543ea98e07fedfe113
+      light_target:
+        entity_id: light.stairs_hallway
+- id: '1636340685766'
+  alias: Pico Stairs Top
+  description: ''
+  use_blueprint:
+    path: personal/pico_5_light.yaml
+    input:
+      pico_remote: 9e39cce3e8e794a6e49c95e8c48265da
+      light_target:
+        entity_id: light.stairs_hallway
+- id: '1636340747230'
+  alias: Pico Stairs Bedroom
+  description: ''
+  use_blueprint:
+    path: personal/pico_5_light.yaml
+    input:
+      pico_remote: 1396714fd612391417dcacabc218a083
+      light_target:
+        entity_id: light.stairs_hallway
+- id: '1636340766864'
+  alias: Pico Pantry
+  description: ''
+  use_blueprint:
+    path: personal/pico_5_light.yaml
+    input:
+      pico_remote: 01c42a2f57a57153cc7e64be14dc5b1d
+      light_target:
+        entity_id: light.pantry
+- id: '1636340793826'
+  alias: Pico Dog Cans MBed
+  description: ''
+  use_blueprint:
+    path: personal/pico_5_light.yaml
+    input:
+      pico_remote: af540ecd7194a76261911e166c6d2603
+      light_target:
+        entity_id: light.dog_cans
+- id: '1636340831534'
+  alias: Pico MBed Light
+  description: ''
+  use_blueprint:
+    path: personal/pico_5_light.yaml
+    input:
+      pico_remote: 51e2cd64b6d7b6212884760cc622c46f
+      light_target:
+        entity_id: light.mbed_fan
+- id: '1636340853827'
+  alias: Pico MBath Shower
+  description: ''
+  use_blueprint:
+    path: personal/pico_5_light.yaml
+    input:
+      pico_remote: 535ed45cc21a9225de5f1b28aa1f575c
+      light_target:
+        entity_id: light.mbath_shower
+- id: '1636341013264'
+  alias: Pico GBed
+  description: ''
+  use_blueprint:
+    path: personal/pico_5_light.yaml
+    input:
+      pico_remote: 423a0b8dc972aa2d064c054bdee04bc8
+      light_target:
+        entity_id: light.gbed_fan
+- id: '1636341816621'
+  alias: Pico LvRm
+  description: ''
+  use_blueprint:
+    path: personal/pico_5_light.yaml
+    input:
+      pico_remote: 6011d10516b5a149cd4d4dc337c64a63
+      light_target:
+        entity_id: light.lvrm_cans
+- id: '1636428460091'
+  alias: Pico Back
+  description: ''
+  use_blueprint:
+    path: personal/pico_2_onoff.yaml
+    input:
+      target_entity: light.outside_yard
+      pico_remote: f0da327d59154b18a311d0b11094d2a8
+- id: '1636517378255'
+  alias: Pico MBed Fan
+  description: ''
+  use_blueprint:
+    path: personal/pico_5_fan.yaml
+    input:
+      pico_remote: 527f47e23ecca4986596916e68b59842
+      fan_target:
+        entity_id: fan.mbed
+- id: '1636517477845'
+  alias: Pico GBath Vanity
+  description: ''
+  use_blueprint:
+    path: personal/pico_5_light.yaml
+    input:
+      pico_remote: 208c1b48dc4c2a5803966a4404c80b40
+      light_target:
+        entity_id: light.gbath_vanity
+- id: '1636519460504'
+  alias: Pico MBed Matt
+  description: ''
+  use_blueprint:
+    path: personal/pico_4z.yaml
+    input:
+      pico: 97d4a5a106e5b8aa88e7fe704876747e
+      auto_mode: restart
+      mode_max: 10
+      button_1_press:
+      - service: light.toggle
+        target:
+          entity_id: light.mbed_fan
+      button_2_press:
+      - choose:
+        - conditions:
+          - condition: state
+            entity_id: fan.mbed
+            state: 'off'
+          sequence:
+          - service: fan.turn_on
+            target:
+              entity_id: fan.mbed
+            data:
+              percentage: 100
+        default:
+        - service: fan.decrease_speed
+          target:
+            entity_id: fan.mbed
+      button_3_press:
+      - service: light.toggle
+        target:
+          entity_id: light.mbed_matt
+      button_4_press:
+      - service: light.toggle
+        target:
+          entity_id: light.mbed_kayla
+- id: '1636520139790'
+  alias: Pico MBed Kayla
+  description: ''
+  use_blueprint:
+    path: personal/pico_4z.yaml
+    input:
+      pico: d86ee3f8418f577b0874fd7dbf7ff557
+      auto_mode: restart
+      mode_max: 10
+      button_1_press:
+      - service: light.toggle
+        target:
+          entity_id: light.mbed_fan
+      button_2_press:
+      - choose:
+        - conditions:
+          - condition: state
+            entity_id: fan.mbed
+            state: 'off'
+          sequence:
+          - service: fan.turn_on
+            target:
+              entity_id: fan.mbed
+            data:
+              percentage: 100
+        default:
+        - service: fan.decrease_speed
+          target:
+            entity_id: fan.mbed
+      button_3_press:
+      - service: light.toggle
+        target:
+          entity_id: light.mbed_matt
+      button_4_press:
+      - service: light.toggle
+        target:
+          entity_id: light.mbed_kayla
