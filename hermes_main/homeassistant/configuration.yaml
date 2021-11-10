@@ -54,12 +54,12 @@ google:
   client_id: !secret google_client_id
   client_secret: !secret google_client_secret
 
-lutron_caseta_pro:
-  bridges:
-    - host: !secret lutron_bridge_ip
-      mac: !secret lutron_bridge_mac
-      fan: [ 18, 21, 22 ]
-      switch: [ 29, 32 ]
+# lutron_caseta_pro:
+#   bridges:
+#     - host: !secret lutron_bridge_ip
+#       mac: !secret lutron_bridge_mac
+#       fan: [ 18, 21, 22, 35 ]
+#       switch: [ 29, 32 ]
 
 # zha:
   # usb_path: /dev/ttyUSB1

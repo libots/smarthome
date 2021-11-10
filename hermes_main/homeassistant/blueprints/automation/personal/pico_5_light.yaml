@@ -1,0 +1,90 @@
+blueprint:
+  name: Pico 5-Button Light Control
+  description:
+    "Light control for 5-button picos model PJ2-3BRL-GXX-X01 (Pico3ButtonRaiseLower)"
+  domain: automation
+  input:
+    pico_remote:
+      name: Pico Remote
+      description: "Select the pico remote to configure:"
+      selector:
+        device:
+          integration: lutron_caseta
+          model: PJ2-3BRL-GXX-X01 (Pico3ButtonRaiseLower)
+    light_target:
+      name: Light
+      description: "Select the light to control:"
+      selector:
+        target:
+          entity:
+            domain: light
+    # light_secondary:
+    #   name: Secondary Light
+    #   description: "Select the secondary light to control:"
+    #   selector:
+    #     target:
+    #       entity:
+    #         domain: light
+trigger:
+  - platform: device
+    device_id: !input "pico_remote"
+    domain: lutron_caseta
+    type: press
+    subtype: "on"
+  - platform: device
+    device_id: !input "pico_remote"
+    domain: lutron_caseta
+    type: press
+    subtype: raise
+  - platform: device
+    device_id: !input "pico_remote"
+    domain: lutron_caseta
+    type: press
+    subtype: stop
+  - platform: device
+    device_id: !input "pico_remote"
+    domain: lutron_caseta
+    type: press
+    subtype: lower
+  - platform: device
+    device_id: !input "pico_remote"
+    domain: lutron_caseta
+    type: press
+    subtype: "off"
+condition: []
+action:
+  - choose:
+      - conditions: '{{ trigger.event.data.action == "press" }}'
+        sequence:
+          - choose:
+              - conditions: "{{ trigger.event.data.button_number == 2 }}" # on
+                sequence:
+                  - service: light.turn_on
+                    target: !input light_target
+                    data:
+                      brightness: 255
+              - conditions: "{{ trigger.event.data.button_number == 5 }}" # up
+                sequence:
+                  - service: light.turn_on
+                    target: !input light_target
+                    data:
+                      brightness_step: 17
+              - conditions: "{{ trigger.event.data.button_number == 3 }}" # middle
+                sequence:
+                  - service: light.turn_on
+                    target: !input light_target
+                    data:
+                      brightness: 128
+              - conditions: "{{ trigger.event.data.button_number == 6 }}" # down
+                sequence:
+                  - service: light.turn_on
+                    target: !input light_target
+                    data:
+                      brightness_step: -17
+              - conditions: "{{ trigger.event.data.button_number == 4 }}" # off
+                sequence:
+                  - service: light.turn_off
+                    target: !input light_target
+    default: []
+mode: queued
+max: 10

@@ -1,0 +1,175 @@
+blueprint:
+  name: Pico 4-Button Zone Custom
+  description: Specify actions when pico buttons are pressed/released.
+  domain: automation
+  input:
+    pico:
+      name: Pico Four-Button Zone Remote
+      description: "Select the pico four-button zone remote to configure."
+      selector:
+        device:
+          integration: lutron_caseta
+          model: PJ2-4B-GXX-X01 (Pico4ButtonZone)
+    auto_mode:
+      name: Automation Mode
+      description: Mode that automation runs in (single,  restart, queued, parallel).
+      default: restart
+      selector:
+        select:
+          options:
+          - single
+          - restart
+          - queued
+          - parallel
+    mode_max:
+      name: Mode Max (ignored by Single and Restart Modes)
+      description: Maximum number of runs that can be executed or queued at a time.
+      default: 10
+      selector:
+        number:
+          min: 1.0
+          max: 15.0
+          step: 1.0
+          mode: slider
+    button_1_press:
+      name: Button One Pressed
+      default: []
+      selector:
+        action: {}
+    button_1_released:
+      name: Button One Released
+      default: []
+      selector:
+        action: {}
+    button_2_press:
+      name: Button Two Pressed
+      default: []
+      selector:
+        action: {}
+    button_2_released:
+      name: Button Two Released
+      default: []
+      selector:
+        action: {}
+    button_3_press:
+      name: Button Three Pressed
+      default: []
+      selector:
+        action: {}
+    button_3_released:
+      name: Button Three Released
+      default: []
+      selector:
+        action: {}
+    button_4_press:
+      name: Button Four Pressed
+      default: []
+      selector:
+        action: {}
+    button_4_released:
+      name: Button Four Released
+      default: []
+      selector:
+        action: {}
+trigger:
+  - platform: device
+    device_id: !input "pico"
+    domain: lutron_caseta
+    type: press
+    subtype: "on"
+  - platform: device
+    device_id: !input "pico"
+    domain: lutron_caseta
+    type: press
+    subtype: raise
+  - platform: device
+    device_id: !input "pico"
+    domain: lutron_caseta
+    type: press
+    subtype: lower
+  - platform: device
+    device_id: !input "pico"
+    domain: lutron_caseta
+    type: press
+    subtype: "off"
+  - platform: device
+    device_id: !input "pico"
+    domain: lutron_caseta
+    type: release
+    subtype: "on"
+  - platform: device
+    device_id: !input "pico"
+    domain: lutron_caseta
+    type: release
+    subtype: raise
+  - platform: device
+    device_id: !input "pico"
+    domain: lutron_caseta
+    type: release
+    subtype: lower
+  - platform: device
+    device_id: !input "pico"
+    domain: lutron_caseta
+    type: release
+    subtype: "off"
+action:
+  - choose:
+      # First scene button press
+      - conditions:
+          - condition: template
+            value_template: '{{ trigger.event.data.button_number == 8 }}'
+          - condition: template
+            value_template: '{{ trigger.event.data.action == "press" }}'
+        sequence: !input button_1_press
+      # First scene button release
+      - conditions:
+          - condition: template
+            value_template: '{{ trigger.event.data.button_number == 8 }}'
+          - condition: template
+            value_template: '{{ trigger.event.data.action == "release" }}'
+        sequence: !input button_1_released
+      # Second scene button press
+      - conditions:
+          - condition: template
+            value_template: '{{ trigger.event.data.button_number == 9 }}'
+          - condition: template
+            value_template: '{{ trigger.event.data.action == "press" }}'
+        sequence: !input button_2_press
+      # Second scene button release
+      - conditions:
+          - condition: template
+            value_template: '{{ trigger.event.data.button_number == 9 }}'
+          - condition: template
+            value_template: '{{ trigger.event.data.action == "release" }}'
+        sequence: !input button_2_released
+      # Third scene button press
+      - conditions:
+          - condition: template
+            value_template: '{{ trigger.event.data.button_number == 10 }}'
+          - condition: template
+            value_template: '{{ trigger.event.data.action == "press" }}'
+        sequence: !input button_3_press
+      # Third scene button release
+      - conditions:
+          - condition: template
+            value_template: '{{ trigger.event.data.button_number == 10 }}'
+          - condition: template
+            value_template: '{{ trigger.event.data.action == "release" }}'
+        sequence: !input button_3_released
+      # Off button press
+      - conditions:
+          - condition: template
+            value_template: '{{ trigger.event.data.button_number == 11 }}'
+          - condition: template
+            value_template: '{{ trigger.event.data.action == "press" }}'
+        sequence: !input button_4_press
+      # Off button release
+      - conditions:
+          - condition: template
+            value_template: '{{ trigger.event.data.button_number == 11 }}'
+          - condition: template
+            value_template: '{{ trigger.event.data.action == "release" }}'
+        sequence: !input button_4_released
+    default: []
+mode: !input "auto_mode"
+max: !input "mode_max"

@@ -1,0 +1,48 @@
+blueprint:
+  name: Pico 2-Button On/Off Control
+  description:
+    "This is for the 2 button picos that have the following model:\n\n\
+    \ PJ2-2B-GXX-X01 (Pico2Button)\n\nSelect an action for each button\
+    \ listed below. "
+  domain: automation
+  input:
+    pico_remote:
+      name: Pico Remote
+      description: "Select the pico remote to configure:"
+      selector:
+        device:
+          integration: lutron_caseta
+          model: PJ2-2B-GXX-X01 (Pico2Button)
+    target_entity:
+      name: Target
+      description: "Select the light/switch/boolean to control:"
+      selector:
+        entity:
+trigger:
+  - platform: device
+    device_id: !input "pico_remote"
+    domain: lutron_caseta
+    type: press
+    subtype: "on"
+  - platform: device
+    device_id: !input "pico_remote"
+    domain: lutron_caseta
+    type: press
+    subtype: "off"
+condition: []
+action:
+  - choose:
+      - conditions: '{{ trigger.event.data.action == "press" }}'
+        sequence:
+          - choose:
+              - conditions: "{{ trigger.event.data.button_number == 2 }}" # on
+                sequence:
+                  - service: homeassistant.turn_on
+                    entity_id: !input target_entity
+              - conditions: "{{ trigger.event.data.button_number == 4 }}" # off
+                sequence:
+                  - service: homeassistant.turn_off
+                    entity_id: !input target_entity
+    default: []
+mode: queued
+max: 10

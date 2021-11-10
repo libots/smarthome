@@ -1,0 +1,86 @@
+blueprint:
+  name: Pico 5-Button Fan Control
+  description:
+    "Fan control for 5-button picos model PJ2-3BRL-GXX-F01 (Pico3ButtonRaiseLower)"
+  domain: automation
+  input:
+    pico_remote:
+      name: Pico Remote
+      description: "Select the pico remote to configure:"
+      selector:
+        device:
+          integration: lutron_caseta
+          model: PJ2-3BRL-GXX-F01 (Pico3ButtonRaiseLower)
+    fan_target:
+      name: Fan
+      description: "Select the fan to control:"
+      selector:
+        target:
+          entity:
+            domain: fan
+    # light_secondary:
+    #   name: Secondary Light
+    #   description: "Select the secondary light to control:"
+    #   selector:
+    #     target:
+    #       entity:
+    #         domain: light
+trigger:
+  - platform: device
+    device_id: !input "pico_remote"
+    domain: lutron_caseta
+    type: press
+    subtype: "on"
+  - platform: device
+    device_id: !input "pico_remote"
+    domain: lutron_caseta
+    type: press
+    subtype: raise
+  - platform: device
+    device_id: !input "pico_remote"
+    domain: lutron_caseta
+    type: press
+    subtype: stop
+  - platform: device
+    device_id: !input "pico_remote"
+    domain: lutron_caseta
+    type: press
+    subtype: lower
+  - platform: device
+    device_id: !input "pico_remote"
+    domain: lutron_caseta
+    type: press
+    subtype: "off"
+condition: []
+action:
+  - choose:
+      - conditions: '{{ trigger.event.data.action == "press" }}'
+        sequence:
+          - choose:
+              - conditions: "{{ trigger.event.data.button_number == 2 }}" # on
+                sequence:
+                  - service: fan.turn_on
+                    target: !input fan_target
+                    data:
+                      percentage: 100
+              - conditions: "{{ trigger.event.data.button_number == 5 }}" # up
+                sequence:
+                  - service: fan.increase_speed
+                    target: !input fan_target
+              - conditions: "{{ trigger.event.data.button_number == 3 }}" # middle
+                sequence:
+                  - service: fan.set_percentage
+                    target: !input fan_target
+                    data:
+                      percentage: 50
+              - conditions: "{{ trigger.event.data.button_number == 6 }}" # down
+                sequence:
+                  - service: fan.decrease_speed
+                    target: !input fan_target
+              - conditions: "{{ trigger.event.data.button_number == 4 }}" # off
+                sequence:
+                  - service: fan.turn_off
+                    target: !input fan_target
+    default: []
+mode: queued
+max: 10
