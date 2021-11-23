@@ -1,3 +1,7 @@
+frontend:
+  extra_module_url:
+    - /hacsfiles/lovelace-card-mod/card-mod.js
+
 lovelace:
   mode: yaml
   dashboards:
@@ -32,8 +36,8 @@ lovelace:
       type: module
     - url: /hacsfiles/lovelace-badge-card/badge-card.js
       type: module
-    - url: /hacsfiles/lovelace-card-mod/card-mod.js
-      type: module
+    # - url: /hacsfiles/lovelace-card-mod/card-mod.js
+    #   type: module
     - url: /hacsfiles/lovelace-card-preloader/lovelace-card-preloader.js
       type: module
     - url: /hacsfiles/lovelace-fold-entity-row/fold-entity-row.js
