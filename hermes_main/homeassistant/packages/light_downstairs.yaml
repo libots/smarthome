@@ -1,5 +1,10 @@
 light:
   - platform: group
+    name: Porch
+    entities:
+      - light.porch_left
+      - light.porch_right
+  - platform: group
     name: Downstairs
     entities:
       - light.foyer
